@@ -1,0 +1,17 @@
+import numpy as np
+from Controllers.MFA_controller import MFA_controller
+from Controllers.SM_controller import SM_controller
+
+
+UMFA = MFA_controller()
+USM = SM_controller
+
+class MFASM_controller:
+    def __init__(self, gamma=20):
+        self.gamma = gamma
+
+    def update_u(self,k):
+        if k == 1:
+            return 0
+        else: 
+            return UMFA[k] + self.gamma * USM[k]
