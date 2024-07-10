@@ -1,7 +1,7 @@
 import numpy as np
 
 class SM_controller:
-    def __ini__(self, epsilon = 10**-4 , alpha = 0.5, T=3):
+    def __init__(self, epsilon = 10**-4 , alpha = 0.5, T=3):
         self.epsilon = epsilon
         self.alpha = alpha
         self.T = T

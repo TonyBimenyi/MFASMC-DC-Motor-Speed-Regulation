@@ -4,7 +4,7 @@ from Controllers.SM_controller import SM_controller
 
 
 UMFA = MFA_controller()
-USM = SM_controller
+USM = SM_controller()
 
 class MFASM_controller:
     def __init__(self, gamma=20):
