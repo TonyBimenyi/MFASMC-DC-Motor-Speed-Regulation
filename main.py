@@ -6,7 +6,7 @@ from Reference.trajectory import generate_trajectory
 from Estimator.estimator import initialize_phi
 from Plot.plotter import plot_results
 
-yd = generate_trajectory()
+yd = generate_trajectory(type='cosine_squared')
 
 # for k in range(400):
 
