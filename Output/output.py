@@ -1,7 +1,7 @@
 import numpy as np
 
 class Output:
-    def __init__(self, rT = 1040, m=2)
+    def __init__(self, rT = 1040, m=2):
         self.rT = rT
         self.m = m
 
