@@ -3,27 +3,26 @@ import matplotlib.pyplot as plt
 
 # Define parameters
 d = 5
-rho = 1.5
+rho = 1
 eta = 1
 lamda = 1
 mu = 1
-epsilon = 10**-8
-alpha = 0.5
+epsilon = 10**-5
+alpha = 8  # Adjusted
 T = 0.1
-gamma1 = 0.1
-gamma2 = 0.1
+gamma1 = 0.1  # Increased
+gamma2 = 0.1  # Increased
 gamma3 = 0.2
 gamma4 = 0.2
-rT = 10
-m = 5
+rT = 1024
+m = 350
 L = 100
-
 
 
 # Generate desired trajectory
 yd = np.zeros(L)
 for k in range(L):
-    yd[k] = 0.5 * np.sin(k * np.pi / 30) + 0.3 * np.cos(k * np.pi / 10)
+    yd[k] = 0.4 * np.sin(0.1 * k) + 0.3 * np.sin(0.05 * k) + 0.2 * np.sin(0.01 * k)
 
 # Initialize arrays
 phi1 = np.zeros((L,1))
@@ -107,10 +106,10 @@ for k in range(1,L-1):
 
     
     if k == 1:
-        u1[0] = 2
-        u2[0] = 2
-        u3[0] = 2
-        u4[0] = 2
+        u1[0] = 0.1
+        u2[0] = 0.1
+        u3[0] = 0.1
+        u4[0] = 0.1
     else:
         u1[k] = mfa1[k] + gamma1 * sm1[k]
         u2[k] = mfa2[k] + gamma2 * sm2[k]
@@ -123,18 +122,18 @@ for k in range(1,L-1):
     y2[0] = 0
     y3[0] = 0
     y4[0] = 0
-    y1[k + 1] = m / (rT * 0.8) * u1[k]
-    y2[k + 1] = m / (rT * 0.4) * u2[k]
-    y3[k + 1] = m / (rT * 0.3) * u3[k]
-    y4[k + 1] = m / (rT * 0.2) * u4[k]
+    y1[k + 1] = m / (rT * 0.3) * u1[k]
+    y2[k + 1] = m / (rT * 0.3) * u2[k]
+    y3[k + 1] = m / (rT * 0.5) * u3[k]
+    y4[k + 1] = m / (rT * 0.5) * u4[k]
 
 # Plot the desired output
 plt.figure()
 plt.plot(yd, '-b', label='Desired Output')
-plt.plot(y1, '-r', label='Y1')
-plt.plot(y2, '-g', label='Y2')
-plt.plot(y3, '-y', label='Y3')
-plt.plot(y4, '-k', label='Y4')
+plt.plot(y1[:-1], '-*r', markersize=4, label='Y1')
+plt.plot(y2[:-1], '-og', markersize=4, label='Y2')
+plt.plot(y3[:-1], '--y', label='Y3')
+plt.plot(y4[:-1], '-k', label='Y4')
 plt.grid()
 plt.legend()
 plt.xlabel('Time step')

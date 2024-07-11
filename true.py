@@ -7,21 +7,21 @@ rho = 1
 eta = 1
 lamda = 1
 mu = 1
-epsilon = 10**-8
-alpha = 0.5
+epsilon = 10**-5
+alpha = 8  # Adjusted
 T = 0.1
-gamma1 = 0.005
-gamma2 = 0.005
-gamma3 = 0.007
-gamma4 = 0.007
+gamma1 = 0.1  # Increased
+gamma2 = 0.1  # Increased
+gamma3 = 0.2
+gamma4 = 0.2
 rT = 1024
 m = 350
 L = 100
 
-# Generate desired trajectory
+# Generate a more complex desired trajectory
 yd = np.zeros(L)
 for k in range(L):
-    yd[k] = 0.5 * np.sin(k * np.pi / 30) + 0.3 * np.cos(k * np.pi / 10)
+    yd[k] = 0.4 * np.sin(0.1 * k) + 0.3 * np.sin(0.05 * k) + 0.2 * np.sin(0.01 * k)
 
 # Initialize arrays
 phi1 = np.zeros((L, 1))
@@ -71,10 +71,10 @@ u1[0] = 0.1
 u2[0] = 0.1
 u3[0] = 0.1
 u4[0] = 0.1
-y1[0] = 0.1
-y2[0] = 0.1
-y3[0] = 0.1
-y4[0] = 0.1
+y1[0] = 0
+y2[0] = 0
+y3[0] = 0
+y4[0] = 0
 
 # Simulation loop
 for k in range(1, L - 1):
@@ -103,16 +103,16 @@ for k in range(1, L - 1):
     u3[k] = mfa3[k] + gamma3 * sm3[k]
     u4[k] = mfa4[k] + gamma4 * sm4[k]
 
-    y1[k + 1] = m / (rT * 0.3) + u1[k]
-    y2[k + 1] = m / (rT * 0.3) + u2[k]
-    y3[k + 1] = m / (rT * 0.5) + u3[k]
-    y4[k + 1] = m / (rT * 0.5) + u4[k]
+    y1[k + 1] = m / (rT * 0.3) * u1[k]
+    y2[k + 1] = m / (rT * 0.3) * u2[k]
+    y3[k + 1] = m / (rT * 0.5) * u3[k]
+    y4[k + 1] = m / (rT * 0.5) * u4[k]
 
 # Plot the desired output
 plt.figure()
 plt.plot(yd, '-b', label='Desired Output')
-plt.plot(y1[:-1], '-*r',markersize=4, label='Y1')
-plt.plot(y2[:-1], '-og',markersize=4, label='Y2')
+plt.plot(y1[:-1], '-*r', markersize=4, label='Y1')
+plt.plot(y2[:-1], '-og', markersize=4, label='Y2')
 plt.plot(y3[:-1], '--y', label='Y3')
 plt.plot(y4[:-1], '-k', label='Y4')
 plt.grid()

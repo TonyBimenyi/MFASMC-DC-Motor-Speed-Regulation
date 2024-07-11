@@ -1,7 +1,7 @@
 import numpy as np
 from scipy import signal
 
-def generate_trajectory(type='step', t=np.linspace(0, 4, 400)):
+def generate_trajectory(type='step', t=np.linspace(0, 1, 100)):
     if type == 'step':
         yd = np.zeros(len(t))
         yd[:len(t)//2] = 1
