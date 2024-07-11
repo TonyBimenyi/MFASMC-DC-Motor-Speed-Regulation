@@ -28,4 +28,4 @@ class MFA_controller:
         if k == 1:
             return 0
         else:
-            return u[k-1] + (self.rho * phi[k] / (self.lamda + phi[k]**2)) * si[k]
+            return u[k-1] + (self.rho * phi[k] / (self.lambda_ + phi[k]**2)) * si[k]

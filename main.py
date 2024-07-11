@@ -26,7 +26,7 @@ for k in range(400):
     
     # Update input values
     for i in range(4):
-        u[i][k] = controller.update_u(k)
+        u[i][k] = controller.update_u(k,phi,si,u,yd,y)
 
     # Update y values
     y1_next, y2_next, y3_next, y4_next = Output(k, y)

@@ -23,8 +23,8 @@ class MFASM_controller:
         else:
             return phi[k-1] + (self.eta * (u[k-1] - u[k-2]) / (self.mu + (u[k-1] - u[k-2])**2)) * (y[k] - y[k-1] - phi[k-1] * (u[k-1] - u[k-2]))
 
-    def update_u(self,k):
+    def update_u(self,k,u,phi,si,yd,y):
         if k == 1:
             return 0
         else: 
-            return self.MFA +  self.SM
+            return self.MFA.update_input(k,u,phi,si) + self.gamma+ self.SM.update_input(k,u,yd,y)
