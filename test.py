@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 # Define parameters
 d = 5
-rho = 1
+rho = 1.5
 eta = 1
 lamda = 1
 mu = 1
