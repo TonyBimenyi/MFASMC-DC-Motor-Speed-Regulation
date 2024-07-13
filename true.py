@@ -19,9 +19,14 @@ m = 350
 L = 100
 
 # Generate a more complex desired trajectory
-yd = np.zeros(L)
+# yd = np.zeros(L)
+# for k in range(L):
+#     yd[k] = 0.4 * np.sin(0.1 * k) + 0.3 * np.sin(0.05 * k) + 0.2 * np.sin(0.01 * k)
+
+yd = np.zeros(L + 1)
 for k in range(L):
-    yd[k] = 0.4 * np.sin(0.1 * k) + 0.3 * np.sin(0.05 * k) + 0.2 * np.sin(0.01 * k)
+    yd[k] = 0.5 * np.sin(k * np.pi / 30) + 0.3 * np.cos(k * np.pi / 10)
+
 
 # Initialize arrays
 phi1 = np.zeros((L, 1))

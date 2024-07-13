@@ -46,7 +46,7 @@ u3 = np.zeros((L,1))
 u4 = np.zeros((L,1))
 
 y1 = np.zeros((L + 1,1))
-y2 = np.zeros((L + 1,1))
+y2 = np.zeros((L + 1,1))47
 y3 = np.zeros((L + 1,1))
 y4 = np.zeros((L + 1,1))
 

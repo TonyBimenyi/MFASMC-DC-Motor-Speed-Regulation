@@ -1,0 +1,1068 @@
+\documentclass[journal,onecolumn]{IEEEtran}
+\renewcommand{\baselinestretch}{1.45}
+\usepackage{mathrsfs}
+\usepackage{booktabs}
+\usepackage{cite}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{graphics}
+\usepackage{color}
+\usepackage{epsfig}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{subfigure}
+\allowdisplaybreaks[4]
+
+\newtheorem{Lem}{Lemma}
+\newtheorem{Thm}{Theorem}
+\newtheorem{defn}{Definition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{rem}{Remark}
+\newtheorem{assumption}{Assumption}
+\newtheorem{procedure}{Procedure}
+\newtheorem{algorithm}{Algorithm}
+\makeatletter
+\newcommand{\rmnum}[1]{\romannumeral #1}
+\newcommand{\Rmnum}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\makeatother
+
+\title{\LARGE Model-Free Adaptive Iterative Learning Containment Control for Nonlinear Multiagent Systems Under Sparse Sensor Attacks}
+
+\author{pzq}
+
+\begin{document}
+ \maketitle
+
+\begin{abstract}
+In this work, the model-free adaptive iterative learning control approach is used to study the containment control problem of nonlinear multiagent systems under sparse  sensor attacks. Firstly, the nonlinear dynamics of each agent is transformed into an approximate linear model along the iterative axis by using the compact form dynamic linearization (CFDL) method. Secondly, the detection mechanism and adaptive switching strategy are designed for the multi-source mixed attacks on sensors, which greatly alleviates the negative impact of sparse sensor attacks on the system. Subsequently, the distributed model-free adaptive iterative learning control algorithm is presented to ensure that the output of each follower is constrained within the convex hull formed by the output of leaders. Then, the convergence of the proposed control algorithm is analyzed and extended to the switching topology. Finally, the control effect is verified by several simulation examples.
+\end{abstract}
+
+\begin{keywords} Containment control, sparse sensor attacks, model-free adaptive iterative learning control, nonlinear multiagent systems.
+\end{keywords}
+
+
+
+\section{Introduction}\label{section:1}
+During the last few decades, with the increase of task complexity and data volume, the intelligent individual has been gradually difficult to complete the needs of the system, so the multiagent systems came into being. Due to excellent collaboration ability and distributed decision-making mechanism, multiagent systems have been widely used in autonomous vehicles \cite{1}, robot collaboration \cite{2}, Internet of Things \cite{3}-\cite{4} and distributed sensor networks \cite{5}. Containment control is considered to be an important problem in multiagent systems cooperation. The objective of containment control is to find a suitable strategy so that all followers can converge into a convex hull composed of multiple leaders. So far, a great deal of research has been done on containment problems with different system models \cite{6}-\cite{9}.
+
+The above work is carried out on the basis of a common premise. In other words, the system model is available. However, with the progress of science and technology, the accurate system model becomes difficult to obtain, which makes the research of the problem into a bottleneck. At this time, some scholars introduced model-free adaptive control methods. The method only relies on the real-time measurement data of the controlled system, and does not rely on any mathematical model information of the controlled system. In \cite{10}-\cite{12}. In the above literature, model-free adaptive control shows good control effect and robustness. Unfortunately, model-free adaptive control only works in the time domain.
+
+However, in engineering practice, many systems perform the same control tasks repeatedly in a finite time interval. The time domain control method does not have the ability to learn from the past repeated operations, that is, the control error is also repeated. In contrast, the iterative learning control method can reduce the system error by using the memory device to store the past duplicate data to correct the current control input. Therefore, combining the characteristics of model-free adaptive control and iterative learning control, the design and analysis methods of model-free adaptive iterative learning control are proposed.
+
+
+In the present work, via ISMC technology, the fault-tolerant problem
+is studied for a class of linear continuous systems based on
+simplified deadzone model with respect to actuator dead-zone failure
+and unmatched external perturbations. First of all, the deadzone is
+modeled as a combination of a line and a bounded disturbance-like
+term. The nonlinear control law is then designed to guarantee that
+sliding mode can be achieved. And the bounded disturbance-like term
+which enters the state equation at the same point as the control
+input can be rejected completely. What's more, a novel bounded real
+lemma with allowing extra degree of freedom for design is presented
+by using the well-known Projection Lemma. Further, based on this new
+lemma, the state feedback controller given by linear matrix
+inequality (LMI) is presented such that the resulting closed-loop
+system in the sliding mode is asymptotically stable.It is worth
+noting that the deadzone failure can be completely compensated and
+the system is more robust against unmatched disturbances than using
+$H_\infty$ control alone. At last, a numerical example is presented
+to show the effectiveness of the proposed scheme.
+
+
+The notations used throughout this paper are fairly standard.
+ $R^n$ denotes the n-dimensional Euclidean space, $R^{m\times n}$ is the
+ set of all $m \times n$ real matrices. In addition, we use '*' as
+ an ellipsis for the terms that are introduced by symmetry. $I$
+ means the unit matrix with appropriate dimensions, $I_n$ is the
+ identity matrix of order n.
+ $\otimes$ is the Kronecker product of two matrices. The direct sum
+ of matrices $A_i, i=1,2,\cdots, n$ will be denoted as
+ $A_1\oplus A_2\oplus \cdots \oplus
+  A_n \triangleq diag\{A_1,A_2,\cdots,A_n\}$.
+In addition, for a matrix $M$, $He\{M\}$ denotes $M+M^T$.%
+
+Secondly, an attack defense scheme is designed for the multi-source mixed attacks occurring in the sensor channel. The scheme is composed of detection mechanism and adaptive switching strategy, which can reduce the negative effects of sparse sensor attacks by switching channel in time after detecting abnormal behavior.
+
+\section{System Description and Problem Statement}
+
+\subsection{Deadzone Model}
+Deadzone is a static input-output relationship which for a range of
+input values gives no output. Once the output appears, the slope
+between the input and the output is constant. The analytical
+expression of the deadzone characteristic is
+
+\begin{equation}
+\label{model 1}
+y_i^l(t+1,k)=f_i^l(y_i^l(t,k),\cdots,y_i^l(t-n_y,k),u_i(t,k),\cdots,u_i(t-n_u,k))
+\end{equation}
+
+\begin{equation}
+\label{model 2}
+\Delta y_i^l(t+1,k)=\phi_i(t,k)\Delta u_i(t,k)
+\end{equation}
+
+\begin{equation}
+\label{model 3}
+e_i^l(t,k)=max\left\{y_{n+1}(t)-y_i^l(t,k),\cdots,y_{n+p}(t)-y_i^l(t,k)\right\}
+\end{equation}
+
+\begin{equation}
+\label{model 4}
+g_i^l(t,k)=\begin{cases}
+1,& \text{if }\left|e_i^l(t,k)\right|\ge\hbar  \\
+0,& \text{if }\left|e_i^l(t,k)\right|< \hbar
+\end{cases}
+\end{equation}
+
+\begin{equation}
+\label{model 5}
+\tilde{y}_i(t,k)=\left[\imath_i^1(t),\imath_i^2(t),\cdots,\imath_i^x(t)\right]\begin{bmatrix}
+y_i^1(t,k)\\
+y_i^2(t,k)\\
+\vdots\\
+y_i^x(t,k)
+\end{bmatrix}
+\end{equation}
+
+\begin{equation}
+\label{model 6}
+\imath_i^l(t)=\begin{cases}
+1,\ \mathcal{Q}_i^1(t)\ne0\ \cap\cdots\cap\mathcal{Q}_i^{l-1}(t)\ne 0\cap\mathcal{Q}_i^{l}(t)=0\\
+0,\ others
+\end{cases}
+\end{equation}
+
+\begin{equation}
+\label{model 7}
+\mathcal{Q}_i^l(t)=\sum_{t=1}^{T}g_i^l(t,k)
+\end{equation}
+
+\begin{equation}
+\label{model 8}
+\xi_i(t,k)= {\textstyle \sum_{j\in\mathbb{N}_j}}a_{ij}(\tilde{y}_j(t,k)-\tilde{y}_i(t,k))+\sum_{q=n+1}^{n+p} a_{iq}(y_q(t)-\tilde{y}_i(t,k))
+\end{equation}
+
+\begin{align}
+\label{model 9}
+\hat\phi_i(t,k)=&\hat\phi_i(t,k-1)+\frac{\eta\Delta u_i(t,k-1)}{\mu+\left|\Delta u_i(t,k-1)\right|^2}
+\notag \\& \times (\Delta \tilde{y}_i(t+1,k-1)-\hat\phi_i(t,k-1)\Delta u_i(t,k-1))
+\end{align}
+
+\begin{align}
+\label{model 10}
+\hat\phi_i(t,k)=\hat\phi_i(t,1),\ if\left|\hat\phi_i(t,k)\right|\le\varsigma \ or\ \left|\Delta u_i(t,k-1)\right|\le \varsigma \ or\
+sign(\hat\phi_i(t,k))\ne sign(\hat\phi_i(t,1))
+\end{align}
+
+\begin{align}
+\label{model 11}
+u_i(t,k)=u_i(t,k-1)+\frac{\rho\hat\phi_i(t,k)}{\lambda+\left|\hat\phi_i(t,k)\right|^2}\xi_i(t+1,k-1)
+\end{align}
+
+
+The key features of the deadzone in the control problems
+investigated in this paper are
+\begin{enumerate}
+\item[{\rm  A1}]The deadzone output $\Phi (u(t))$ is not available for
+measurement.
+\item[{\rm  A2}]The deadzone slopes in positive and negative region
+are same, i.e. ${m_r} = {m_l} = m$.
+\item[{\rm  A3}]The deadzone parameters $b_r$,$b_l$ and $m$ are unknown,
+but their signs are known: ${b_r} > 0,{b_l} < 0,m > 0$.
+\item[{\rm  A4}]The deadzone parameters $b_r$,$b_l$ and $m$ are bounded,
+i.e. there exist known constants $b_{r\min }$, $b_{r\max }$,
+$b_{l\min }$, $b_{l\max }$, $m_{\min }$, $m_{\max }$ such that${b_r}
+\in [{b_{r\min }},{b_{r\max }}],{b_l} \in [{b_{l\min }},{b_{l\max
+}}],m \in [{m_{\min }},{m_{\max }}]$.
+\end{enumerate}
+
+
+\begin{rem}\label{re1}
+
+
+Assumption(A1) is common in practical systems, such as servomotors
+and servo valves. If $\Phi (u(t))$ is measurable, the control of
+deadzone will be relatively easy and will not be discussed in this
+paper. Assumption(A2) is generally adopted in the literature (see,
+for example, \cite{12,13}) and can commonly be met in the industrial
+systems. Assumptions (A3) and (A4) are physically satisfied in real
+plants.
+\end{rem}
+
+From a practical point of view, we can re-define model
+(\ref{Eq:deadzone model 1}) as a simplified deadzone model\cite{4}
+which makes the design of controller simpler\cite{xluo09}.
+\begin{equation}
+\label{Eq:deadzone model 2}
+\begin{array}{rcl}
+\Phi (u(t)) = mu(t) + d(u(t))
+\end{array}
+\end{equation}
+where $ m $ is called the general slope of the deadzone, $\Phi
+(u(t))$ can be calculated from (\ref{Eq:deadzone model 1}) and
+(\ref{Eq:deadzone model 2}) as,
+
+\begin{equation}
+\label{Eq:deadzone model 3}
+\begin{array}{rcl}
+\ d(u(t)) = \left\{
+\begin{array}{l}
+  - m{b_r}{\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} for{\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} u(t) \ge {b_r} \\
+  - mu(t){\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} for{\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {b_l} < u(t) < {b_r} \\
+  - m{b_l}{\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} for{\kern 1pt} {\kern 1pt} {\kern 1pt} u(t) \le {b_l}{\kern 1pt}  \\
+ \end{array} \right.\
+\end{array}
+\end{equation}
+
+From Assumptions (A2) and (A4), one can conclude that $d(u(t))$ is
+bounded, and satisfies $\left| {d(u(t))} \right| \le \bar d$, where
+$\bar d$  is the upper-bound, which can be chosen as $\bar d$ =
+$\max \{ {m_{\max }}{b_{r\max }}$,  $-{m_{\max }}{b_{l\min }}\} $,
+where $b_{l\min }$ carries a negative value.
+
+
+
+
+
+
+
+\subsection{System Model}
+
+
+Consider a linear time-invariant continuous system in the form of
+\begin{equation}
+\label{Eq:deadzone system}
+\begin{array}{rcl}
+   \dot{x}(t) &=& Ax(t)+B\Phi (u(t))+Ew(t)
+
+
+\end{array}
+\end{equation}
+ where $x(t)\in R^n$ is the state vector,
+$w(t)\in R^r$ is an exogenous disturbance in $\mathcal
+{L}_2[0,\infty)$, $u(t)\in R^m$ is the control input, and$z(t)\in R
+^q$ is the regulated output, respectively. The system matrices $A$,
+$B$, $E$, $C$, and $D$ are known constant matrices of appropriate
+dimensions.
+
+Then, the resulting  model of continuous-time system in
+(\ref{Eq:deadzone system}) considering the deadzone model
+(\ref{Eq:deadzone model 2}) and (\ref{Eq:deadzone model 3}) is given
+by
+\begin{equation}
+\label{Eq:equivalent system}
+\begin{array}{rcl}
+   \dot{x}(t) &=& Ax(t)+Bmu(t) + Bd(u(t))+Ew(t)
+
+
+\end{array}
+\end{equation}
+
+\begin{rem}\label{rem4}
+ It is obvious that there is no consideration about the deadzone
+failure when $m=1$, $d(u(t))=0$.
+\end{rem}
+
+\subsection{Problem Statement}
+The problem of interest in this paper is to develop
+ a sliding mode controller $u(t)$ such that the deadzone failure can be compensated completely and
+ the closed-loop system in the sliding mode(\ref{Eq:closed sliding mode dynamics}) is
+asymptotically stable, and is more robust against unmatched
+disturbances than using $H_\infty$ control alone.
+
+
+
+
+To facilitate control system design, the following lemmas are
+presented and will be used in the later developments.
+ \begin{Lem} \label{le2} (Projection Lemma)\cite{JiaYM, GahinetP} Given a symmetric matrix
+ $\Phi\in R^{n\times n}$ and two matrices $T_1$, $T_2$ of column
+ dimension $n$, there exists a matrix $X$ that satisfies
+\begin{equation*}
+\begin{array}{l}
+\Phi+He\{T_1^TX^TT_2\}<0,
+\end{array}
+\end{equation*}
+ if and only if the following projection inequalities with respect
+ to $X$ are satisfied.
+\begin{equation*}
+\begin{array}{l}
+N^T_{T_1}\Phi N_{T_1}<0, N^T_{T_2}\Phi N_{T_2}<0,
+\end{array}
+\end{equation*}
+where $N_{T_1}$ and $N_{T_2}$ denote arbitrary bases of the
+null-spaces of $T_1$ and $T_2$, respectively.
+\end{Lem}
+
+
+ \begin{Lem}\label{le3} For a prescribed scalar $\gamma>0$,
+the system with the transfer function as
+$T(s)=\bar{C}(sI-\bar{A})^{-1}\bar{E}$ is asymptotically stable, and
+$\|T(s)\|_{\infty}<\gamma$ if and only if  there exists matrix
+$P=P^T>0$
+ such that
+ \begin{equation}\label{Eq:Lem_33}\left(
+   \begin{array}{ccc}
+     1 & 1 & 1 \\
+     1 & 1 & 1 \\
+     1 & 1 & 1 \\
+   \end{array}
+ \right)
+ \end{equation}
+
+
+\begin{equation}\label{Eq:Lem_3}\left[
+\begin{array}{cccc}
+PA_{cl}+A_{cl}^TP&PB_{cl}&C_{cl}^T\\
+{*}&-\gamma^2I&D_{cl}^T\\
+{*}&{*}&-I
+\end{array}\right]<0.
+\end{equation}
+ \end{Lem}
+
+
+
+There is no doubt that the standard bounded real lemma is given by a
+strict matrix inequality in Lemma \ref{le3}. However, there is a
+drawback of the above lemma. The construct products between the
+Lyapunov matrix and the system's dynamic matrices will introduce
+some conservativeness. Taking into account the above drawback, a
+novel bounded real lemma  is obtained by using Projection Lemma.
+
+
+
+
+
+
+
+
+\section{ Main Result}
+
+
+
+Consider a sliding mode controller as follows
+\begin{equation}
+\label{Eq:Controller}
+\begin{array}{rcl}
+u(x,t)&=&u_0(x,t)+u_1(x,t)\\[1mm]
+\end{array}
+\end{equation}
+ The nominal control $u_0(x,t)$ is responsible for the performance of
+ the nominal system; $u_1(x,t)$ is a discontinuous control action
+ that rejects the perturbations by ensuring the sliding
+ motion. Usually,the discontinuous control and the linear control are selected as
+ \begin{equation}
+\label{Eq:nonlinear Controller}
+\begin{array}{rcl}
+u_1(x,t)&=&-\rho(x,t)(GB)^{-1}{s(x,t)\over \|s(x,t)\|}\\[1mm]
+\end{array}
+\end{equation}
+and
+\begin{equation}
+\label{Eq:linear Controller}
+\begin{array}{rcl}
+u_0(x,t)&=&Kx(t)\\[1mm]
+\end{array}
+\end{equation} respectively.
+
+
+
+
+Now the integral sliding surface is chosen to be
+ \begin{equation}
+\label{Eq:sliding surface}
+\begin{array}{rcl}
+s(x,t)&=&G[x(t)-x(t_0)-\int_{t_0}^t(Ax(\tau)+B{m_{min}}u_0(\tau))\,dt]\\[1mm]
+\end{array}
+\end{equation}
+where $s\in R^m$ , $u_0(t) \in R^m$ designed by state feedback
+ is a control input to guarantee unmatched disturbance attenuation once the system is in the sliding
+ mode, and $G$ is chosen as $B^+$ to avoid amplification of the
+ unmatched disturbances \cite{24}.
+
+
+Differentiating (\ref{Eq:sliding surface}) with respect to time and
+substituting $\dot x(t)$ from (\ref{Eq:equivalent system}) and $u(t)
+$ from  (\ref{Eq:Controller})obtains
+\begin{equation*}
+\label{Eq:sliding surface Difference}
+\begin{array}{rcl}
+\dot{s}(x,t)&=&GB((m-{m_{min}})u_0+mu_l+d(t))+GEw(t)\\[1mm]
+\end{array}
+\end{equation*}
+then
+\begin{equation*}
+\label{Eq:1}
+\begin{array}{rcl}
+mu_{leq}=-{m_{min}}u_0-d(t)-{(GB)}^{-1}GEw(t)\\[1mm]
+\end{array}
+\end{equation*}
+we can obtain the sliding mode dynamics
+
+\begin{equation}
+\label{Eq:open sliding mode dynamics}
+\begin{array}{rcl}
+   \dot{x}(t)&=&Ax(t)+(I-B{(GB)}^{-1}G)Ew(t)+B{m_{min}}u_0(t)
+
+\\[1mm]
+   z(t)&=& Cx(t)+Du_0(t)
+\end{array}
+\end{equation}
+
+
+\begin{rem}\label{re2}
+
+The novelty of the paper lies in that the way to treat the deadzone
+failure. The bounded disturbance-like term $d(u(t))$ which enters
+the state equation at the same point as the control input can be
+rejected completely by ISMC technology, and the linear part of the
+deadzone will be compensated by state feedback controller in the
+following design.
+
+\end{rem}
+
+ Consider the system
+(\ref{Eq:open sliding mode dynamics}) associated with the control
+law (\ref{Eq:linear Controller}), the closed-loop system in the
+sliding mode can be expressed as follows
+\begin{equation}
+\label{Eq:closed sliding mode dynamics}
+\begin{array}{rcl}
+ \dot{x}(t)&=&A_{cl}x(t)+B_{cl}w(t)\\[1mm]
+  z(t)&=&C_{cl}x(t)
+\end{array}
+\end{equation}
+where
+\begin{equation*}
+A_{cl}=A+B{m_{min}}K, B_{cl}=(I-B{(GB)}^{-1}G)E, C_{cl}=C+DK.
+\end{equation*}
+
+
+The transfer function matrix of the closed-loop system in
+(\ref{Eq:closed sliding mode dynamics}) in the sliding mode is given
+by
+\begin{equation}
+\label{EQ:Tran form}
+\begin{array}{l}
+T(s)=C_{cl}(sI-A_{cl})^{-1}B_{cl}.
+\end{array}
+\end{equation}
+
+
+
+
+
+
+Now we will focus on obtaining the state feedback $H_{\infty}$
+controller design conditions on the sliding surface and the
+achievement conditions.
+
+First, we utilize the following improved bounded real
+lemma\cite{JiaYM}, which is crucial to our derivation.
+ \begin{Thm}\label{thm1}  For a prescribed scalar $\gamma>0$, the
+ sliding dynamics on $ s(x,t)=0 $ with the transfer function as $T(s)=\bar{C}(sI-\bar{A})^{-1}\bar{E}$
+  is asymptotically stable, and
+satisfies the norm constraint $\|T(s)\|_{\infty}<\gamma$ if and only
+if there exist matrices $Q=Q^T>0$, $Z$ and a sufficiently small
+scalar $\epsilon>0$ such that
+\begin{equation}\begin{array}{l}
+\label{Eq:thm 1 condition} \left[\begin{array}{ccccc}
+Q-He\{Z\}&Z^T(I+\epsilon A_{cl}) &0&\sqrt{\epsilon}Z^TB_{cl}\\{*}&-Q&\sqrt{\epsilon}C_{cl}^T&0\\
+{*}&{*}&-\gamma^2 I&D_{cl}
+\\
+{*}&{*}&{*}& - I
+\end{array}\right]<0.\end{array}
+\end{equation}
+ \end{Thm}
+\begin{proof}
+By suitable block-row-column exchanges of (\ref{Eq:thm 1
+condition}), it is easy to obtain
+\begin{equation}\begin{array}{l}
+\label{Eq:Thm 1 p1} \left[\begin{array}{ccccc}-
+I&\sqrt{\epsilon}B_{cl}^TZ&0&D_{cl}^T\\{*}&Q-Z-Z^T&Z^T(I+\epsilon
+A_{cl})
+&0\\{*}&{*}&-Q&\sqrt{\epsilon}C_{cl}^T\\{*}&{*}&{*}&-\gamma^2 I
+\end{array}\right]<0.\end{array}
+\end{equation}
+
+ Obviously, the matrix inequality (\ref{Eq:Thm 1 p1}) can
+be equivalently rewritten as
+\begin{equation}\begin{array}{l} \label{Eq:Thm 1 p2}
+\left[\begin{array}{ccccc}- I&
+0&0&D_{cl}^T\\{*}&Q&0&0\\{*}&{*}&-Q&\sqrt{\epsilon}C_{cl}^T\\{*}&{*}&{*}&-\gamma^2I
+\end{array}\right]+He\left\{\left[\begin{array}{c}0\\I\\0\\0\end{array}\right]Z^T\left[\begin{array}{c}
+\sqrt{\epsilon}B_{cl}^T\\-I\\I+\epsilon
+A_{cl}^T\\0\end{array}\right]^T\right\}<0\end{array}
+\end{equation}
+
+Noting that explicit bases of the  null-spaces of
+$\left[\begin{array}{ccccc}0&I&0&0\end{array}\right]$ and
+$\left[\begin{array}{ccc} \sqrt{\epsilon}B_{cl}&-I&I+\epsilon
+A_{cl}\end{array}\right. \\
+\left.\begin{array}{cc}&0\end{array}\right]$ are given as
+$N_1=\left[\begin{array}{cccc}I&0&0\\0&0&0\\0&I&0\\0&0&I\end{array}\right]$
+ and
+$N_2=\left[\begin{array}{cccc}I&0&0\\\sqrt{\epsilon}B_{cl}&I+\epsilon
+A_{cl}&0\\0&I&0\\0&0&I\end{array}\right]$.
+
+Then, canceling the matrix $Z$ from (\ref{Eq:Thm 1 p2}) by Lemma
+\ref{le2} leads to
+\begin{equation*}\begin{array}{l}
+N_1^T\Psi N_1=\left[\begin{array}{cccc}- I&
+0&D_{cl}^T\\{*}&-Q&\sqrt{\epsilon}C_{cl}^T\\{*}&{*}&-\gamma^2 I
+\end{array}\right]<0,\end{array}
+\end{equation*}
+\begin{equation}\begin{array}{l} \label{Eq:Thm 1 p4}N_2^T\Psi
+N_2=\left[\begin{array}{cccc}- I+\epsilon
+B_{cl}^TQB_{cl}&\sqrt{\epsilon}B_{cl}^TQ\mathcal
+{A}^T&D_{cl}^T\\{*}&\mathcal {A}Q\mathcal
+{A}^T-Q&\sqrt{\epsilon}C_{cl}^T
+\\{*}&{*}&-\gamma^2
+I
+\end{array}\right]<0,\end{array}
+\end{equation}
+where $\Psi=\left[\begin{array}{ccccc}-I&
+0&0&D_{cl}^T\\{*}&Q&0&0\\{*}&{*}&-Q&\sqrt{\epsilon}C_{cl}^T\\{*}&{*}&{*}&-\gamma^2
+I
+\end{array}\right], \mathcal {A}=I+\epsilon A_{cl}^T.$
+
+By some simple algebraic manipulations and using Schur complement
+lemma, the  inequality (\ref{Eq:Thm 1 p4}) can also be rewritten as
+\begin{equation}\begin{array}{l} \label{Eq:Thm 1 p5}\left[\begin{array}{cccc}- I+\gamma^{-2}D_{cl}^TD_{cl}
+&\sqrt{\epsilon}B_{cl}^TQ\mathcal
+{A}^T+\gamma^{-2}\sqrt{\epsilon}D_{cl}^TC_{cl}&\sqrt{\epsilon}B_{cl}^TQ\\{*}&\mathcal
+{A}Q\mathcal {A}^T-Q+\gamma^{-2}\epsilon C_{cl}^TC_{cl}&0
+\\{*}&{*}&-Q
+\end{array}\right]<0,\end{array}
+\end{equation}
+
+which implies that the following inequalities hold.
+\begin{equation*}\begin{array}{l}
+\Sigma=\gamma^2 I-D_{cl}^TD_{cl}>0,\end{array}
+\end{equation*}
+\begin{equation*}\begin{array}{l}\left[\begin{array}{cc}W_1+\gamma^2W_2^T\Sigma^{-1}W_2&
+0\\
+* &
+-Q\end{array}\right]+O(\epsilon)<0
+\end{array}
+\end{equation*}
+where $W_1=A_{cl}^TQ+ QA_{cl}+\gamma^{-2}
+C_{cl}^TC_{cl},W_2=B_{cl}^TQ+\gamma^{-2}D_{cl}^TC_{cl}^T$.
+
+Obviously, when $\epsilon$ is sufficiently small, (\ref{Eq:Thm 1
+p7}) holds.
+\begin{equation}\label{Eq:Thm 1 p7}\begin{array}{l}\left[\begin{array}{cc}W_1+\gamma^2W_2^T\Sigma^{-1}W_2&
+0\\
+* &
+-Q\end{array}\right]<0.
+\end{array}
+\end{equation}
+
+Then,  by using the Schur complement lemma and some algebraic
+manipulations,  the result in (\ref{Thm 1 p8}) is given.
+\begin{equation}\label{Thm 1 p8}\left[\begin{array}{cccc} A_{cl}^TQ+ QA_{cl}&
+ QB_{cl}&C_{cl}^T\\
+ * &-I& D_{cl}^T\\ * & * &-\gamma^2 I\end{array}\right]<0.
+\end{equation}
+
+Let $J_1=\left[\begin{array}{cccc}
+I&0&0\\0&0&I\\0&I&0\end{array}\right]$ and $P=Q^{-1}$. Then,
+multiplying (\ref{Thm 1 p8}) on the right by $J_1^T$ and on the left
+by $J_1$, (\ref{Thm 1 p9}) is obtained by some simple matrix
+manipulations.
+\begin{equation}\label{Thm 1 p9}\left[
+\begin{array}{cccc}
+PA_{cl}^T+A_{cl}P&PC_{cl}^T&B_{cl}\\
+{*}&-\gamma^2I&D_{cl}\\
+{*}&{*}&-I\\
+
+\end{array}\right]<0.
+\end{equation}
+
+Further, based on duality theory, for the transfer function
+$C_{cl}(s I-A_{cl})^{-1}B_{cl}+D_{cl}$ and its dual $B_{cl}^T(s
+I-A_{cl}^T)^{-1}C_{cl}^T+D_{cl}^T$, the $H_{\infty}$ norms are
+equivalent. Then, (\ref{Eq:Lem_3}) can be obtained.
+
+This completes the proof.
+ \end{proof}
+
+
+\begin{rem}\label{re3}
+By the introduction of additional matrix and a small sufficient
+scalar, additional degrees of freedom can be obtained as in
+\cite{JiaYM}, which may make the condition be of use in the solution
+of many difficult control synthesis problems in a potentially less
+conservative framework, and the linear part of the deadzone can be
+effectively compensated.
+\end{rem}
+
+
+
+ \begin{Thm}\label{thm2}  For a prescribed scalar $\gamma>0$and a sufficiently small scalar $\epsilon>0$, the
+ closed-loop sliding dynamics
+ system in
+(\ref{Eq:closed sliding mode dynamics}) is asymptotically stable,
+and satisfies the norm constraint $\|T(s)\|_{\infty}<\gamma$ if and
+only if
+ there exist matrices $0<\tilde{Q}_s=Q_s^T=\left[\begin{array}{cc}\tilde{Q}_{sij}\end{array}\right]_{2\times2}\in
+R^{2n\times 2n}$with $\tilde{Q}_{sij}$ having appropriate
+dimensions,  and matrices $M$ and $G$ such that the following LMI
+hold:
+
+\begin{equation}\begin{array}{l}
+\label{Eq:Thm 2 stand} \left[\begin{array}{ccccc}
+\tilde{Q}_s-He\{G\}&G+\epsilon \Gamma_a &0&\sqrt{\epsilon}B_{cl}\\ *&-\tilde{Q}_s&\sqrt{\epsilon}\Gamma_c^T&0\\
+
+*&*&-\gamma^2 I&0
+\\
+*&*&*& - I
+\end{array}\right]<0,\end{array}
+\end{equation}
+where
+\begin{eqnarray*}
+&&\Gamma_a=A_{cl}G+Bm_{min}M, \Gamma_c=CG+DM,\\&&
+\end{eqnarray*}
+In addition, the constraints $\|T(s)\|_{\infty}<\gamma$ is satisfied
+simultaneously for the closed-loop system with the stabilizing state
+feedback gain matrix
+\begin{equation}
+\label{Eq:State Controller Para} K=MG^{-1}.
+\end{equation}
+\end{Thm}
+ \begin{proof}
+Following similar lines as in \cite{OliveiraMC02},  to make the
+ problem tractable, first construct the matrix $Z^T$ as
+
+\begin{equation}
+\label{Eq:Thm 3
+pr2}Z^T=\left[\begin{array}{cc}Y&N\\N&-N\end{array}\right].
+\end{equation}
+ Also introduce the
+transformation matrix  $\mathcal {J}_1=(I_2\otimes E)\oplus I\oplus
+I$ with $E=\left[\begin{array}{cc}I&I\\0&I\end{array}\right]$. Then,
+pre- and post-multiply (\ref{Eq:thm 1 condition}) by $\mathcal
+{J}_1$ and $\mathcal {J}_1^T$, respectively, and delete the second
+and the forth   rows and columns, it follows that
+\begin{equation}\begin{array}{l}
+\label{Eq:Thm2 pr1} \left[\begin{array}{ccccc} (1,1)&
+(1,2)&0&\sqrt{\epsilon}(Y+N)B_{cl}\\
+ *&(2,2)&\sqrt{\epsilon}(C+DK)^T&0\\
+
+*&*&-\gamma^2 I&0
+\\ *&
+*&*& - I
+\end{array}\right]<0\end{array}
+\end{equation}
+where
+\begin{eqnarray*}
+&&(1,1)=Q_{s11}+He\{Q_{s12}\}+Q_{s22}-He\{Y+N\},\\&&
+(1,2)=Y+N+\epsilon (Y+N)(A_{\delta}+Bm_{min}K),\\&&
+(2,2)=-Q_{s11}+He\{Q_{s12}\}+Q_{s22}.
+\end{eqnarray*}
+
+Further, define $G^T=(Y+N)^{-1}$,
+$\tilde{Q}_s=G^T(Q_{11}+He\{Q_{s12}\}+Q_{s22})G$ and $M=C_cG$, then,
+pre- and post-multiply (\ref{Eq:Thm2 pr1}) by $(I_3\otimes
+G^T)\oplus I\oplus I$ and $(I_3\otimes G)\oplus I\oplus I$,
+respectively, (\ref{Eq:Thm2 pr1}) is equivalent to (\ref{Eq:Thm 2
+stand}). This completes the proof.
+ \end{proof}
+
+
+
+
+
+
+\begin{Thm}\label{thm3}
+For a prescribed sufficiently small constant $\mu>0$, the linear
+continuous system (\ref{Eq:equivalent system}) subjected to
+Assumptions 1-4 with multiple inputs containing actuator dead zone,
+is asymptotically converge to the sliding mode (\ref{Eq:sliding
+surface}), if the nonlinear control law is chosen as
+(\ref{Eq:nonlinear Controller})
+\begin{equation}
+\label{Eq:nonlinear Controller}
+\begin{array}{rcl}
+u_1(x,t)&=&-\rho(t)(GB)^{-1}{s(x,t)\over \|s(x,t)\|}\\[1mm]
+\end{array}
+\end{equation}
+where
+\begin{eqnarray*}
+\rho(x,t)={1\over
+m_{min}}(\mu+\|GE\|\|{\bar{d}(x,t)}\|+\|GB\|\|{\bar{w}(x,t)}\|)
+\end{eqnarray*}
+\end{Thm}
+
+ \begin{proof}
+~Let us choose a $Lyapunov$ functional candidate
+ \begin{equation*}
+\label{EQ:lyapunov function} V(t) = {1\over 2} s^2
+\end{equation*}
+Calculating the difference of $V(t)$ along the system
+(\ref{Eq:equivalent system}), we have
+\begin{eqnarray*}
+\dot
+V(t)=s^T\dot{s}(x,t)&=&s^T(GB((m-{m_{min}})u_0+mu_l+d(t))+GEw(t))\\&&
+\leq
+\|s\|(-m_{min}\rho+\|GE\|\|{\bar{d}(x,t)}\|+\|GB\|\|{\bar{w}(x,t)}\|)\\&&<0
+\end{eqnarray*}
+ This completes the proof.
+ \end{proof}
+
+
+\begin{rem}\label{re5}
+The chattering phenomenon of nonlinear controller design will be
+serious. We can employ continuous boundary layer approximation of
+discontinuous control presented in \cite{27,28} to eliminate it. But
+the key point in this paper is not here, so we do not focus on it.
+\end{rem}
+
+
+
+Then, based on Theorem 2 and Theorem 3, the following algorithm is
+presented for the design of integral sliding mode controller:
+
+{\bf Algorithm 1.}
+\begin{itemize}
+\item[]{\bf Step 1.} Minimize $\gamma^2$ subject to the LMI
+constraints (\ref{Eq:Thm 2 stand}). Denoting the optimal solution as
+$M$,  $G$, and $\gamma$, then, the state-feedback controller gain
+ can be obtained by $K=MG^{-1}$.
+\item[]{\bf Step 2.} Substitute $K$ into (\ref{Eq:sliding
+surface}). Then, the integral sliding surface can be given by
+$s(x,t)=B^+[x(t)-x(t_0)-\int_{t_0}^{t_{f}}((A+BMG^{-1})x(\tau))\,dt]$.
+\item[]{\bf Step 3.} Set the control as $u(x,t)=MG^{-1}x(t)-\rho{s(x,t)\over
+ \|s(x,t)\|}$,where $\rho={1\over
+m_{min}}(\mu+\|GE\|{\bar{d}}+\|GB\|{\bar{w}})$.
+\end{itemize}
+
+
+$\lim\limits_{T_f\rightarrow\infty}\int_{T_0}^{T_f}=1$\\
+$\sum\limits_{i=1}^{2^m}$
+
+
+
+
+
+
+
+\section{Numerical Simulations}
+In this section,  a numerical example is proposed to show the
+effectiveness of the proposed control strategy. For this purpose,
+consider the continuous-time system  (\ref{Eq:equivalent system})
+with
+\begin{eqnarray}\label{Eq:Continuous-time System example}
+&&A=\left[\begin{array}{cccc}0.05 &  -0.05  &  -0.23  &  -0.99\\
+    1.67 & -0.78  & 0.77  & -1.53\\
+   -1.46&    0.60  & -2.97  & -1.06\\
+   -1.78  &  1.49  &  1.69  &  0\end{array}
+\right], B=\left[\begin{array}{cc}1.27 &   0.18\\
+    0.63  &  2\\
+   -1.83  &  1.39\\
+    0.52 &   1.92\end{array}
+\right],
+E=\left[\begin{array}{ll}-1.3 &  -0.1\\
+   -1.87 &   0\\
+    1.79  & -0.4\\
+   -0.95 &   1.76\end{array}
+\right],\nonumber\\[1mm]&&
+C=\left[\begin{array}{cccc}-1.97 &   1.04 &   1.26& 0.16\end{array}
+\right], D_{21}=\left[\begin{array}{cc}0.4  &
+1.28\end{array}\right].
+\end{eqnarray}
+
+
+
+It need to point out that we always set $\epsilon=0.02$, and $m=1.2$
+in this example.
+
+
+In the simulation, the bounds of the parameters of the dead-zone are
+$m_{\min }=0.85$, $m_{\max}=1.25$, $b_{r\min}=0.1, b_{r\max}=0.6,
+b_{l\min}=-0.7, b_{l\max}=-0.1 $, then we can calculate the $\bar
+d(u(t))=0.875$.
+
+
+
+Minimizing $\gamma$ subject to (\ref{Eq:Thm 2 stand}) in Theorem
+\ref{thm2}, the $H_{\infty}$ state feedback controller's gain matrix
+$K$ is obtained as follows by using (\ref{Eq:State Controller
+Para}),
+
+\begin{equation*}
+\begin{array}{c} K=\left[\begin{array}{cccc}
+   -6.6234& -1.8059&  3.0005& 0.7187\\
+   3.6089 &  -0.2482 &  -1.9220&   -0.3496 \end{array}\right]
+\end{array}
+\end{equation*}
+and the performance indexes $\gamma$ is obtained as $4.2995e-007$.
+Then, from Theorem \ref{thm3}, we get nonlinear control law
+parameter $\rho=1.1301$.
+
+
+To illustrate the simulation results of the control objectives, with
+the zero initial state, the disturbance
+$w^T(t)=\left[\begin{array}{cc}w_1^T(t)&w_2^T(t)\end{array}\right]$
+added to the system is assumed to be:
+\begin{equation}
+\label{EQ:Disturbance input}
+\begin{array}{l}w_1(t)=w_2(t)=\left\{\begin{array}{llc} 0.2\, cos(t)
+\,\,\,\, 20\leq t\leq 30\\0\,\,\,\,
+otherwise.\end{array}\right.\end{array}
+\end{equation}
+
+From Fig.1, the simulation results  show that the system is more
+robust than using $H_{\infty}$ technology alone when the unmatched
+disturbance is added to the system. It can also be concluded that
+the system states can be affected severely when the deadzone fault
+occurs using traditional integral sliding mode controller, while the
+system is on the sliding mode all the time if the deadzone failure
+occurs using the proposed scheme.
+
+
+From Fig.2, the closed loop system is on the integral sliding
+surface whether the deadzone or unmatched disturbances occurs using
+proposed scheme. While the system will be out of the sliding surface
+using traditional scheme.
+%%
+%%\begin{center}
+%%\includegraphics [scale=0.5,trim=0.5 0.5 0.5 0.5]{controlvariable.eps}\\
+%%\label{Fig.4}Fig.~3 ~~ Control variables
+%%\end{center}
+
+\section{Conclusion}
+
+In this paper, robust integral sliding mode control has been
+proposed for multi inputs systems with nonsymmetric deadzone and
+unmatched disturbances. Considering unmatched perturbations, the
+state feedback controller in combination with ISM surface has been
+proposed to further robustify than using $H_\infty$ alone. As far as
+the case of deadzone is concerned,  the integral sliding mode
+controller ensures that, even in the presence of uncertainties, the
+deadzone can be compensated completely. Finally, simulation studies
+are presented to illustrate the effectiveness of the proposed
+control.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section*{Acknowledgement}
+
+
+
+
+\begin{thebibliography}{99}
+
+
+
+\bibitem{1}
+G. Tao and P. Kokotovic, Adaptive Control of Systems With Actuator
+and Sensor Nonlinearities. New York: Wiley, 1996.
+
+
+\bibitem{2}
+
+Recker,D., Kokotovic, P.V., Rhode,D., Winkelman,J. Adaptive
+nonlinear control of systems containing a dead-zone.{\sl Proceedings
+of the 30th IEEE conference on decision and control}.IEEE: 1991.
+2111-2115.
+
+\bibitem{3}
+Tao,G.,Kokotovic,P.V. A daptive control of plants with unknown
+dead-zones.{\sl IEEE Transactions on Automatic Control},1994
+{\bf39}: 59-68.
+
+\bibitem{4}
+Wang,X.S., Su,C.Y., Hong,H. Robust adaptive control of a class of
+linear systems with unknown dead-zone.{\sl Automatica},2004, {\bf
+40}: 407-413.
+
+\bibitem{5}
+H. J. Ma, G. H. Yang, Adaptive output control of uncertain nonlinear
+systems with non-symmetric dead-zone input.{\sl Automatica},
+2010,{\bf 46}:  413-420.
+
+\bibitem{6}
+Zhou,J., Wen,C., Zhang,Y. Adaptive output control of nonlinear
+systems with uncertain dead-zone nonlinearity.{\sl IEEE Transactions
+on Automatic Control}, 2006,{\bf 51}: 504-511.
+
+\bibitem{7}
+Zhou,J. Decentralized adaptive control for large-scale time-delay
+systems with dead-zone input, {\sl Automatica},2008,{\bf 44}:
+1790-1799.
+
+\bibitem{8}
+Ibrirs., Xie W.F., Su C.Y,  Adaptive tracking of nonlinear systems
+with non-symmetric dead-zone input,{\sl Automatica},2007, {\bf
+43}(3):522-530.
+
+\bibitem{9}
+Zhang T.P., Ge S.S, Adaptive dynamic surface control of nonlinear
+systems with unknown deadzone in pure feedback form, {\sl
+Automatica}, 2008,{\bf 44}: 1895-1903.
+
+\bibitem{21}
+Selmic R.R.,Lewis F.L. Dead-zone compensation in motion control
+systems using neural networks. {\sl IEEE Transactions on Automatic
+Control},2000, {\bf 45}:602-613.
+
+\bibitem{10}
+Mou Chen, Shuzhi Sam Ge, Bernard Voon Ee How, Robust Adaptive Neural
+Network Control for a Class of Uncertain MIMO Nonlinear Systems With
+Input Nonlinearities, {\sl IEEE Transactions on neural networks},
+2010, {\bf 21}(5):796 - 812 .
+
+\bibitem{11}
+Jang,J.O. A dead-zone compensator for a DC motor system using fuzzy
+logic control.{\sl IEEE Transactions on Systems,Man and Cybernetics
+Part C: Applications and Reviews},2001, {\bf 31}, 42-47.
+
+\bibitem{12}
+Kim,J.H., Park,J.H., Lee,S.W., Chong,E.K.P. A two-layered fuzzy
+logic controller for systems with dead-zones. {\sl IEEE Transactions
+on Industrial Electronics}, 1994,{\bf 41}, 155-162.
+
+\bibitem{13}
+F.L.Lewis, K.Liu, R.Selmic,  L.-X.Wang, Adaptive fuzzy logic
+compensation of actuator deadzones, {\sl J.Robot.Syst.},1997, {\bf
+14}:501-511.
+
+
+
+\bibitem{15}
+M.L.Corradini, G.Orlando. Robust stabilization of nonlinear
+uncertain plants with backlash or deadzone in the actuator,{\sl IEEE
+Trans. Contr. Syst. Technol.}, 2002,{\bf 10}: 158-166 .
+
+\bibitem{16}
+M.L.Corradini, G.Orlando, G.Parlangel. A VSC Approach for the Robust
+Stabilization of Nonlinear Plants With Uncertain Nonsmooth Actuator
+Nonlinearities¡ªA Unified Framework, {\sl IEEE Transaction on
+automatic control}, 2004, {\bf 49}(5):807-812.
+
+
+
+\bibitem{shyu05}
+Kuo-Kai Shyu ,Wen-Jeng Liu ,Kou-Cheng Hsu. Design of large-scale
+time-delayed systems with dead-zone input via variable structure
+control,{\sl Automatica}, 2005 , {\bf41}:1239¨C1246.
+
+\bibitem{18}
+Wen-Jeng Liu, Kuo-Kai Shyu,  Kou-Cheng Hsu. Design of Uncertain
+Multi-input Systems with State Delay and Input Deadzone Nonlinearity
+via Sliding Mode Control, {\sl International Journal of Control,
+Automation, and Systems}, 2011,{\bf 9}(3):461-469.
+
+\bibitem{19}
+Kou-Cheng Hsu, Wei-Yen Wang,Ping-Zong Lin, Sliding Mode Control for
+Uncertain Nonlinear Systems With Multiple Inputs Containing Sector
+Nonlinearities and Deadzones, {\sl IEEE Transaction on
+systems,man,and sybernetics-part B:sybernetics},2004, {\bf 34},
+(1):374-380.
+
+\bibitem{20}
+V. I. Utkin, Sliding Modes in Control Optimization. New York:
+Springer-Verlag, 1992.
+
+\bibitem{xluo09}
+X.Luo, X.Wu, X.Guan, Adaptive backstepping fault-tolerant control
+for unmatched non-linear systems against actuator dead-zone, {\sl
+IET Control Theory and Applications}, 2010, {\bf 4|}(5):879-888.
+
+
+
+\bibitem{22}
+
+S.Aloui, O.Pages, A.ElHajjaji, A.Chaari, Y.Koubaa, Improved fuzzy
+sliding mode control for a class of MIMO nonlinear uncertain and
+perturbed systems,{\sl J. Appl.Soft Comput.}, 2011, {\bf 11}(1):
+820-826.
+
+\bibitem{23}
+V.I.Utkin and J.Shi, Integral sliding mode in system so perating
+under uncertainty conditions,{\sl presented at the 35th
+Conf.Decis.Control},1996.
+
+
+
+\bibitem{24}
+F.Castanos, L.Fridman, Analysis and design of integral sliding
+manifolds for systems with unmatched perturbations,{\sl IEEE
+Trans.Autom. Control},2006, {\bf 51}(5):853-858.
+
+\bibitem{25}
+W.J.Cao, J.X.Xu, Nonlinear integral-type sliding surface for both
+matched and unmatched uncertain systems, {\sl IEEE
+Trans.Autom.Control}, 2004, {\bf 49}(8):1355-1360.
+
+\bibitem{26}
+Jeang-Lin Chang, Dynamic Output Integral Sliding-Mode Control With
+Disturbance Attenuation, {\sl IEEE Trans.Autom.Control},2009, {\bf
+54}(11):2653-2658.
+
+\bibitem{27}
+Young, K.D., Utkin, V.I., Ozguner, U., A control engineer's guide to
+sliding mode control,  {\sl IEEE Transactions on Control Systems
+Technology }, 1999, {\bf 7}(3):328-342 .
+
+\bibitem{28}
+C.Edwards and S.K.Spurgeon, Sliding Mode Control Theory and
+Application. London, U.K.: Taylor  Francis, 1998.
+
+
+\bibitem{GahinetP}
+Gahinet P,   Apkarian P.  A linear matrix inequality  approach to
+$H{\infty}$ Control. {\sl International  Journal of  Robust
+Nonlinear Control}, 1994, {\bf 4}(5): 421-448
+
+
+
+
+\bibitem{JiaYM}
+ Jia Y M. Alternative  proofs for improved  LMI  representations
+for the analysis and  the  design  of continuous-time systems with
+polytopic uncetainty: A predictive approach. {\sl IEEE Transactions
+on Automatic Control}, 2003, {\bf 48}(8): 1413-1416.
+
+
+\bibitem{OliveiraMC02}
+de Oliveira M C,Bemussou J,Geromel J C, Extended $H_2$ and $H_{\infty}$
+norm characterizations and controller parametrizations for
+discrete-time systems. {\sl International Joural of Control}, 2002,
+{\bf 75}(9):666-679.
+
+
+
+\bibitem{Gahinet96}
+Gahinet P.  Explicit controller formulas for LMI-based $H_{\infty}$
+synthesis. {\sl Automatica}, 1996, {\bf 32}(7):  1007-1014
+
+
+
+
+\end{thebibliography}
+
+
+
+\end{document}
