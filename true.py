@@ -8,25 +8,20 @@ eta = 1
 lamda = 1
 mu = 1
 epsilon = 10**-5
-alpha = 8  # Adjusted
+alpha = 0.5  # Further adjusted
 T = 0.1
-gamma1 = 0.1  # Increased
-gamma2 = 0.1  # Increased
-gamma3 = 0.2
-gamma4 = 0.2
+gamma1 = 0.1  # Further increased
+gamma2 = 0.1  # Further increased
+gamma3 = 0.2  # Further increased
+gamma4 = 0.2  # Further increased
 rT = 1024
 m = 350
 L = 100
 
 # Generate a more complex desired trajectory
-# yd = np.zeros(L)
-# for k in range(L):
-#     yd[k] = 0.4 * np.sin(0.1 * k) + 0.3 * np.sin(0.05 * k) + 0.2 * np.sin(0.01 * k)
-
 yd = np.zeros(L + 1)
 for k in range(L):
     yd[k] = 0.5 * np.sin(k * np.pi / 30) + 0.3 * np.cos(k * np.pi / 10)
-
 
 # Initialize arrays
 phi1 = np.zeros((L, 1))
@@ -76,10 +71,10 @@ u1[0] = 0.1
 u2[0] = 0.1
 u3[0] = 0.1
 u4[0] = 0.1
-y1[0] = 0
-y2[0] = 0
-y3[0] = 0
-y4[0] = 0
+y1[0] = 0.1
+y2[0] = 0.1
+y3[0] = 0.1
+y4[0] = 0.1
 
 # Simulation loop
 for k in range(1, L - 1):
@@ -93,15 +88,15 @@ for k in range(1, L - 1):
     si3[k] = y2[k] + yd[k] - 2 * y3[k]
     si4[k] = y1[k] + y3[k] - 2 * y4[k]
 
-    mfa1[k] = mfa1[k - 1] + (rho * phi1[k]) / (lamda + abs(phi1[k])**2) * si1[k]
-    mfa2[k] = mfa2[k - 1] + (rho * phi2[k]) / (lamda + abs(phi2[k])**2) * si2[k]
-    mfa3[k] = mfa3[k - 1] + (rho * phi3[k]) / (lamda + abs(phi3[k])**2) * si3[k]
-    mfa4[k] = mfa4[k - 1] + (rho * phi4[k]) / (lamda + abs(phi4[k])**2) * si4[k]
+    mfa1[k] = u1[k - 1] + (rho * phi1[k]) / (lamda + abs(phi1[k])**2) * si1[k]
+    mfa2[k] = u2[k - 1] + (rho * phi2[k]) / (lamda + abs(phi2[k])**2) * si2[k]
+    mfa3[k] = u3[k - 1] + (rho * phi3[k]) / (lamda + abs(phi3[k])**2) * si3[k]
+    mfa4[k] = u4[k - 1] + (rho * phi4[k]) / (lamda + abs(phi4[k])**2) * si4[k]
 
-    sm1[k] = mfa1[k - 1] + (yd[k + 1] - y1[k] + alpha * yd[k + 1] - y1[k] + epsilon * T * np.sign(k))
-    sm2[k] = mfa2[k - 1] + (yd[k + 1] - y1[k] + alpha * yd[k + 1] - y1[k] + epsilon * T * np.sign(k))
-    sm3[k] = mfa3[k - 1] + (yd[k + 1] - y1[k] + alpha * yd[k + 1] - y1[k] + epsilon * T * np.sign(k))
-    sm4[k] = mfa4[k - 1] + (yd[k + 1] - y1[k] + alpha * yd[k + 1] - y1[k] + epsilon * T * np.sign(k))
+    sm1[k] = u1[k - 1] + (yd[k + 1] - y1[k] + alpha * yd[k + 1] - y1[k] + epsilon * T * np.sign(k))
+    sm2[k] = u2[k - 1] + (yd[k + 1] - y1[k] + alpha * yd[k + 1] - y1[k] + epsilon * T * np.sign(k))
+    sm3[k] = u3[k - 1] + (yd[k + 1] - y1[k] + alpha * yd[k + 1] - y1[k] + epsilon * T * np.sign(k))
+    sm4[k] = u4[k - 1] + (yd[k + 1] - y1[k] + alpha * yd[k + 1] - y1[k] + epsilon * T * np.sign(k))
 
     u1[k] = mfa1[k] + gamma1 * sm1[k]
     u2[k] = mfa2[k] + gamma2 * sm2[k]
