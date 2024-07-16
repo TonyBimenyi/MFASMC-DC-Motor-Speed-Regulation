@@ -5,15 +5,15 @@ import matplotlib.pyplot as plt
 d = 5
 rho = 1
 eta = 1
-lamda = 0.5
+lamda = 50
 mu = 1
-epsilon = 10**-10
-alpha = 0.5  # Further adjusted
-T = 50000
-gamma1 = 0.2  # Further increased
-gamma2 = 0.2  # Further increased
-gamma3 = 0.3  # Further increased
-gamma4 = 0.3  # Further increased
+epsilon = 10**-5
+alpha = 1  # Adjusted
+T = 0.1
+gamma1 = 0.15  # Increased
+gamma2 = 0.15 # Increased
+gamma3 = 0.45
+gamma4 = 0.45
 rT = 1024
 m = 350
 L = 100
@@ -93,10 +93,10 @@ for k in range(1,L-1):
         mfa3[0] = 0
         mfa4[0] = 0
     else:
-        mfa1[k] = u1[k - 1] + (rho * phi1[k]) / (lamda + abs(phi1[k])**2) * si1[k]
-        mfa2[k] = u2[k - 1] + (rho * phi2[k]) / (lamda + abs(phi2[k])**2) * si2[k]
-        mfa3[k] = u3[k - 1] + (rho * phi3[k]) / (lamda + abs(phi3[k])**2) * si3[k]
-        mfa4[k] = u4[k - 1] + (rho * phi4[k]) / (lamda + abs(phi4[k])**2) * si4[k]
+        mfa1[k] = mfa1[k - 1] + (rho * phi1[k]) / (lamda + abs(phi1[k])**2) * si1[k]
+        mfa2[k] = mfa2[k - 1] + (rho * phi2[k]) / (lamda + abs(phi2[k])**2) * si2[k]
+        mfa3[k] = mfa3[k - 1] + (rho * phi3[k]) / (lamda + abs(phi3[k])**2) * si3[k]
+        mfa4[k] = mfa4[k - 1] + (rho * phi4[k]) / (lamda + abs(phi4[k])**2) * si4[k]
 
     if k == 1:
         sm1[0] = 0
@@ -104,17 +104,17 @@ for k in range(1,L-1):
         sm3[0] = 0
         sm4[0] = 0
     else:
-        sm1[k] = u1[k - 1] + (yd[k + 1] - y1[k] + alpha * yd[k + 1] - y1[k] + epsilon * T * np.sign(k))
-        sm2[k] = u2[k - 1] + (yd[k + 1] - y1[k] + alpha * yd[k + 1] - y1[k] + epsilon * T * np.sign(k))
-        sm3[k] = u3[k - 1] + (yd[k + 1] - y1[k] + alpha * yd[k + 1] - y1[k] + epsilon * T * np.sign(k))
-        sm4[k] = u4[k - 1] + (yd[k + 1] - y1[k] + alpha * yd[k + 1] - y1[k] + epsilon * T * np.sign(k))
+        sm1[k] = sm1[k - 1] + (yd[k + 1] - y1[k] + alpha * yd[k + 1] - y1[k] + epsilon * T * np.sign(k))
+        sm2[k] = sm2[k - 1] + (yd[k + 1] - y1[k] + alpha * yd[k + 1] - y1[k] + epsilon * T * np.sign(k))
+        sm3[k] = sm3[k - 1] + (yd[k + 1] - y1[k] + alpha * yd[k + 1] - y1[k] + epsilon * T * np.sign(k))
+        sm4[k] = sm4[k - 1] + (yd[k + 1] - y1[k] + alpha * yd[k + 1] - y1[k] + epsilon * T * np.sign(k))
 
     
     if k == 1:
-        u1[0] = 0
-        u2[0] = 0
-        u3[0] = 0
-        u4[0] = 0
+        u1[0] = 0.1
+        u2[0] = 0.1
+        u3[0] = 0.1
+        u4[0] = 0.1
     else:
         u1[k] = mfa1[k] + gamma1 * sm1[k]
         u2[k] = mfa2[k] + gamma2 * sm2[k]
@@ -123,14 +123,14 @@ for k in range(1,L-1):
 
     
 
-    y1[0] = 0
-    y2[0] = 0
-    y3[0] = 0
-    y4[0] = 0
-    y1[k + 1] = m / (rT * 0.3) * u1[k]
-    y2[k + 1] = m / (rT * 0.3) * u2[k]
-    y3[k + 1] = m / (rT * 0.5) * u3[k]
-    y4[k + 1] = m / (rT * 0.5) * u4[k]
+    y1[0] = 0.1
+    y2[0] = 0.1
+    y3[0] = 0.1
+    y4[0] = 0.1
+    y1[k + 1] = m / (rT * 0.1) * u1[k]
+    y2[k + 1] = m / (rT * 0.1) * u2[k]
+    y3[k + 1] = m / (rT * 0.3) * u3[k]
+    y4[k + 1] = m / (rT * 0.3) * u4[k]
 
 # Plot the desired output
 plt.figure()
