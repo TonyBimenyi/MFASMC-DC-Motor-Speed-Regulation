@@ -55,6 +55,11 @@ y2 = np.zeros((L + 1,1))
 y3 = np.zeros((L + 1,1))
 y4 = np.zeros((L + 1,1))
 
+e1 = np.zeros((L + 1,1))
+e2 = np.zeros((L + 1,1))
+e3 = np.zeros((L + 1,1))
+e4 = np.zeros((L + 1,1))
+
 si1 = np.zeros((L,1))
 si2 = np.zeros((L,1))
 si3 = np.zeros((L,1))
@@ -132,15 +137,26 @@ for k in range(1,L-1):
     y3[k + 1] = m / (rT * 0.3) * u3[k]
     y4[k + 1] = m / (rT * 0.3) * u4[k]
 
+    e1[k] = yd[k] - y1[k]
+    e2[k] = yd[k] - y2[k]
+    e3[k] = yd[k] - y3[k]
+    e4[k] = yd[k] - y4[k] 
+
 # Plot the desired output
 plt.figure()
-plt.plot(yd, '-b', label='Desired Output')
-plt.plot(y1[:-1], '-*r', markersize=4, label='Y1')
-plt.plot(y2[:-1], '-og', markersize=4, label='Y2')
-plt.plot(y3[:-1], '--y', label='Y3')
-plt.plot(y4[:-1], '-k', label='Y4')
+# plt.plot(yd, '-b', label='Desired Output')
+# plt.plot(y1[:-1], '-*r', markersize=4, label='Y1')
+# plt.plot(y2[:-1], '-og', markersize=4, label='Y2')
+# plt.plot(y3[:-1], '--y', label='Y3')
+# plt.plot(y4[:-1], '-k', label='Y4')
+
+plt.plot(e1[:-1], '-*r', markersize=4, label='Y1')
+plt.plot(e2[:-1], '-og', markersize=4, label='Y2')
+plt.plot(e3[:-1], '--y', label='Y3')
+plt.plot(e4[:-1], '-k', label='Y4')
 plt.grid()
 plt.legend()
+plt.ylim(-0.1, 0.1)
 plt.xlabel('Time step')
 plt.ylabel('Value')
 plt.title('Simulation Results')
