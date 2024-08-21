@@ -5,64 +5,83 @@ import matplotlib.pyplot as plt
 d = 5
 rho = 1
 eta = 1
-lamda = 50
+lamda = 20
 mu = 1
 epsilon = 10**-5
-alpha = 1
+alpha = 1  # Adjusted
 T = 0.1
-gamma1 = 0.15
-gamma2 = 0.15
+gamma1 = 0.15  # Increased
+gamma2 = 0.15 # Increased
 gamma3 = 0.45
 gamma4 = 0.45
 rT = 1024
 m = 350
-L = 100
+L = 200
+
 
 # Generate desired trajectory
-yd = np.zeros(L + 1)
-for k in range(L):
-    yd[k] = 0.5 * np.sin(k * np.pi / 30) + 0.3 * np.cos(k * np.pi / 10)
+# yd = np.zeros(L)
+# for k in range(L):
+#     yd[k] = 0.4 * np.sin(0.1 * k) + 0.3 * np.sin(0.05 * k) + 0.2 * np.sin(0.01 * k)
+
+    # Generate a more complex desired trajectory
+# yd = np.zeros(L + 1)
+# for k in range(L):
+#     yd[k] = 0.5 * np.sin(k * np.pi / 30) + 0.3 * np.cos(k * np.pi / 10)
+
+
+# Generate constant desired trajectory
+yd = 0.5 * (1 + np.sign(np.sin(np.linspace(0, 2 * np.pi, L + 1))))  # Square wave
+
+# # Generate desired trajectory
+# yd = np.zeros(L + 1)
+# for k in range(L):
+#     yd[k] = 0.5 * np.sin(k * np.pi / 30) + 0.3 * np.cos(k * np.pi / 10)
+    
 
 # Initialize arrays
-phi1 = np.zeros((L, 1))
-phi2 = np.zeros((L, 1))
-phi3 = np.zeros((L, 1))
-phi4 = np.zeros((L, 1))
+phi1 = np.zeros((L,1))
+phi2 = np.zeros((L,1))
+phi3 = np.zeros((L,1))
+phi4 = np.zeros((L,1))
 
-mfa1 = np.zeros((L, 1))
-mfa2 = np.zeros((L, 1))
-mfa3 = np.zeros((L, 1))
-mfa4 = np.zeros((L, 1))
+mfa1 = np.zeros((L,1))
+mfa2 = np.zeros((L,1))
+mfa3 = np.zeros((L,1))
+mfa4 = np.zeros((L,1))
 
-sm1 = np.zeros((L, 1))
-sm2 = np.zeros((L, 1))
-sm3 = np.zeros((L, 1))
-sm4 = np.zeros((L, 1))
+sm1 = np.zeros((L,1))
+sm2 = np.zeros((L,1))
+sm3 = np.zeros((L,1))
+sm4 = np.zeros((L,1))
 
-u1 = np.zeros((L, 1))
-u2 = np.zeros((L, 1))
-u3 = np.zeros((L, 1))
-u4 = np.zeros((L, 1))
+u1 = np.zeros((L,1))
+u2 = np.zeros((L,1))
+u3 = np.zeros((L,1))
+u4 = np.zeros((L,1))
 
-y1 = np.zeros((L + 1, 1))
-y2 = np.zeros((L + 1, 1))
-y3 = np.zeros((L + 1, 1))
-y4 = np.zeros((L + 1, 1))
+y1 = np.zeros((L + 1,1))
+y2 = np.zeros((L + 1,1))
+y3 = np.zeros((L + 1,1))
+y4 = np.zeros((L + 1,1))
 
-e1 = np.zeros((L + 1, 1))
-e2 = np.zeros((L + 1, 1))
-e3 = np.zeros((L + 1, 1))
-e4 = np.zeros((L + 1, 1))
+e1 = np.zeros((L + 1,1))
+e2 = np.zeros((L + 1,1))
+e3 = np.zeros((L + 1,1))
+e4 = np.zeros((L + 1,1))
 
-si1 = np.zeros((L, 1))
-si2 = np.zeros((L, 1))
-si3 = np.zeros((L, 1))
-si4 = np.zeros((L, 1))
+si1 = np.zeros((L,1))
+si2 = np.zeros((L,1))
+si3 = np.zeros((L,1))
+si4 = np.zeros((L,1))
+
+
+
 
 # Simulation loop
-for k in range(1, L-1):
+for k in range(1,L-1):
     if k == 0:
-        phi1[0] = 1
+        phi1[0] = 1  # the initial value of phi(k), can't set to zero.
         phi2[0] = 1
         phi3[0] = 1
         phi4[0] = 1
@@ -81,6 +100,7 @@ for k in range(1, L-1):
     si2[k] = y1[k] - 2 * y2[k] + y3[k]
     si3[k] = y2[k] + yd[k] - 2 * y3[k]
     si4[k] = y1[k] + y3[k] - 2 * y4[k]
+    
 
     if k == 1:
         mfa1[0] = 0
@@ -104,6 +124,7 @@ for k in range(1, L-1):
         sm3[k] = sm3[k - 1] + (yd[k + 1] - y1[k] + alpha * yd[k + 1] - y1[k] + epsilon * T * np.sign(k))
         sm4[k] = sm4[k - 1] + (yd[k + 1] - y1[k] + alpha * yd[k + 1] - y1[k] + epsilon * T * np.sign(k))
 
+    
     if k == 1:
         u1[0] = 0.1
         u2[0] = 0.1
@@ -114,6 +135,8 @@ for k in range(1, L-1):
         u2[k] = mfa2[k] + gamma2 * sm2[k]
         u3[k] = mfa3[k] + gamma3 * sm3[k]
         u4[k] = mfa4[k] + gamma4 * sm4[k]
+
+    
 
     y1[0] = 0.1
     y2[0] = 0.1
@@ -127,53 +150,29 @@ for k in range(1, L-1):
     e1[k] = yd[k] - y1[k]
     e2[k] = yd[k] - y2[k]
     e3[k] = yd[k] - y3[k]
-    e4[k] = yd[k] - y4[k]
+    e4[k] = yd[k] - y4[k] 
 
-# Create subplots
-fig, axs = plt.subplots(2, 2, figsize=(12, 8))
+# Plot the desired output
+plt.figure()
+# plt.plot(yd, '-b', label='Desired Output')
+# plt.plot(y1[:-1], '-*r', markersize=4, label='Y1')
+# plt.plot(y2[:-1], '-og', markersize=4, label='Y2')
+# plt.plot(y3[:-1], '--y', label='Y3')
+# plt.plot(y4[:-1], '-k', label='Y4')
 
-# Plot each output and its tracking error
-axs[0, 0].plot(y1[:-1], '-*r', markersize=6, label='Y1')
-axs[0, 0].plot(yd, '-b', label='Desired Output')
-axs[0, 0].set_title('Tracking Performance y1(k)')
-axs[0, 0].set_xlim(0, L)
-axs[0, 0].set_ylim(min(y1.min(), yd.min()) - 0.1, max(y1.max(), yd.max()) + 0.1)
-axs[0, 0].legend()
-axs[0, 0].grid()
+plt.plot(phi1[:-1], '-*r', markersize=4, label='phi1')
+plt.plot(phi2[:-1], '-+g', markersize=4, label='phi2')
+plt.plot(phi3[:-1], '--y', label='phi3')
+plt.plot(phi4[:-1], '-b', label='phi4')
+plt.grid()
+plt.legend()
 
-axs[0, 1].plot(y2[:-1], '-xg', markersize=6, label='Y2')
-axs[0, 1].plot(yd, '-b', label='Desired Output')
-axs[0, 1].set_title('Tracking Performance y2(k)')
-axs[0, 1].set_xlim(0, L)
-axs[0, 1].set_ylim(min(y2.min(), yd.min()) - 0.1, max(y2.max(), yd.max()) + 0.1)
-axs[0, 1].legend()
-axs[0, 1].grid()
 
-axs[1, 0].plot(y3[:-1], '-oy',markersize=5, label='Y3')
-axs[1, 0].plot(yd, '-b', label='Desired Output')
-axs[1, 0].set_title('Tracking Performance y3(k)')
-axs[1, 0].set_xlim(0, L)
-axs[1, 0].set_ylim(min(y3.min(), yd.min()) - 0.1, max(y3.max(), yd.max()) + 0.1)
-axs[1, 0].legend()
-axs[1, 0].grid()
+# Set axis limits
+plt.xlim(0, L)  # Set x-axis to range from 0 to 100
+plt.ylim(0,)  # Set y-axis to range from -0.35 to 0.35
 
-axs[1, 1].plot(y4[:-1], '-^k',markersize=6, label='Y4')
-axs[1, 1].plot(yd, '-b', label='Desired Output')
-axs[1, 1].set_title('Tracking Performance y4(k)')
-axs[1, 1].set_xlim(0, L)
-axs[1, 1].set_ylim(min(y4.min(), yd.min()) - 0.1, max(y4.max(), yd.max()) + 0.1)
-axs[1, 1].legend()
-axs[1, 1].grid()
-
-# plt.plot(e1[:-1], '-*r', markersize=4, label='e1')
-# plt.plot(e2[:-1], '-+g', markersize=4, label='e2')
-# plt.plot(e3[:-1], '--y', label='e3')
-# plt.plot(e4[:-1], '-b', label='e4')
-
-# Set common labels
-for ax in axs.flat:
-    ax.set_xlabel('Step')
-    ax.set_ylabel('Output')
-
-plt.tight_layout()
+plt.xlabel('Step')
+plt.ylabel('Tracking Errors')
+# plt.title('Simulation Results')
 plt.show()

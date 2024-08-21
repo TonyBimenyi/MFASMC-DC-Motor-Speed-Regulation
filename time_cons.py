@@ -18,10 +18,9 @@ rT = 1024
 m = 350
 L = 100
 
-# Generate desired trajectory
-yd = np.zeros(L + 1)
-for k in range(L):
-    yd[k] = 0.5 * np.sin(k * np.pi / 30) + 0.3 * np.cos(k * np.pi / 10)
+# Generate constant desired trajectory
+yd = 0.5 * (1 + np.sign(np.sin(np.linspace(0, 2 * np.pi, L + 1))))  # Square wave
+
 
 # Initialize arrays
 phi1 = np.zeros((L, 1))
@@ -133,42 +132,38 @@ for k in range(1, L-1):
 fig, axs = plt.subplots(2, 2, figsize=(12, 8))
 
 # Plot each output and its tracking error
-axs[0, 0].plot(y1[:-1], '-*r', markersize=6, label='Y1')
+axs[0, 0].plot(y1[:-1], '-*r', markersize=4, label='Y1')
 axs[0, 0].plot(yd, '-b', label='Desired Output')
-axs[0, 0].set_title('Tracking Performance y1(k)')
+axs[0, 0].set_title('Tracking Performance y1')
 axs[0, 0].set_xlim(0, L)
 axs[0, 0].set_ylim(min(y1.min(), yd.min()) - 0.1, max(y1.max(), yd.max()) + 0.1)
 axs[0, 0].legend()
 axs[0, 0].grid()
 
-axs[0, 1].plot(y2[:-1], '-xg', markersize=6, label='Y2')
+axs[0, 1].plot(y2[:-1], '-og', markersize=4, label='Y2')
 axs[0, 1].plot(yd, '-b', label='Desired Output')
-axs[0, 1].set_title('Tracking Performance y2(k)')
+axs[0, 1].set_title('Tracking Performance y2')
 axs[0, 1].set_xlim(0, L)
 axs[0, 1].set_ylim(min(y2.min(), yd.min()) - 0.1, max(y2.max(), yd.max()) + 0.1)
 axs[0, 1].legend()
 axs[0, 1].grid()
 
-axs[1, 0].plot(y3[:-1], '-oy',markersize=5, label='Y3')
+axs[1, 0].plot(y3[:-1], '--y', label='Y3')
 axs[1, 0].plot(yd, '-b', label='Desired Output')
-axs[1, 0].set_title('Tracking Performance y3(k)')
+axs[1, 0].set_title('Tracking Performance y3')
 axs[1, 0].set_xlim(0, L)
 axs[1, 0].set_ylim(min(y3.min(), yd.min()) - 0.1, max(y3.max(), yd.max()) + 0.1)
 axs[1, 0].legend()
 axs[1, 0].grid()
 
-axs[1, 1].plot(y4[:-1], '-^k',markersize=6, label='Y4')
+axs[1, 1].plot(y4[:-1], '-k', label='Y4')
 axs[1, 1].plot(yd, '-b', label='Desired Output')
-axs[1, 1].set_title('Tracking Performance y4(k)')
+axs[1, 1].set_title('Tracking Performance y4')
 axs[1, 1].set_xlim(0, L)
+# axs[1, 1].set_ylim(-1.3, 1.3)
 axs[1, 1].set_ylim(min(y4.min(), yd.min()) - 0.1, max(y4.max(), yd.max()) + 0.1)
 axs[1, 1].legend()
 axs[1, 1].grid()
-
-# plt.plot(e1[:-1], '-*r', markersize=4, label='e1')
-# plt.plot(e2[:-1], '-+g', markersize=4, label='e2')
-# plt.plot(e3[:-1], '--y', label='e3')
-# plt.plot(e4[:-1], '-b', label='e4')
 
 # Set common labels
 for ax in axs.flat:
