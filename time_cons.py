@@ -58,6 +58,8 @@ si2 = np.zeros((L, 1))
 si3 = np.zeros((L, 1))
 si4 = np.zeros((L, 1))
 
+
+
 # Simulation loop
 for k in range(1, L-1):
     if k == 0:
