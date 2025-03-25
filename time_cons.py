@@ -182,21 +182,22 @@ for k in range(1, L-1):
 
 plt.figure(figsize=(10, 6))  # Adjust figure size for better visibility
 
-plt.plot(yd[:-1], '-y', linewidth=2, label=r'$y_d$')  
-plt.plot(y1[:-1], '-.r', linewidth=2, label=r'$y_1$')
-plt.plot(y2[:-1], '--b', linewidth=2, label=r'$y_2$')
-plt.plot(y3[:-1], '--k', linewidth=2, label=r'$y_3$')
-plt.plot(y4[:-1], '-.g', linewidth=2, label=r'$y_4$')
+plt.plot(yd[:-1], '-y', linewidth=4, label=r'$y_d$')  
+plt.plot(y1[:-1], '-.r', linewidth=4, label=r'$y_1$')
+plt.plot(y2[:-1], '--b', linewidth=4, label=r'$y_2$')
+plt.plot(y3[:-1], '--k', linewidth=4, label=r'$y_3$')
+plt.plot(y4[:-1], '-.g', linewidth=4, label=r'$y_4$')
 
 # Enlarge font size for axis labels and legend
-plt.xlabel('Time Step', fontsize=14, fontweight='bold')
-plt.ylabel('Output', fontsize=14, fontweight='bold')
+plt.xlabel('Time Step', fontsize=14)
+plt.ylabel('Output', fontsize=14)
 plt.xticks(fontsize=12)
 plt.yticks(fontsize=12)
 plt.xlim(0,L)  # Set y-axis to range from -0.35 to 0.35
 
 # Improve legend readability
 plt.legend(fontsize=14, loc='best')
+plt.title('Tracking Performance',fontsize=14, fontweight='bold')
 
 plt.grid(False)  # Add grid for better readability
 plt.tight_layout()  # Adjust layout for clarity
