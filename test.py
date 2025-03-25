@@ -177,17 +177,19 @@ for k in range(1, L-1):
 #     ax.set_xlabel('Step')
 #     ax.set_ylabel('Output')
 
-plt.plot(e1[:-1], '-*r', markersize=4, label='$e_1$')
-plt.plot(e2[:-1], '-+g', markersize=4, label='$e_2$')
-plt.plot(e3[:-1], '--y', label='$e_3$')
-plt.plot(e4[:-1], '-b', label='$e_4$')
+plt.figure(figsize=(8, 2))  # Reduce height by setting a smaller second value
+plt.plot(e1[:-1], '-.r',linewidth=2, markersize=4, label='$e_1$')
+plt.plot(e2[:-1], '--g',linewidth=2, markersize=4, label='$e_2$')
+plt.plot(e3[:-1], '--y',linewidth=2, label='$e_3$')
+plt.plot(e4[:-1], '-.b',linewidth=2, label='$e_4$')
 plt.xlim(0,L)  # Set y-axis to range from -0.35 to 0.35
-plt.ylim(-0.100,0.100)  # Set y-axis to range from -0.35 to 0.35
-plt.grid(True)
+plt.ylim(-0.2, 0.2)  # Set y-axis to range from -0.35 to 0.35
+plt.grid(False)
 plt.legend()
-plt.xlabel('Step')
-plt.ylabel('Tracking Errors')
-
+plt.xlabel('Step',fontsize=14)
+plt.ylabel('Tracking Errors',fontsize=14)
+plt.xticks(fontsize=12)
+plt.yticks([-0.2, 0, 0.2],fontsize=12)
 
 
 plt.tight_layout()
