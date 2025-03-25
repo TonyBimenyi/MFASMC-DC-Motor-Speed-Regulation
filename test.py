@@ -177,7 +177,7 @@ for k in range(1, L-1):
 #     ax.set_xlabel('Step')
 #     ax.set_ylabel('Output')
 
-plt.figure(figsize=(8, 2))  # Reduce height by setting a smaller second value
+plt.figure(figsize=(10, 2))  # Reduce height by setting a smaller second value
 plt.plot(e1[:-1], '-.r',linewidth=2, markersize=4, label='$e_1$')
 plt.plot(e2[:-1], '--g',linewidth=2, markersize=4, label='$e_2$')
 plt.plot(e3[:-1], '--y',linewidth=2, label='$e_3$')

@@ -17,6 +17,7 @@ gamma4 = 0.45
 rT = 1024
 m = 350
 L = 200
+font_style = 'Times New Roman'
 
 # Generate constant desired trajectory
 yd = 0.5 * (1 + np.sign(np.sin(np.linspace(0, 2 * np.pi, L + 1))))  # Square wave
@@ -181,23 +182,24 @@ for k in range(1, L-1):
 # plt.show()
 
 plt.figure(figsize=(10, 6))  # Adjust figure size for better visibility
+plt.rcParams['font.family'] = 'Times New Roman'  # Set font globally to Times New Roman
 
-plt.plot(yd[:-1], '-y', linewidth=2.5, label=r'$y_d$')  
+plt.plot(yd[:-1], '-y', linewidth=2.5, label=r'$y_d$')
 plt.plot(y1[:-1], '--r', linewidth=2.5, label=r'$y_1$')
 plt.plot(y2[:-1], '-.b', linewidth=2.5, label=r'$y_2$')
 plt.plot(y3[:-1], '--k', linewidth=2.5, label=r'$y_3$')
 plt.plot(y4[:-1], '-.g', linewidth=2.5, label=r'$y_4$')
 
 # Enlarge font size for axis labels and legend
-plt.xlabel('Time Step', fontsize=14)
-plt.ylabel('Output', fontsize=14)
-plt.xticks(fontsize=12)
-plt.yticks(fontsize=12)
+plt.xlabel('Time Step', fontsize=16, fontname=font_style)
+plt.ylabel('Output', fontsize=16, fontname=font_style)
+plt.xticks(fontsize=13)
+plt.yticks(fontsize=13)
 plt.xlim(0,L)  # Set y-axis to range from -0.35 to 0.35
 
 # Improve legend readability
-plt.legend(fontsize=14, loc='best')
-plt.title('Tracking Performance',fontsize=14, fontweight='bold')
+plt.legend(fontsize=16, loc='best')
+# plt.title('Tracking performance',fontsize=15, fontweight='bold',fontname=font_style)
 
 plt.grid(False)  # Add grid for better readability
 plt.tight_layout()  # Adjust layout for clarity
