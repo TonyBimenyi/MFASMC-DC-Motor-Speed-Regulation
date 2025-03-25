@@ -23,7 +23,7 @@ L = 200
 
 yd = np.zeros(L + 1)
 for k in range(L):
-    yd[k] = 0.5 * np.sin(k * np.pi / 30) + 0.3 * np.cos(k * np.pi / 10)
+    yd[k] = 0.5 * np.sin(0.07 * np.pi) + 0.7 * np.cos(0.04 * np.pi)
 
 
 # Initialize arrays
@@ -135,46 +135,69 @@ for k in range(1, L-1):
     e4[k] = yd[k] - y4[k]
 
 # Create subplots
-fig, axs = plt.subplots(2, 2, figsize=(12, 8))
+# fig, axs = plt.subplots(2, 2, figsize=(12, 8))
 
-# Plot each output and its tracking error
-axs[0, 0].plot(y1[:-1], '-*r', markersize=7, label='y1')
-axs[0, 0].plot(yd, '-b', label='yd')
-# axs[0, 0].set_title('Tracking Performance y1')
-axs[0, 0].set_xlim(0, L)
-axs[0, 0].set_ylim(min(y1.min(), yd.min()) - 0.1, max(y1.max(), yd.max()) + 0.1)
-axs[0, 0].legend()
-axs[0, 0].grid()
+# # Plot each output and its tracking error
+# axs[0, 0].plot(y1[:-1], '-*r', markersize=7, label='y1')
+# axs[0, 0].plot(yd, '-b', label='yd')
+# # axs[0, 0].set_title('Tracking Performance y1')
+# axs[0, 0].set_xlim(0, L)
+# axs[0, 0].set_ylim(min(y1.min(), yd.min()) - 0.1, max(y1.max(), yd.max()) + 0.1)
+# axs[0, 0].legend()
+# axs[0, 0].grid()
 
-axs[0, 1].plot(y2[:-1], '-xg', markersize=7, label='y2')
-axs[0, 1].plot(yd, '-b', label='yd')
-# axs[0, 1].set_title('Tracking Performance y2')
-axs[0, 1].set_xlim(0, L)
-axs[0, 1].set_ylim(min(y2.min(), yd.min()) - 0.1, max(y2.max(), yd.max()) + 0.1)
-axs[0, 1].legend()
-axs[0, 1].grid()
+# axs[0, 1].plot(y2[:-1], '-xg', markersize=7, label='y2')
+# axs[0, 1].plot(yd, '-b', label='yd')
+# # axs[0, 1].set_title('Tracking Performance y2')
+# axs[0, 1].set_xlim(0, L)
+# axs[0, 1].set_ylim(min(y2.min(), yd.min()) - 0.1, max(y2.max(), yd.max()) + 0.1)
+# axs[0, 1].legend()
+# axs[0, 1].grid()
 
-axs[1, 0].plot(y3[:-1], '-oy', label='y3', markersize=5)
-axs[1, 0].plot(yd, '-b', label='yd')
-# axs[1, 0].set_title('Tracking Performance y3')
-axs[1, 0].set_xlim(0, L)
-axs[1, 0].set_ylim(min(y3.min(), yd.min()) - 0.1, max(y3.max(), yd.max()) + 0.1)
-axs[1, 0].legend()
-axs[1, 0].grid()
+# axs[1, 0].plot(y3[:-1], '-oy', label='y3', markersize=5)
+# axs[1, 0].plot(yd, '-b', label='yd')
+# # axs[1, 0].set_title('Tracking Performance y3')
+# axs[1, 0].set_xlim(0, L)
+# axs[1, 0].set_ylim(min(y3.min(), yd.min()) - 0.1, max(y3.max(), yd.max()) + 0.1)
+# axs[1, 0].legend()
+# axs[1, 0].grid()
 
-axs[1, 1].plot(y4[:-1], '-vk', label='y4', markersize=7)
-axs[1, 1].plot(yd, '-b', label='yd')
-# axs[1, 1].set_title('Tracking Performance y4')
-axs[1, 1].set_xlim(0, L)
-# axs[1, 1].set_ylim(-1.3, 1.3)
-axs[1, 1].set_ylim(min(y4.min(), yd.min()) - 0.1, max(y4.max(), yd.max()) + 0.1)
-axs[1, 1].legend()
-axs[1, 1].grid()
+# axs[1, 1].plot(y4[:-1], '-vk', label='y4', markersize=7)
+# axs[1, 1].plot(yd, '-b', label='yd')
+# # axs[1, 1].set_title('Tracking Performance y4')
+# axs[1, 1].set_xlim(0, L)
+# # axs[1, 1].set_ylim(-1.3, 1.3)
+# axs[1, 1].set_ylim(min(y4.min(), yd.min()) - 0.1, max(y4.max(), yd.max()) + 0.1)
+# axs[1, 1].legend()
+# axs[1, 1].grid()
 
-# Set common labels
-for ax in axs.flat:
-    ax.set_xlabel('Step')
-    ax.set_ylabel('Output')
+# # Set common labels
+# for ax in axs.flat:
+#     ax.set_xlabel('Step')
+#     ax.set_ylabel('Output')
 
-plt.tight_layout()
+# plt.tight_layout()
+# plt.show()
+
+plt.figure(figsize=(10, 6))  # Adjust figure size for better visibility
+
+plt.plot(yd[:-1], '-y', linewidth=2, label=r'$y_d$')  
+plt.plot(y1[:-1], '-.r', linewidth=2, label=r'$y_1$')
+plt.plot(y2[:-1], '--b', linewidth=2, label=r'$y_2$')
+plt.plot(y3[:-1], '--k', linewidth=2, label=r'$y_3$')
+plt.plot(y4[:-1], '-.g', linewidth=2, label=r'$y_4$')
+
+# Enlarge font size for axis labels and legend
+plt.xlabel('Time Step', fontsize=14, fontweight='bold')
+plt.ylabel('Output', fontsize=14, fontweight='bold')
+plt.xticks(fontsize=12)
+plt.yticks(fontsize=12)
+plt.xlim(0,L)  # Set y-axis to range from -0.35 to 0.35
+
+# Improve legend readability
+plt.legend(fontsize=14, loc='best')
+
+plt.grid(False)  # Add grid for better readability
+plt.tight_layout()  # Adjust layout for clarity
+
 plt.show()
