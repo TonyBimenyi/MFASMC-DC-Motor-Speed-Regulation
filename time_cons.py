@@ -23,7 +23,8 @@ L = 200
 
 yd = np.zeros(L + 1)
 for k in range(L):
-    yd[k] = 0.5 * np.sin(0.07 * np.pi) + 0.7 * np.cos(0.04 * np.pi)
+    yd[k] = 0.5 * np.sin(0.07 * np.pi * k) + 0.7 * np.cos(0.04 * np.pi * k)
+
 
 
 # Initialize arrays
