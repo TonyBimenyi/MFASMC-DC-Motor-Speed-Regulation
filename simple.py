@@ -160,11 +160,11 @@ plt.figure()
 # plt.plot(y3[:-1], '--y', label='Y3')
 # plt.plot(y4[:-1], '-k', label='Y4')
 
-plt.plot(phi1[:-1], '-*r', markersize=4, label='$\phi_1$')
-plt.plot(phi2[:-1], '-+g', markersize=4, label='$\phi_2$')
-plt.plot(phi3[:-1], '--y', label='$\phi_3$')
-plt.plot(phi4[:-1], '-b', label='$\phi_4$')
-plt.grid()
+plt.plot(phi1[:-1], '-r', markersize=4, label='$\phi_1$')
+plt.plot(phi2[:-1], '-.g', markersize=4, label='$\phi_2$')
+plt.plot(phi3[:-1], '-y', label='$\phi_3$')
+plt.plot(phi4[:-1], '--k', label='$\phi_4$')
+plt.grid(False)
 plt.legend()
 
 
