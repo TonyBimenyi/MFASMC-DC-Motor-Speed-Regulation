@@ -178,7 +178,7 @@ for k in range(1, L-1):
 #     ax.set_ylabel('Output')
 
 # plt.rcParams['font.family'] = 'Times New Roman'  # Set font globally to Times New Roman
-plt.figure(figsize=(10, 2))  # Reduce height by setting a smaller second value
+plt.figure(figsize=(10, 2.5))  # Reduce height by setting a smaller second value
 plt.plot(e1[:-1], '-.r',linewidth=2, markersize=4, label='$e_1$')
 plt.plot(e2[:-1], '--g',linewidth=2, markersize=4, label='$e_2$')
 plt.plot(e3[:-1], '--y',linewidth=2, label='$e_3$')
@@ -187,7 +187,7 @@ plt.xlim(0,L)  # Set y-axis to range from -0.35 to 0.35
 plt.ylim(-0.2, 0.2)  # Set y-axis to range from -0.35 to 0.35
 plt.grid(False)
 plt.legend()
-plt.xlabel('Step',fontsize=14)
+plt.xlabel('Time step',fontsize=14)
 plt.ylabel('Tracking Errors',fontsize=14)
 plt.xticks(fontsize=12)
 plt.yticks([-0.2, 0, 0.2],fontsize=12)

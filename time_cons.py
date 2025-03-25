@@ -20,11 +20,11 @@ L = 200
 font_style = 'Times New Roman'
 
 # Generate constant desired trajectory
-yd = 0.5 * (1 + np.sign(np.sin(np.linspace(0, 2 * np.pi, L + 1))))  # Square wave
+# yd = 0.5 * (1 + np.sign(np.sin(np.linspace(0, 2 * np.pi, L + 1))))  # Square wave
 
-# yd = np.zeros(L + 1)
-# for k in range(L):
-#     yd[k] = 0.5 * np.sin(0.07 * np.pi * k) + 0.7 * np.cos(0.04 * np.pi * k)
+yd = np.zeros(L + 1)
+for k in range(L):
+    yd[k] = 0.5 * np.sin(0.07 * np.pi * k) + 0.7 * np.cos(0.04 * np.pi * k)
 
 
 
@@ -190,7 +190,7 @@ plt.plot(y3[:-1], '--k', linewidth=2.5, label=r'$y_3$')
 plt.plot(y4[:-1], '-.g', linewidth=2.5, label=r'$y_4$')
 
 # Enlarge font size for axis labels and legend
-plt.xlabel('Time Step', fontsize=14)
+plt.xlabel('Time step', fontsize=14)
 plt.ylabel('Output', fontsize=14)
 plt.xticks(fontsize=12)
 plt.yticks(fontsize=12)
