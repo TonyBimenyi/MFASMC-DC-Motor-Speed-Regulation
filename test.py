@@ -23,7 +23,12 @@ L = 200
 # for k in range(L):
 #     yd[k] = 0.5 * np.sin(k * np.pi / 30) + 0.3 * np.cos(k * np.pi / 10)
 
-yd = 0.5 * (1 + np.sign(np.sin(np.linspace(0, 2 * np.pi, L + 1))))  # Square wave
+# yd = 0.5 * (1 + np.sign(np.sin(np.linspace(0, 2 * np.pi, L + 1))))  # Square wave
+
+
+yd = np.zeros(L + 1)
+for k in range(L):
+    yd[k] = 0.5 * np.sin(0.07 * np.pi * k) + 0.7 * np.cos(0.04 * np.pi * k)
 
 # Initialize arrays
 phi1 = np.zeros((L, 1))
@@ -132,56 +137,56 @@ for k in range(1, L-1):
     e4[k] = yd[k] - y4[k]
 
 # Create subplots
-fig, axs = plt.subplots(2, 2, figsize=(12, 8))
+# fig, axs = plt.subplots(2, 2, figsize=(12, 8))
 
-# Plot each output and its tracking error
-axs[0, 0].plot(y1[:-1], '-*r', markersize=6, label='$y_1$')
-axs[0, 0].plot(yd, '-b', label='$y_d$')
-axs[0, 0].set_title('Tracking Performance $y_1(k)$')
-axs[0, 0].set_xlim(0, L)
-axs[0, 0].set_ylim(min(y1.min(), yd.min()) - 0.1, max(y1.max(), yd.max()) + 0.1)
-axs[0, 0].legend()
-axs[0, 0].grid()
+# # Plot each output and its tracking error
+# axs[0, 0].plot(y1[:-1], '-*r', markersize=6, label='$y_1$')
+# axs[0, 0].plot(yd, '-b', label='$y_d$')
+# axs[0, 0].set_title('Tracking Performance $y_1(k)$')
+# axs[0, 0].set_xlim(0, L)
+# axs[0, 0].set_ylim(min(y1.min(), yd.min()) - 0.1, max(y1.max(), yd.max()) + 0.1)
+# axs[0, 0].legend()
+# axs[0, 0].grid()
 
-axs[0, 1].plot(y2[:-1], '-xg', markersize=6, label='$y_2$')
-axs[0, 1].plot(yd, '-b', label='$y_d$')
-axs[0, 1].set_title('Tracking Performance $y_2(k)$')
-axs[0, 1].set_xlim(0, L)
-axs[0, 1].set_ylim(min(y2.min(), yd.min()) - 0.1, max(y2.max(), yd.max()) + 0.1)
-axs[0, 1].legend()
-axs[0, 1].grid()
+# axs[0, 1].plot(y2[:-1], '-xg', markersize=6, label='$y_2$')
+# axs[0, 1].plot(yd, '-b', label='$y_d$')
+# axs[0, 1].set_title('Tracking Performance $y_2(k)$')
+# axs[0, 1].set_xlim(0, L)
+# axs[0, 1].set_ylim(min(y2.min(), yd.min()) - 0.1, max(y2.max(), yd.max()) + 0.1)
+# axs[0, 1].legend()
+# axs[0, 1].grid()
 
-axs[1, 0].plot(y3[:-1], '-oy',markersize=5, label='$y_3$')
-axs[1, 0].plot(yd, '-b', label='$y_d$')
-axs[1, 0].set_title('Tracking Performance $y_3(k)$')
-axs[1, 0].set_xlim(0, L)
-axs[1, 0].set_ylim(min(y3.min(), yd.min()) - 0.1, max(y3.max(), yd.max()) + 0.1)
-axs[1, 0].legend()
-axs[1, 0].grid()
+# axs[1, 0].plot(y3[:-1], '-oy',markersize=5, label='$y_3$')
+# axs[1, 0].plot(yd, '-b', label='$y_d$')
+# axs[1, 0].set_title('Tracking Performance $y_3(k)$')
+# axs[1, 0].set_xlim(0, L)
+# axs[1, 0].set_ylim(min(y3.min(), yd.min()) - 0.1, max(y3.max(), yd.max()) + 0.1)
+# axs[1, 0].legend()
+# axs[1, 0].grid()
 
-axs[1, 1].plot(y4[:-1], '-^k',markersize=6, label='$y_4$')
-axs[1, 1].plot(yd, '-b', label='$y_d$')
-axs[1, 1].set_title('Tracking Performance $y_4(k)$')
-axs[1, 1].set_xlim(0, L)
-axs[1, 1].set_ylim(min(y4.min(), yd.min()) - 0.1, max(y4.max(), yd.max()) + 0.1)
-axs[1, 1].legend()
-axs[1, 1].grid()
+# axs[1, 1].plot(y4[:-1], '-^k',markersize=6, label='$y_4$')
+# axs[1, 1].plot(yd, '-b', label='$y_d$')
+# axs[1, 1].set_title('Tracking Performance $y_4(k)$')
+# axs[1, 1].set_xlim(0, L)
+# axs[1, 1].set_ylim(min(y4.min(), yd.min()) - 0.1, max(y4.max(), yd.max()) + 0.1)
+# axs[1, 1].legend()
+# axs[1, 1].grid()
 
-# Set common labels
-for ax in axs.flat:
-    ax.set_xlabel('Step')
-    ax.set_ylabel('Output')
+# # Set common labels
+# for ax in axs.flat:
+#     ax.set_xlabel('Step')
+#     ax.set_ylabel('Output')
 
-# plt.plot(e1[:-1], '-*r', markersize=4, label='$e_1$')
-# plt.plot(e2[:-1], '-+g', markersize=4, label='$e_2$')
-# plt.plot(e3[:-1], '--y', label='$e_3$')
-# plt.plot(e4[:-1], '-b', label='$e_4$')
-# plt.xlim(0,L)  # Set y-axis to range from -0.35 to 0.35
-# plt.ylim(-0.100,0.100)  # Set y-axis to range from -0.35 to 0.35
-# plt.grid(True)
-# plt.legend()
-# plt.xlabel('Step')
-# plt.ylabel('Tracking Errors')
+plt.plot(e1[:-1], '-*r', markersize=4, label='$e_1$')
+plt.plot(e2[:-1], '-+g', markersize=4, label='$e_2$')
+plt.plot(e3[:-1], '--y', label='$e_3$')
+plt.plot(e4[:-1], '-b', label='$e_4$')
+plt.xlim(0,L)  # Set y-axis to range from -0.35 to 0.35
+plt.ylim(-0.100,0.100)  # Set y-axis to range from -0.35 to 0.35
+plt.grid(True)
+plt.legend()
+plt.xlabel('Step')
+plt.ylabel('Tracking Errors')
 
 
 
