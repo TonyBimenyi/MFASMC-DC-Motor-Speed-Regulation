@@ -153,26 +153,27 @@ for k in range(1,L-1):
     e4[k] = yd[k] - y4[k] 
 
 # Plot the desired output
-plt.figure()
+plt.figure(figsize=(10, 6))  # Adjust figure size for better visibility
 # plt.plot(yd, '-b', label='Desired Output')
 # plt.plot(y1[:-1], '-*r', markersize=4, label='Y1')
 # plt.plot(y2[:-1], '-og', markersize=4, label='Y2')
 # plt.plot(y3[:-1], '--y', label='Y3')
 # plt.plot(y4[:-1], '-k', label='Y4')
 
-plt.plot(phi1[:-1], '-r', markersize=4, label='$\phi_1$')
-plt.plot(phi2[:-1], '-.g', markersize=4, label='$\phi_2$')
-plt.plot(phi3[:-1], '-y', label='$\phi_3$')
-plt.plot(phi4[:-1], '--k', label='$\phi_4$')
+plt.plot(phi1[:-1], '-r',linewidth=2, markersize=4, label='$\phi_1$')
+plt.plot(phi2[:-1], '-.g',linewidth=2, markersize=4, label='$\phi_2$')
+plt.plot(phi3[:-1], '-y',linewidth=2, label='$\phi_3$')
+plt.plot(phi4[:-1], '--k',linewidth=2, label='$\phi_4$')
 plt.grid(False)
-plt.legend()
+plt.legend(fontsize=14, loc='best')
 
-
+plt.xticks(fontsize=12)
+plt.yticks(fontsize=12)
 # Set axis limits
 plt.xlim(0, L)  # Set x-axis to range from 0 to 100
 plt.ylim(0,)  # Set y-axis to range from -0.35 to 0.35
 
-plt.xlabel('Step')
-plt.ylabel('Tracking Errors')
+plt.xlabel('Time Step', fontsize=14)
+plt.ylabel('Output', fontsize=14)
 # plt.title('Simulation Results')
 plt.show()
