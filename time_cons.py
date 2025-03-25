@@ -19,11 +19,11 @@ m = 350
 L = 200
 
 # Generate constant desired trajectory
-yd = 0.5 * (1 + np.sign(np.sin(np.linspace(0, 2 * np.pi, L + 1))))  # Square wave
+# yd = 0.5 * (1 + np.sign(np.sin(np.linspace(0, 2 * np.pi, L + 1))))  # Square wave
 
-# yd = np.zeros(L + 1)
-# for k in range(L):
-#     yd[k] = 0.5 * np.sin(k * np.pi / 30) + 0.3 * np.cos(k * np.pi / 10)
+yd = np.zeros(L + 1)
+for k in range(L):
+    yd[k] = 0.5 * np.sin(k * np.pi / 30) + 0.3 * np.cos(k * np.pi / 10)
 
 
 # Initialize arrays
