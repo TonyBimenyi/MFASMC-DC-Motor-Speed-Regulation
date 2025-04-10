@@ -9,6 +9,8 @@ lamda = 50
 mu = 1
 epsilon = 10**-5
 alpha = 1
+omega = 2
+sigma = 1
 gamma1 = 0.15
 gamma2 = 0.15
 gamma3 = 0.45
@@ -71,7 +73,7 @@ for k in range(1, L-1):
         phi3[k] = phi3[k - 1] + (eta * (u3[k - 1] - u3[k - 2]) / (mu + (abs(u3[k - 1] - u3[k - 2]))**2)) * (y3[k] - y3[k - 1] - phi3[k - 1] * (u3[k - 1] - u3[k - 2]))
         phi4[k] = phi4[k - 1] + (eta * (u4[k - 1] - u4[k - 2]) / (mu + (abs(u4[k - 1] - u4[k - 2]))**2)) * (y4[k] - y4[k - 1] - phi4[k - 1] * (u4[k - 1] - u4[k - 2]))
 
-        
+
     if k == 1:
         mfa1[0] = 0
         mfa2[0] = 0
@@ -82,6 +84,14 @@ for k in range(1, L-1):
         mfa2[k] = mfa2[k - 1] + (rho * phi2[k]) / (lamda + abs(phi2[k])**2) * si2[k]
         mfa3[k] = mfa3[k - 1] + (rho * phi3[k]) / (lamda + abs(phi3[k])**2) * si3[k]
         mfa4[k] = mfa4[k - 1] + (rho * phi4[k]) / (lamda + abs(phi4[k])**2) * si4[k]
+
+    if k == 1:
+        sm1[0] = 0
+        sm2[0] = 0
+        sm3[0] = 0
+        sm4[0] = 0
+    else:
+        sm1[k] = sm1[k-1] + ((omega * phi1[k])/(sigma))
 
 plt.figure(figsize=(10, 6))  # Adjust figure size for better visibility
 
