@@ -109,9 +109,12 @@ for k in range(1, L-1):
         sm4[0] = 0
     else:
         sm1[k] = sm1[k-1] + (omega * phi1[k]/sigma+abs(phi1[k])**2 *alpha*si1[k]-si1[k]/alpha*y4[k]+yd[k]-y1[k]+tau*np.sign(s1[k]))
-        sm2[k] = sm2[k-1] + (omega * phi2[k]/sigma+abs(phi2[k])**2 *alpha*si2[k]-si2[k]/alpha*y4[k]+yd[k]-y1[k]+tau*np.sign(s2[k]))
-        sm1[k] = sm1[k-1] + (omega * phi1[k]/sigma+abs(phi1[k])**2 *alpha*si1[k]-si1[k]/alpha*y4[k]+yd[k]-y1[k]+tau*np.sign(s1[k]))
-        sm1[k] = sm1[k-1] + (omega * phi1[k]/sigma+abs(phi1[k])**2 *alpha*si1[k]-si1[k]/alpha*y4[k]+yd[k]-y1[k]+tau*np.sign(s1[k]))
+
+        sm2[k] = sm2[k-1] + (omega * phi2[k]/sigma+abs(phi2[k])**2 *alpha*si2[k]-si2[k]/alpha*y1[k]+y3[k]+0-y2[k]+tau*np.sign(s2[k]))
+
+        sm3[k] = sm3[k-1] + (omega * phi3[k]/sigma+abs(phi3[k])**2 *alpha*si3[k]-si3[k]/alpha*y2[k]+yd[k]-y3[k]+tau*np.sign(s3[k]))
+        
+        sm4[k] = sm4[k-1] + (omega * phi4[k]/sigma+abs(phi4[k])**2 *alpha*si4[k]-si4[k]/alpha*y1[k]+y3[k]+0-y4[k]+tau*np.sign(s4[k]))
         
     if k == 1:
         u1[0] = 0.1
