@@ -56,10 +56,10 @@ si2 = np.zeros((L, 1))
 si3 = np.zeros((L, 1))
 si4 = np.zeros((L, 1))
 
-SS1 = np.zeros((L, 1))
-SS2 = np.zeros((L, 1))
-SS3 = np.zeros((L, 1))
-SS4 = np.zeros((L, 1))
+s1 = np.zeros((L, 1))
+s2 = np.zeros((L, 1))
+s3 = np.zeros((L, 1))
+s4 = np.zeros((L, 1))
 
 # Simulation loop
 for k in range(1, L-1):
@@ -84,7 +84,10 @@ for k in range(1, L-1):
     si3[k] = y2[k] + yd[k] - 2 * y3[k]
     si4[k] = y1[k] + y3[k] - 2 * y4[k]
 
-    SS1[k] = alpha * 
+    s1[k] = alpha * si1[k+1] -si1[k]
+    s1[k] = alpha * si1[k+1] -si1[k]
+    s3[k] = alpha * si1[k+1] -si1[k]
+    s4[k] = alpha * si1[k+1] -si1[k]
 
 
     if k == 1:
