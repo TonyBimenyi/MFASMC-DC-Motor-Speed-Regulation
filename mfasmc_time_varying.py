@@ -3,20 +3,20 @@ import matplotlib.pyplot as plt
 
 #define parameters 
 d =5
-rho = 0.8
-eta = 1.2
-lamda = 0.1
-mu = 0.1
+rho = 0.2
+eta = 0.8
+lamda = 0.01
+mu = 0.01
 epsilon = 10**-5
-alpha = 1.5
-omega = 1
-sigma = 1
-tau = 0.5
+alpha = 0.9
+omega = 0.8
+sigma = 0.01
+tau = 0.1
 T =2
-gamma1 = 0.35
-gamma2 = 0.35
-gamma3 = 0.55
-gamma4 = 0.55
+gamma1 = 0.15
+gamma2 = 0.15
+gamma3 = 0.15
+gamma4 = 0.15   
 
 rT = 1024
 m = 350
@@ -108,13 +108,13 @@ for k in range(1, L-1):
         sm3[0] = 0
         sm4[0] = 0
     else:
-        sm1[k] = sm1[k-1] + ((omega * phi1[k])/(sigma+abs(phi1[k])**2) * ((alpha*(si1[k])-si1[k])/(alpha*(y4[k+1]+yd[k+1]))-y1[k]+tau*np.sign(s1[k])))
+        sm1[k] = sm1[k-1] + ((omega * phi1[k])/(sigma+abs(phi1[k])**2) * ((alpha*(si1[k])-si1[k])/alpha*(y4[k+1]+yd[k+1])-y1[k]+tau*np.sign(s1[k])))
 
-        sm2[k] = sm2[k-1] + ((omega * phi2[k])/(sigma+abs(phi2[k])**2) * ((alpha*(si2[k])-si2[k])/(alpha*(y1[k+1]+y3[k+1]+0))-y2[k]+tau*np.sign(s2[k])))
+        sm2[k] = sm2[k-1] + ((omega * phi2[k])/(sigma+abs(phi2[k])**2) * ((alpha*(si2[k])-si2[k])/alpha*(y1[k+1]+y3[k+1]+0)-y2[k]+tau*np.sign(s2[k])))
 
-        sm3[k] = sm3[k-1] + ((omega * phi3[k])/(sigma+abs(phi3[k])**2) * ((alpha*(si3[k])-si3[k])/(alpha*(y2[k+1]+yd[k+1]))-y3[k]+tau*np.sign(s3[k])))
+        sm3[k] = sm3[k-1] + ((omega * phi3[k])/(sigma+abs(phi3[k])**2) * ((alpha*(si3[k])-si3[k])/alpha*(y2[k+1]+yd[k+1])-y3[k]+tau*np.sign(s3[k])))
 
-        sm4[k] = sm4[k-1] + ((omega * phi4[k])/(sigma+abs(phi4[k])**2) * ((alpha*(si4[k])-si4[k])/(alpha*(y1[k+1]+y3[k+1]+0))-y4[k]+tau*np.sign(s4[k])))
+        sm4[k] = sm4[k-1] + ((omega * phi4[k])/(sigma+abs(phi4[k])**2) * ((alpha*(si4[k])-si4[k])/alpha*(y1[k+1]+y3[k+1]+0))-y4[k]+tau*np.sign(s4[k])))
         
     if k == 1:
         u1[0] = 0.1
