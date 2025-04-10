@@ -11,6 +11,7 @@ epsilon = 10**-5
 alpha = 1
 omega = 2
 sigma = 1
+tau =1
 gamma1 = 0.15
 gamma2 = 0.15
 gamma3 = 0.45
@@ -55,6 +56,11 @@ si2 = np.zeros((L, 1))
 si3 = np.zeros((L, 1))
 si4 = np.zeros((L, 1))
 
+SS1 = np.zeros((L, 1))
+SS2 = np.zeros((L, 1))
+SS3 = np.zeros((L, 1))
+SS4 = np.zeros((L, 1))
+
 # Simulation loop
 for k in range(1, L-1):
     if k == 0:
@@ -72,6 +78,13 @@ for k in range(1, L-1):
         phi2[k] = phi2[k - 1] + (eta * (u2[k - 1] - u2[k - 2]) / (mu + (abs(u2[k - 1] - u2[k - 2]))**2)) * (y2[k] - y2[k - 1] - phi2[k - 1] * (u2[k - 1] - u2[k - 2]))
         phi3[k] = phi3[k - 1] + (eta * (u3[k - 1] - u3[k - 2]) / (mu + (abs(u3[k - 1] - u3[k - 2]))**2)) * (y3[k] - y3[k - 1] - phi3[k - 1] * (u3[k - 1] - u3[k - 2]))
         phi4[k] = phi4[k - 1] + (eta * (u4[k - 1] - u4[k - 2]) / (mu + (abs(u4[k - 1] - u4[k - 2]))**2)) * (y4[k] - y4[k - 1] - phi4[k - 1] * (u4[k - 1] - u4[k - 2]))
+
+    si1[k] = yd[k] - 2 * y1[k] + y4[k]
+    si2[k] = y1[k] - 2 * y2[k] + y3[k]
+    si3[k] = y2[k] + yd[k] - 2 * y3[k]
+    si4[k] = y1[k] + y3[k] - 2 * y4[k]
+
+    SS1[k] = alpha * 
 
 
     if k == 1:
@@ -91,7 +104,7 @@ for k in range(1, L-1):
         sm3[0] = 0
         sm4[0] = 0
     else:
-        sm1[k] = sm1[k-1] + ((omega * phi1[k])/(sigma))
+        sm1[k] = sm1[k-1] + ((omega * phi1[k])/(sigma+abs(phi1[k])**2))*((alpha*(si1[k])-si1[k])/(alpha*(y4[k]+yd[k]))-y1[k]+tau*np.sign(SS1[k]))
 
 plt.figure(figsize=(10, 6))  # Adjust figure size for better visibility
 
