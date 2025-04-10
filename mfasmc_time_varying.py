@@ -85,9 +85,9 @@ for k in range(1, L-1):
     si4[k] = y1[k] + y3[k] - 2 * y4[k]
 
     s1[k] = alpha * si1[k+1] -si1[k]
-    s1[k] = alpha * si1[k+1] -si1[k]
-    s3[k] = alpha * si1[k+1] -si1[k]
-    s4[k] = alpha * si1[k+1] -si1[k]
+    s1[k] = alpha * si2[k+1] -si2[k]
+    s3[k] = alpha * si3[k+1] -si3[k]
+    s4[k] = alpha * si4[k+1] -si4[k]
 
 
     if k == 1:
