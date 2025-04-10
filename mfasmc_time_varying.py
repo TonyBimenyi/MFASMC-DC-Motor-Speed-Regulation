@@ -17,7 +17,7 @@ gamma2 = 0.15
 gamma3 = 0.45
 gamma4 = 0.45
 
-rt = 1024
+rT = 1024
 m = 350
 L = 200
 
@@ -107,11 +107,24 @@ for k in range(1, L-1):
         sm3[0] = 0
         sm4[0] = 0
     else:
-        sm1[k] = sm1[k-1] + ((omega * phi1[k])/(sigma+abs(phi1[k])**2))*((alpha*(si1[k])-si1[k])/(alpha*(y4[k]+yd[k]))-y1[k]+tau*np.sign(SS1[k]))
+        sm1[k] = sm1[k-1] + ((omega * phi1[k])/(sigma+abs(phi1[k])**2))*((alpha*(si1[k])-si1[k])/(alpha*(y4[k]+yd[k]))-y1[k]+tau*np.sign(s1[k]))
+        sm2[k] = sm2[k-1] + ((omega * phi2[k])/(sigma+abs(phi2[k])**2))*((alpha*(si2[k])-si1[k])/(alpha*(y1[k]+y3[k])+0)-y2[k]+tau*np.sign(s2[k]))
+        sm3[k] = sm3[k-1] + ((omega * phi3[k])/(sigma+abs(phi3[k])**2))*((alpha*(si3[k])-si3[k])/(alpha*(y2[k]+yd[k]))-y3[k]+tau*np.sign(s3[k]))
+        sm4[k] = sm4[k-1] + ((omega * phi4[k])/(sigma+abs(phi4[k])**2))*((alpha*(si4[k])-si4[k])/(alpha*(y1[k]+y3[k])+0)-y4[k]+tau*np.sign(s4[k]))
+
+    y1[0] = 0.1
+    y2[0] = 0.1
+    y3[0] = 0.1
+    y4[0] = 0.1
+    y1[k + 1] = m / (rT * 0.1) * u1[k]
+    y2[k + 1] = m / (rT * 0.1) * u2[k]
+    y3[k + 1] = m / (rT * 0.3) * u3[k]
+    y4[k + 1] = m / (rT * 0.3) * u4[k]
 
 plt.figure(figsize=(10, 6))  # Adjust figure size for better visibility
 
 plt.plot(yd[:-1], '-y', linewidth=2.5, label=r'$y_d$')  
+plt.plot(y1[:-1], '--r', linewidth=2.5, label=r'$y_1$')
 
 # Enlarge font size for axis labels and legend
 plt.xlabel('Time step', fontsize=14)
