@@ -1,20 +1,20 @@
 clc; clear;
 
 % Parameters
-rho =1;            % Increase gain for better control response
+rho =7.5;            % Increase gain for better control response
 eta = 1;          % Increase to make the adaptive update faster
-lamda = 5;         % Model-free parameter
+lamda = 350;         % Model-free parameter
 mu = 0.005;           % Adaptive parameter
 epsilon = 1e-5;      % Small threshold for stability
-alpha = 50;           % Smoothing factor for error dynamics
+alpha = 15;           % Smoothing factor for error dynamics
 T = 0.1;             % Sampling time
-gamma1 = 0.45;        % Adjust control gains for faster tracking
-gamma2 = 0.1;        % Adjust control gains
-gamma3 = 0.45;        % Adjust control gains
-gamma4 = 0.1;        % Adjust control gains
-omega = 10;        % Sliding mode coefficient
-sigma = 85;         % Sliding mode parameter
-tau = 0.000001;       % Small damping term
+gamma1 = 0.25;        % Adjust control gains for faster tracking
+gamma2 = 0.15;        % Adjust control gains
+gamma3 = 0.25;        % Adjust control gains
+gamma4 = 0.15;        % Adjust control gains
+beta = 10;        % Sliding mode coefficient
+sigma = 95;         % Sliding mode parameter
+tau = 1e-5;       % Small damping term
 
 rT = 1024;           % Sample rate
 L = 200;             % Time steps
@@ -22,14 +22,14 @@ m = 200;             % Data size
 n = 600;             % Data size
 
 % Initialization
-phi1 = zeros(m,1); 
-phi2 = zeros(m,1); 
-phi3 = zeros(m,1); 
-phi4 = zeros(m,1);
-mfa1 = zeros(m,1); 
-mfa2 = zeros(m,1); 
-mfa3 = zeros(m,1); 
-mfa4 = zeros(m,1);
+phi1 = zeros(m+1,1); 
+phi2 = zeros(m+1,1); 
+phi3 = zeros(m+1,1); 
+phi4 = zeros(m+1,1);
+mfa1 = zeros(m+1,1); 
+mfa2 = zeros(m+1,1); 
+mfa3 = zeros(m+1,1); 
+mfa4 = zeros(m+1,1);
 sm1 = zeros(m,1);  
 sm2 = zeros(m,1);  
 sm3 = zeros(m,1);  
@@ -54,17 +54,18 @@ yd = zeros(m+1,1);
 
 % Desired signal (Reference trajectory)
 for k = 1:1:m+1
+    % yd(k) = 0.6; % Time-invariant constant reference signal
     yd(k) = 0.6 * sin(0.05 * pi * k) + 0.6 * cos(0.03 * pi * k);
-
 end
+
 
 for k = 1:m
     % Adaptive Gain update
     if k == 1
-        phi1(k) = 1; 
-        phi2(k) = 1; 
-        phi3(k) = 1; 
-        phi4(k) = 1;
+        phi1(k) = 4.0; 
+        phi2(k) = 4.0; 
+        phi3(k) = 4.0; 
+        phi4(k) = 4.0;
     elseif k == 2
         phi1(k) = phi1(k-1) + (eta * u1(k-1) / (mu + u1(k-1)^2)) * (y1(k) - phi1(k-1)*u1(k-1));
         phi2(k) = phi2(k-1) + (eta * u2(k-1) / (mu + u2(k-1)^2)) * (y2(k) - phi2(k-1)*u2(k-1));
@@ -101,14 +102,20 @@ for k = 1:m
     xi3(k) = y2(k) + yd(k) - 2*y3(k);
     xi4(k) = y1(k) + y3(k) - 2*y4(k);
 
+    
+    % Fix: Handle k=1 case for sliding surfaces
     if k == 1
-        s1(k) = 0; s2(k) = 0; s3(k) = 0; s4(k) = 0;
+        s1(k) = 0;
+        s2(k) = 0;
+        s3(k) = 0;
+        s4(k) = 0;
     else
         s1(k) = alpha * xi1(k) - xi1(k-1);
         s2(k) = alpha * xi2(k) - xi2(k-1);
         s3(k) = alpha * xi3(k) - xi3(k-1);
         s4(k) = alpha * xi4(k) - xi4(k-1);
     end
+    
 
     % MFAC updates
     if k == 1
@@ -117,10 +124,10 @@ for k = 1:m
         mfa3(k) = 0;
         mfa4(k) = 0;
     else
-        mfa1(k) = mfa1(k-1) + (rho * phi1(k)) / (lamda + phi1(k)^2) * xi1(k);
-        mfa2(k) = mfa2(k-1) + (rho * phi2(k)) / (lamda + phi2(k)^2) * xi2(k);
-        mfa3(k) = mfa3(k-1) + (rho * phi3(k)) / (lamda + phi3(k)^2) * xi3(k);
-        mfa4(k) = mfa4(k-1) + (rho * phi4(k)) / (lamda + phi4(k)^2) * xi4(k);
+        mfa1(k) = mfa1(k-1) + (rho * phi1(k)) / (lamda + abs(phi1(k)^2)) * xi1(k);
+        mfa2(k) = mfa2(k-1) + (rho * phi2(k)) / (lamda + abs(phi2(k)^2)) * xi2(k);
+        mfa3(k) = mfa3(k-1) + (rho * phi3(k)) / (lamda + abs(phi3(k)^2)) * xi3(k);
+        mfa4(k) = mfa4(k-1) + (rho * phi4(k)) / (lamda + abs(phi4(k)^2)) * xi4(k);
     end
 
     % SMC updates
@@ -130,29 +137,29 @@ for k = 1:m
         sm3(k) = 0;
         sm4(k) = 0;
     else
-        sm1(k) = sm1(k-1) + (omega * phi1(k)) / (sigma + (phi1(k))^2) * ...
+        sm1(k) = sm1(k-1) + (beta * phi1(k)) / (sigma + (phi1(k))^2) * ...
             ( (xi1(k) + (y4(k) - y4(k-1)) + (yd(k+1) - yd(k))) / (1 + 1) ...
             - (xi1(k)) / (alpha * (2)) + tau * sign(s1(k)) );
 
-        sm2(k) = sm2(k-1) + (omega * phi2(k)) / (sigma + (phi2(k))^2) * ...
-            ( (xi2(k) + (y1(k) - y1(k-1)) + (y3(k) - y3(k-1))) / 2 ...
+        sm2(k) = sm2(k-1) + (beta * phi2(k)) / (sigma + (phi2(k))^2) * ...
+            ( (xi2(k) + (y1(k) - y1(k-1)) + (y3(k) - y3(k-1))) / (1 + 1) ...
             - (xi2(k)) / (alpha * 2) + tau * sign(s2(k)) );
 
-        sm3(k) = sm3(k-1) + (omega * phi3(k)) / (sigma + (phi3(k))^2) * ...
+        sm3(k) = sm3(k-1) + (beta * phi3(k)) / (sigma + (phi3(k))^2) * ...
             ( (xi3(k) + (y2(k) - y2(k-1)) + (yd(k+1) - yd(k))) / (1 + 1) ...
             - (xi3(k)) / (alpha * (2)) + tau * sign(s3(k)) );
 
-        sm4(k) = sm4(k-1) + (omega * phi4(k)) / (sigma + (phi4(k))^2) * ...
+        sm4(k) = sm4(k-1) + (beta * phi4(k)) / (sigma + (phi4(k))^2) * ...
             ( (xi4(k) + (y1(k) - y1(k-1)) + (y3(k) - y3(k-1))) / (1 + 1) ...
             - (xi4(k)) / (alpha * (2)) + tau * sign(s4(k)) );
     end
 
     % Control signal
     if k == 1
-        u1(k) = 0;
-        u2(k) = 0;
-        u3(k) = 0;
-        u4(k) = 0;
+        u1(k) = 0.01;
+        u2(k) = 0.01;
+        u3(k) = 0.01;
+        u4(k) = 0.01;
     else
         u1(k) = mfa1(k) + gamma1 * sm1(k);
         u2(k) = mfa2(k) + gamma2 * sm2(k);
@@ -160,14 +167,11 @@ for k = 1:m
         u4(k) = mfa4(k) + gamma4 * sm4(k);
     end
     if k == 1%0
-        y1(k)=0.1;
-        y2(k)=0.1;
-        y3(k)=0.1;
-        y4(k)=0.1;
-%             y1(i,k)=0.01*randi([-5,5]);
-%             y2(i,k)=0.01*randi([-5,5]);
-%             y3(i,k)=0.01*randi([-5,5]);
-%             y4(i,k)=0.01*randi([-5,5]);
+        y1(k)=0.6;
+        y2(k)=0.6;
+        y3(k)=0.6;
+        y4(k)=0.6;
+
     end
 
 
@@ -177,37 +181,56 @@ for k = 1:m
     a = 0.5;
     b1 = 1.3 * n / (rT * 0.2);
     b2 = 1.1 * n / (rT * 0.2);
-    nonlinearity = 0.01; % Coefficient for cubic nonlinearity
-    ff_gain = 0.1; % Feedforward gain
+    b3 = 1.3 * n / (rT * 0.2);
+    b4 = 1.2 * n / (rT * 0.2);
+    
+    nonlinearity1 = 0.02; % Coefficient for cubic nonlinearity
+    nonlinearity2 = 0.02; % Coefficient for cubic nonlinearity
+    nonlinearity3 = 0.02; % Coefficient for cubic nonlinearity
+    nonlinearity4 = 0.02; % Coefficient for cubic nonlinearity
+    ff_gain = 0.45; % Feedforward gain
     
   
 
+    % Add cubic nonlinearity and feedforward term
+    y1(k+1) = a * y1(k) + b1 * u1(k)- nonlinearity1 * y1(k)^3 + ff_gain ;
+    y2(k+1) = a * y2(k) + b2 * u2(k) - nonlinearity2 * y2(k)^2+ ff_gain ;
+    y3(k+1) = a * y3(k) + b3 * u3(k)- nonlinearity3 * y3(k)^3+ ff_gain;
+    y4(k+1) = a * y4(k) + b4 * u4(k)- nonlinearity4 * y4(k)^2 + ff_gain ;
+
     % % Add cubic nonlinearity and feedforward term
-    % y1(k+1) = a * y1(k)+ff_gain + b1 * u1(k)- nonlinearity * y1(k)^2 + ff_gain ;
-    % y2(k+1) = a * y2(k)+ff_gain + b2 * u2(k) - nonlinearity * y2(k)^2+ ff_gain ;
-    % y3(k+1) = a * y3(k)+ff_gain + b1 * u3(k)- nonlinearity * y3(k)^2+ ff_gain;
-    % y4(k+1) = a * y4(k)+ff_gain + b2 * u4(k)- nonlinearity * y4(k)^2 + ff_gain ;
-
-    y1(k+1) = y1(k)*u1(k)/(1+y1(k)^2)+u1(k);
-    y2(k+1) = y2(k)*u2(k)/(1+y2(k)^2)+u2(k);
-    y3(k+1) = y3(k)*u3(k)/(1+y3(k)^2)+u3(k);
-    y4(k+1) = y4(k)*u4(k)/(1+y4(k)^2)+u4(k);
-
+    % y1(k+1) = y1(k) * u1(k) / 1 + y1(k)^2 + u1(k);
+    % y2(k+1) = y2(k) * u2(k) / 1 + y2(k)^3 + u2(k) + 0.5 * u2(k);
+    % y3(k+1) = y3(k) * u3(k) / 1 + y3(k)^2 + u3(k) + 0.9 * u3(k);
+    % y4(k+1) = y4(k) * u4(k) / 1 + y4(k)^3 + u4(k) + 0.8 * u4(k); 
 end
 
 % Plotting
-figure;
-plot(yd(1:end-1), '-b', 'DisplayName', 'y_d', 'LineWidth', 2); hold on;
-plot(y1(1:end-1), '--r', 'DisplayName', 'y_1', 'LineWidth', 2);
-plot(y2(1:end-1), '-.b', 'DisplayName', 'y_2', 'LineWidth', 2);
-plot(y3(1:end-1), '-.k', 'DisplayName', 'y_3', 'LineWidth', 2);
-plot(y4(1:end-1), '-.g', 'DisplayName', 'y_4', 'LineWidth', 2);
-xlabel('Time step', 'FontSize', 14);
-ylabel('Output', 'FontSize', 14);
+figure('Position', [100, 100, 10*100, 5.5*100]); % [left, bottom, width, height] in pixels
+plot(yd(1:end-1), '-b', 'DisplayName', 'y_d(k)', 'LineWidth', 2.5); hold on;
+plot(y1(1:end-1), '--', 'DisplayName', 'y_1(k)', 'LineWidth', 2.5);
+plot(y2(1:end-1), '-.m', 'DisplayName', 'y_2(k)', 'LineWidth', 2.5);
+plot(y3(1:end-1), '-.k', 'DisplayName', 'y_3(k)', 'LineWidth', 2.5);
+plot(y4(1:end-1), '--g', 'DisplayName', 'y_4(k)', 'LineWidth', 2.5);
+% xlabel('Time step', 'FontSize', 14);
+% ylabel('Tracking performance', 'FontSize', 14);
 legend('FontSize', 14);
 xlim([0 L]);
-grid on;
+grid off;
 set(gca, 'FontSize', 12);
-title('Tracking Performance', 'FontSize', 15, 'FontWeight', 'bold');
+% title('Tracking Performance', 'FontSize', 15, 'FontWeight', 'bold');
 
-
+% Create a figure and set its size (width: 10 inches, height: 2.5 inches)
+figure('Position', [100, 100, 10*100, 5.5*100]); % [left, bottom, width, height] in pixels
+plot(xi1(1:end-1), '--', 'DisplayName', '\xi_1(k)', 'LineWidth', 2.5);hold on;
+plot(xi2(1:end-1), '-.m', 'DisplayName', '\xi_2(k)', 'LineWidth', 2.5);
+plot(xi3(1:end-1), '-.k', 'DisplayName', '\xi_3(k)', 'LineWidth', 2.5);
+plot(xi4(1:end-1), '-.g', 'DisplayName', '\xi_4(k)', 'LineWidth', 2.5);
+% xlabel('Time step', 'FontSize', 14);
+% ylabel('Distributed error', 'FontSize', 14);
+legend('FontSize', 14);
+xlim([0 L]);
+ylim([-0.2 0.2]);
+grid off;
+set(gca, 'FontSize', 12);
+% title('Distributed Errors', 'FontSize', 15, 'FontWeight', 'bold');
