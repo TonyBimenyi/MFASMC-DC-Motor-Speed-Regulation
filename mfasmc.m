@@ -313,6 +313,27 @@ legend('y_d','y_4');
 set(gca, 'FontSize', font_size); % Smaller font for inset
 
 
+zoom_x_start = 4; % Start of zoomed x-range (last 20% of L)
+zoom_x_end = 6.5; % End of zoomed x-range
+axes('Position', [0.65,0.275,0.15,0.13]); % Top-right corner, adjust as needed
+box on; % Add a box around the inset
+hold on;
+
+plot(t, yd_plot, '--b', 'LineWidth', 2.5); hold on;
+plot(t, y3, '-.g', 'LineWidth', 2.5);
+
+% Set limits for the zoomed region
+xlim([zoom_x_start zoom_x_end]);
+% ylim([-0.02 0.02]);
+
+yticks([0.599,0.6,0.601]);  % Set y-axis ticks
+
+% Optional: Add a rectangle on the main plot to indicate the zoomed region
+axes(findall(gcf, 'Type', 'axes', 'Position', [100, 100, 10*100, 5.5*100])); % Switch back to main axes
+
+
+
+
 
 
 
