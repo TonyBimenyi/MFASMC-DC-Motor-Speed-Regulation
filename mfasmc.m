@@ -54,9 +54,9 @@ yd = zeros(m+1,1);
 
 % Desired signal (Reference trajectory)
 for k = 1:1:m+1
-    % yd(k) = 0.6; % Time-invariant constant reference signal
+    yd(k) = 0.6; % Time-invariant constant reference signal
     
-    yd(k) = 0.6 * sin(0.05 * pi * k) + 0.6 * cos(0.03 * pi * k);
+    % yd(k) = 0.6 * sin(0.05 * pi * k) + 0.6 * cos(0.03 * pi * k);
 end
 
 
@@ -207,19 +207,39 @@ for k = 1:m
 end
 
 % Plotting
-figure('Position', [100, 100, 10*100, 5.0*100]); % [left, bottom, width, height] in pixels
-plot(yd(1:end-1), '-b', 'DisplayName', 'y_d(k)', 'LineWidth', 2.5); hold on;
-plot(y1(1:end-1), '--', 'DisplayName', 'y_1(k)', 'LineWidth', 2.5);
-plot(y2(1:end-1), '-.m', 'DisplayName', 'y_2(k)', 'LineWidth', 2.5);
-plot(y3(1:end-1), '-.k', 'DisplayName', 'y_3(k)', 'LineWidth', 2.5);
-plot(y4(1:end-1), '--g', 'DisplayName', 'y_4(k)', 'LineWidth', 2.5);
-% xlabel('Time step', 'FontSize', 14);
-% ylabel('Tracking performance', 'FontSize', 14);
-legend('FontSize', 14);
-xlim([0 L]);
-grid off;
-set(gca, 'FontSize', 13);
-% title('Tracking Performance', 'FontSize', 15, 'FontWeight', 'bold');
+
+% Time vector for plotting
+t = 0:T:m*T;  % Gives 201 points, as expected
+
+% Truncate yd to match y1, y2, etc. size
+yd_plot = yd(1:m+1);
+
+% Plot 4 subplots
+% figure;
+figure('Position', [100, 100, 15*100, 7.0*100]); % [left, bottom, width, height] in pixels
+subplot(2,2,1);
+plot(t, yd_plot, '--b', 'LineWidth',2.5); hold on;
+plot(t, y1, '-.g', 'LineWidth', 2.5);
+title('Agent 1'); grid off;
+legend('y_d','y_1');
+
+subplot(2,2,2);
+plot(t, yd_plot, '--b', 'LineWidth', 2.5); hold on;
+plot(t, y2, '-.g', 'LineWidth', 2.5);
+title('Agent 2'); grid off;
+legend('y_d','y2');
+
+subplot(2,2,3);
+plot(t, yd_plot, '--b', 'LineWidth', 2.5); hold on;
+plot(t, y3, '-.g', 'LineWidth', 2.5);
+title('Agent 3'); grid off;
+legend('y_d','y_3');
+
+subplot(2,2,4);
+plot(t, yd_plot, '--b', 'LineWidth', 2.5); hold on;
+plot(t, y4, '-.g', 'LineWidth', 2.5);
+title('Agent 4'); grid off;
+legend('y_d','y_4');
 
 
 
