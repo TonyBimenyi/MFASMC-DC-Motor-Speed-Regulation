@@ -209,10 +209,11 @@ end
 % Plotting
 
 % Time vector for plotting
-t = 0:T:m*T;  % Gives 201 points, as expected
+t = 0:T:L*T;  % Gives 201 points, as expected
 
 % Truncate yd to match y1, y2, etc. size
-yd_plot = yd(1:m+1);
+yd_plot = yd(1:L+1);
+font_size = 14;
 
 % Plot 4 subplots
 % figure;
@@ -222,24 +223,97 @@ plot(t, yd_plot, '--b', 'LineWidth',2.5); hold on;
 plot(t, y1, '-.g', 'LineWidth', 2.5);
 title('Agent 1'); grid off;
 legend('y_d','y_1');
+set(gca, 'FontSize', font_size); % Smaller font for inset
+
+
+zoom_x_start = 4; % Start of zoomed x-range (last 20% of L)
+zoom_x_end = 6.5; % End of zoomed x-range
+axes('Position', [0.20,0.75,0.15,0.13]); % Top-right corner, adjust as needed
+box on; % Add a box around the inset
+hold on;
+
+plot(t, yd_plot, '--b', 'LineWidth', 2.5); hold on;
+plot(t, y4, '-.g', 'LineWidth', 2.5);
+
+% Set limits for the zoomed region
+xlim([zoom_x_start zoom_x_end]);
+% ylim([-0.02 0.02]);
+
+yticks([0.599,0.6,0.601]);  % Set y-axis ticks
+
+% Optional: Add a rectangle on the main plot to indicate the zoomed region
+axes(findall(gcf, 'Type', 'axes', 'Position', [100, 100, 10*100, 5.5*100])); % Switch back to main axes
+
+
+% ----------------------------------------------------------------
 
 subplot(2,2,2);
 plot(t, yd_plot, '--b', 'LineWidth', 2.5); hold on;
 plot(t, y2, '-.g', 'LineWidth', 2.5);
+% yticks([0.5,0.6,0.7,0.8,0.9]); % Set x-axis ticks
 title('Agent 2'); grid off;
 legend('y_d','y2');
+set(gca, 'FontSize', font_size); % Smaller font for inset
+
+zoom_x_start = 4; % Start of zoomed x-range (last 20% of L)
+zoom_x_end = 6.5; % End of zoomed x-range
+axes('Position', [0.65,0.75,0.15,0.13]); % Top-right corner, adjust as needed
+box on; % Add a box around the inset
+hold on;
+
+plot(t, yd_plot, '--b', 'LineWidth', 2.5); hold on;
+plot(t, y3, '-.g', 'LineWidth', 2.5);
+
+% Set limits for the zoomed region
+xlim([zoom_x_start zoom_x_end]);
+% ylim([-0.02 0.02]);
+
+yticks([0.599,0.6,0.601]);  % Set y-axis ticks
+
+% Optional: Add a rectangle on the main plot to indicate the zoomed region
+axes(findall(gcf, 'Type', 'axes', 'Position', [100, 100, 10*100, 5.5*100])); % Switch back to main axes
+
+
+% ---------------------------------------------------------------
 
 subplot(2,2,3);
 plot(t, yd_plot, '--b', 'LineWidth', 2.5); hold on;
 plot(t, y3, '-.g', 'LineWidth', 2.5);
 title('Agent 3'); grid off;
 legend('y_d','y_3');
+set(gca, 'FontSize', font_size); % Smaller font for inset
+
+zoom_x_start = 4; % Start of zoomed x-range (last 20% of L)
+zoom_x_end = 6.5; % End of zoomed x-range
+axes('Position', [0.20,0.275,0.15,0.13]); % Top-right corner, adjust as needed
+box on; % Add a box around the inset
+hold on;
+
+plot(t, yd_plot, '--b', 'LineWidth', 2.5); hold on;
+plot(t, y4, '-.g', 'LineWidth', 2.5);
+
+% Set limits for the zoomed region
+xlim([zoom_x_start zoom_x_end]);
+% ylim([-0.02 0.02]);
+
+yticks([0.599,0.6,0.601]);  % Set y-axis ticks
+
+% Optional: Add a rectangle on the main plot to indicate the zoomed region
+axes(findall(gcf, 'Type', 'axes', 'Position', [100, 100, 10*100, 5.5*100])); % Switch back to main axes
+
+
+
+% --------------------------------------------------
 
 subplot(2,2,4);
 plot(t, yd_plot, '--b', 'LineWidth', 2.5); hold on;
 plot(t, y4, '-.g', 'LineWidth', 2.5);
 title('Agent 4'); grid off;
 legend('y_d','y_4');
+set(gca, 'FontSize', font_size); % Smaller font for inset
+
+
+
 
 
 
