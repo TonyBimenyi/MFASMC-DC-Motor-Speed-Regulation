@@ -134,15 +134,15 @@ for k = 1:m
             ( (xi1(k) + (y4(k) - y4(k-1)) + (yd(k+1) - yd(k))) / (1 + 1) ...
             - (xi1(k)) / (alpha * (2)) + tau * sign(s1(k)) );
 
-        sm2(k) = sm2(k-1) + (beta * phi2(k)) / (sigma + (phi2(k))^2) * ...
+        sm2(k) = sm2(k-1) + (beta * phi2(k)) / (sigma + (phi2(k)^2)) * ...
             ( (xi2(k) + (y1(k) - y1(k-1)) + (y3(k) - y3(k-1))) / (1 + 1) ...
             - (xi2(k)) / (alpha * 2) + tau * sign(s2(k)) );
 
-        sm3(k) = sm3(k-1) + (beta * phi3(k)) / (sigma + (phi3(k))^2) * ...
+        sm3(k) = sm3(k-1) + (beta * phi3(k)) / (sigma + (phi3(k)^2)) * ...
             ( (xi3(k) + (y2(k) - y2(k-1)) + (yd(k+1) - yd(k))) / (1 + 1) ...
             - (xi3(k)) / (alpha * (2)) + tau * sign(s3(k)) );
 
-        sm4(k) = sm4(k-1) + (beta * phi4(k)) / (sigma + (phi4(k))^2) * ...
+        sm4(k) = sm4(k-1) + (beta * phi4(k)) / (sigma + (phi4(k)^2)) * ...
             ( (xi4(k) + (y1(k) - y1(k-1)) + (y3(k) - y3(k-1))) / (1 + 1) ...
             - (xi4(k)) / (alpha * (2)) + tau * sign(s4(k)) );
     end
@@ -198,17 +198,18 @@ disp(['Length of yd: ', num2str(length(yd))]); % Should be 201
 disp(['Length of xi1: ', num2str(length(xi1))]); % Should be 200
 
 % Plot 4 subplots
-figure('Position', [100, 100, 15*100, 7.0*100]); % [left, bottom, width, height] in pixels
+figure('Position', [100, 100, 15*100, 7.5*100]); % [left, bottom, width, height] in pixels
 subplot(2,2,1);
 plot(t, yd, '--b', 'LineWidth', 2.5); hold on;
 plot(t, y1, '-.g', 'LineWidth', 2.5);
 title('Agent 1'); grid off;
 legend('y_d','y_1');
 set(gca, 'FontSize', font_size);
-xlim([1 m+1]); % Ensure x-axis spans 1 to 201
+xlim([0 m+1]); % X-axis starts from 0
+ylim([0.5 0.8]); % Y-axis limits for Agent 1
 
-zoom_x_start = 4; % Start of zoomed x-range
-zoom_x_end = 6.5; % End of zoomed x-range
+zoom_x_start = 40; % Start of zoomed x-range
+zoom_x_end = 70.5; % End of zoomed x-range
 axes('Position', [0.20,0.75,0.15,0.13]);
 box on; hold on;
 plot(t, yd, '--b', 'LineWidth', 2.5);
@@ -217,17 +218,14 @@ xlim([zoom_x_start zoom_x_end]);
 yticks([0.599,0.6,0.601]);
 set(gca, 'FontSize', font_size);
 
-
-
-
-
 subplot(2,2,2);
 plot(t, yd, '--b', 'LineWidth', 2.5); hold on;
 plot(t, y2, '-.g', 'LineWidth', 2.5);
 title('Agent 2'); grid off;
 legend('y_d','y_2');
 set(gca, 'FontSize', font_size);
-xlim([1 m+1]); % Ensure x-axis spans 1 to 201
+xlim([0 m+1]); % X-axis starts from 0
+ylim([0.41 0.99]); % Y-axis limits for Agent 2
 
 axes('Position', [0.65,0.75,0.15,0.13]);
 box on; hold on;
@@ -243,7 +241,8 @@ plot(t, y3, '-.g', 'LineWidth', 2.5);
 title('Agent 3'); grid off;
 legend('y_d','y_3');
 set(gca, 'FontSize', font_size);
-xlim([1 m+1]); % Ensure x-axis spans 1 to 201
+xlim([0 m+1]); % X-axis starts from 0
+ylim([0.5 0.8]); % Y-axis limits for Agent 1
 
 axes('Position', [0.20,0.275,0.15,0.13]);
 box on; hold on;
@@ -259,7 +258,8 @@ plot(t, y4, '-.g', 'LineWidth', 2.5);
 title('Agent 4'); grid off;
 legend('y_d','y_4');
 set(gca, 'FontSize', font_size);
-xlim([1 m+1]); % Ensure x-axis spans 1 to 201
+xlim([0 m+1]); % X-axis starts from 0
+ylim([0.41 0.99]); % Y-axis limits for Agent 2
 
 axes('Position', [0.65,0.275,0.15,0.13]);
 box on; hold on;
