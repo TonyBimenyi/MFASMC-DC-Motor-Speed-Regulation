@@ -1,25 +1,25 @@
 clc; clear;
 
 % Parameters
-rho =7.5;            % Increase gain for better control response
-eta = 1;          % Increase to make the adaptive update faster
-lamda = 350;         % Model-free parameter
+rho = 7.5;            % Increase gain for better control response
+eta = 1;              % Increase to make the adaptive update faster
+lamda = 350;          % Model-free parameter
 mu = 0.005;           % Adaptive parameter
-epsilon = 1e-5;      % Small threshold for stability
+epsilon = 1e-5;       % Small threshold for stability
 alpha = 15;           % Smoothing factor for error dynamics
-T = 0.1;             % Sampling time
+T = 0.1;              % Sampling time (kept for calculations but not used in time vector)
 gamma1 = 0.45;        % Adjust control gains for faster tracking
 gamma2 = 0.15;        % Adjust control gains
 gamma3 = 0.45;        % Adjust control gains
 gamma4 = 0.15;        % Adjust control gains
-beta = 10;        % Sliding mode coefficient
-sigma = 95;         % Sliding mode parameter
-tau = 1e-5;       % Small damping term
+beta = 10;            % Sliding mode coefficient
+sigma = 95;           % Sliding mode parameter
+tau = 1e-5;           % Small damping term
 
-rT = 1024;           % Sample rate
-L = 200;             % Time steps
-m = 200;             % Data size
-n = 600;             % Data size
+rT = 1024;            % Sample rate
+L = 200;              % Time steps
+m = 200;              % Data size
+n = 600;              % Data size
 
 % Initialization
 phi1 = zeros(m+1,1); 
@@ -55,10 +55,8 @@ yd = zeros(m+1,1);
 % Desired signal (Reference trajectory)
 for k = 1:1:m+1
     yd(k) = 0.6; % Time-invariant constant reference signal
-    
     % yd(k) = 0.6 * sin(0.05 * pi * k) + 0.6 * cos(0.03 * pi * k);
 end
-
 
 for k = 1:m
     % Adaptive Gain update
@@ -80,22 +78,18 @@ for k = 1:m
     end
 
     % Stability protection
-    if k > 2 && (abs(phi1(k)) <= epsilon || abs(u1(k - 1) - u1(k - 2)) <= epsilon || sign(phi1(k)) ~= sign(phi1(1)))
+    if k > 2 && (abs(phi1(k)) <= epsilon || abs(u1(k-1) - u1(k-2)) <= epsilon || sign(phi1(k)) ~= sign(phi1(1)))
         phi1(k) = phi1(1);
     end
-    
-    if k > 2 && (abs(phi2(k)) <= epsilon || abs(u2(k - 1) - u2(k - 2)) <= epsilon || sign(phi2(k)) ~= sign(phi2(1)))
+    if k > 2 && (abs(phi2(k)) <= epsilon || abs(u2(k-1) - u2(k-2)) <= epsilon || sign(phi2(k)) ~= sign(phi2(1)))
         phi2(k) = phi2(1);
     end
-    
-    if k > 2 && (abs(phi3(k)) <= epsilon || abs(u3(k - 1) - u3(k - 2)) <= epsilon || sign(phi3(k)) ~= sign(phi3(1)))
+    if k > 2 && (abs(phi3(k)) <= epsilon || abs(u3(k-1) - u3(k-2)) <= epsilon || sign(phi3(k)) ~= sign(phi3(1)))
         phi3(k) = phi3(1);
     end
-    
-    if k > 2 && (abs(phi4(k)) <= epsilon || abs(u4(k - 1) - u4(k - 2)) <= epsilon || sign(phi4(k)) ~= sign(phi4(1)))
+    if k > 2 && (abs(phi4(k)) <= epsilon || abs(u4(k-1) - u4(k-2)) <= epsilon || sign(phi4(k)) ~= sign(phi4(1)))
         phi4(k) = phi4(1);
     end
-    
 
     % Error dynamics
     xi1(k) = yd(k) - 2*y1(k) + y4(k);
@@ -103,7 +97,6 @@ for k = 1:m
     xi3(k) = y2(k) + yd(k) - 2*y3(k);
     xi4(k) = y1(k) + y3(k) - 2*y4(k);
 
-    
     % Fix: Handle k=1 case for sliding surfaces
     if k == 1
         s1(k) = 0;
@@ -116,7 +109,6 @@ for k = 1:m
         s3(k) = alpha * xi3(k) - xi3(k-1);
         s4(k) = alpha * xi4(k) - xi4(k-1);
     end
-    
 
     % MFAC updates
     if k == 1
@@ -167,16 +159,12 @@ for k = 1:m
         u3(k) = mfa3(k) + gamma3 * sm3(k);
         u4(k) = mfa4(k) + gamma4 * sm4(k);
     end
-    if k == 1%0
-        y1(k)=0.6;
-        y2(k)=0.6;
-        y3(k)=0.6;
-        y4(k)=0.6;
-
+    if k == 1
+        y1(k) = 0.6;
+        y2(k) = 0.6;
+        y3(k) = 0.6;
+        y4(k) = 0.6;
     end
-
-
-    
 
     % Plant model update with nonlinear term and feedforward
     a = 0.5;
@@ -191,203 +179,115 @@ for k = 1:m
     nonlinearity4 = 0.01; % Coefficient for cubic nonlinearity
     ff_gain = 0.45; % Feedforward gain
     
-  
-
     % Add cubic nonlinearity and feedforward term
-    y1(k+1) = a * y1(k) + b1 * u1(k)- nonlinearity1 * y1(k)^3 + ff_gain ;
-    y2(k+1) = a * y2(k) + b2 * u2(k) - nonlinearity2 * y2(k)^2+ ff_gain ;
-    y3(k+1) = a * y3(k) + b3 * u3(k)- nonlinearity3 * y3(k)^3+ ff_gain;
-    y4(k+1) = a * y4(k) + b4 * u4(k)- nonlinearity4 * y4(k)^2 + ff_gain ;
-
-    % % Add cubic nonlinearity and feedforward term
-    % y1(k+1) = y1(k) * u1(k) / 1 + y1(k)^2 + u1(k);
-    % y2(k+1) = y2(k) * u2(k) / 1 + y2(k)^3 + u2(k) + 0.5 * u2(k);
-    % y3(k+1) = y3(k) * u3(k) / 1 + y3(k)^2 + u3(k) + 0.9 * u3(k);
-    % y4(k+1) = y4(k) * u4(k) / 1 + y4(k)^3 + u4(k) + 0.8 * u4(k); 
+    y1(k+1) = a * y1(k) + b1 * u1(k) - nonlinearity1 * y1(k)^3 + ff_gain;
+    y2(k+1) = a * y2(k) + b2 * u2(k) - nonlinearity2 * y2(k)^2 + ff_gain;
+    y3(k+1) = a * y3(k) + b3 * u3(k) - nonlinearity3 * y3(k)^3 + ff_gain;
+    y4(k+1) = a * y4(k) + b4 * u4(k) - nonlinearity4 * y4(k)^2 + ff_gain;
 end
 
 % Plotting
-
 % Time vector for plotting
-t = 0:T:L*T;  % Gives 201 points, as expected
-
-% Truncate yd to match y1, y2, etc. size
-yd_plot = yd(1:L+1);
+t = 1:1:m+1;  % Gives 201 points, as expected
 font_size = 14;
 
+% Verify time vector and array lengths
+disp(['Length of t: ', num2str(length(t))]); % Should display 201
+disp(['Length of y1: ', num2str(length(y1))]); % Should be 201
+disp(['Length of yd: ', num2str(length(yd))]); % Should be 201
+disp(['Length of xi1: ', num2str(length(xi1))]); % Should be 200
+
 % Plot 4 subplots
-% figure;
 figure('Position', [100, 100, 15*100, 7.0*100]); % [left, bottom, width, height] in pixels
 subplot(2,2,1);
-plot(t, yd_plot, '--b', 'LineWidth',2.5); hold on;
+plot(t, yd, '--b', 'LineWidth', 2.5); hold on;
 plot(t, y1, '-.g', 'LineWidth', 2.5);
 title('Agent 1'); grid off;
 legend('y_d','y_1');
-set(gca, 'FontSize', font_size); % Smaller font for inset
+set(gca, 'FontSize', font_size);
+xlim([1 m+1]); % Ensure x-axis spans 1 to 201
 
-
-zoom_x_start = 4; % Start of zoomed x-range (last 20% of L)
+zoom_x_start = 4; % Start of zoomed x-range
 zoom_x_end = 6.5; % End of zoomed x-range
-axes('Position', [0.20,0.75,0.15,0.13]); % Top-right corner, adjust as needed
-box on; % Add a box around the inset
-hold on;
-
-plot(t, yd_plot, '--b', 'LineWidth', 2.5); hold on;
-plot(t, y4, '-.g', 'LineWidth', 2.5);
-
-% Set limits for the zoomed region
+axes('Position', [0.20,0.75,0.15,0.13]);
+box on; hold on;
+plot(t, yd, '--b', 'LineWidth', 2.5);
+plot(t, y1, '-.g', 'LineWidth', 2.5);
 xlim([zoom_x_start zoom_x_end]);
-% ylim([-0.02 0.02]);
-
-yticks([0.599,0.6,0.601]);  % Set y-axis ticks
-
-% Optional: Add a rectangle on the main plot to indicate the zoomed region
-axes(findall(gcf, 'Type', 'axes', 'Position', [100, 100, 10*100, 5.5*100])); % Switch back to main axes
+yticks([0.599,0.6,0.601]);
+set(gca, 'FontSize', font_size);
 
 
-% ----------------------------------------------------------------
+
+
 
 subplot(2,2,2);
-plot(t, yd_plot, '--b', 'LineWidth', 2.5); hold on;
+plot(t, yd, '--b', 'LineWidth', 2.5); hold on;
 plot(t, y2, '-.g', 'LineWidth', 2.5);
-% yticks([0.5,0.6,0.7,0.8,0.9]); % Set x-axis ticks
 title('Agent 2'); grid off;
-legend('y_d','y2');
-set(gca, 'FontSize', font_size); % Smaller font for inset
+legend('y_d','y_2');
+set(gca, 'FontSize', font_size);
+xlim([1 m+1]); % Ensure x-axis spans 1 to 201
 
-zoom_x_start = 4; % Start of zoomed x-range (last 20% of L)
-zoom_x_end = 6.5; % End of zoomed x-range
-axes('Position', [0.65,0.75,0.15,0.13]); % Top-right corner, adjust as needed
-box on; % Add a box around the inset
-hold on;
-
-plot(t, yd_plot, '--b', 'LineWidth', 2.5); hold on;
-plot(t, y3, '-.g', 'LineWidth', 2.5);
-
-% Set limits for the zoomed region
+axes('Position', [0.65,0.75,0.15,0.13]);
+box on; hold on;
+plot(t, yd, '--b', 'LineWidth', 2.5);
+plot(t, y2, '-.g', 'LineWidth', 2.5);
 xlim([zoom_x_start zoom_x_end]);
-% ylim([-0.02 0.02]);
-
-yticks([0.599,0.6,0.601]);  % Set y-axis ticks
-
-% Optional: Add a rectangle on the main plot to indicate the zoomed region
-axes(findall(gcf, 'Type', 'axes', 'Position', [100, 100, 10*100, 5.5*100])); % Switch back to main axes
-
-
-% ---------------------------------------------------------------
+yticks([0.599,0.6,0.601]);
+set(gca, 'FontSize', font_size);
 
 subplot(2,2,3);
-plot(t, yd_plot, '--b', 'LineWidth', 2.5); hold on;
+plot(t, yd, '--b', 'LineWidth', 2.5); hold on;
 plot(t, y3, '-.g', 'LineWidth', 2.5);
 title('Agent 3'); grid off;
 legend('y_d','y_3');
-set(gca, 'FontSize', font_size); % Smaller font for inset
+set(gca, 'FontSize', font_size);
+xlim([1 m+1]); % Ensure x-axis spans 1 to 201
 
-zoom_x_start = 4; % Start of zoomed x-range (last 20% of L)
-zoom_x_end = 6.5; % End of zoomed x-range
-axes('Position', [0.20,0.275,0.15,0.13]); % Top-right corner, adjust as needed
-box on; % Add a box around the inset
-hold on;
-
-plot(t, yd_plot, '--b', 'LineWidth', 2.5); hold on;
-plot(t, y4, '-.g', 'LineWidth', 2.5);
-
-% Set limits for the zoomed region
+axes('Position', [0.20,0.275,0.15,0.13]);
+box on; hold on;
+plot(t, yd, '--b', 'LineWidth', 2.5);
+plot(t, y3, '-.g', 'LineWidth', 2.5);
 xlim([zoom_x_start zoom_x_end]);
-% ylim([-0.02 0.02]);
-
-yticks([0.599,0.6,0.601]);  % Set y-axis ticks
-
-% Optional: Add a rectangle on the main plot to indicate the zoomed region
-axes(findall(gcf, 'Type', 'axes', 'Position', [100, 100, 10*100, 5.5*100])); % Switch back to main axes
-
-
-
-% --------------------------------------------------
+yticks([0.599,0.6,0.601]);
+set(gca, 'FontSize', font_size);
 
 subplot(2,2,4);
-plot(t, yd_plot, '--b', 'LineWidth', 2.5); hold on;
+plot(t, yd, '--b', 'LineWidth', 2.5); hold on;
 plot(t, y4, '-.g', 'LineWidth', 2.5);
 title('Agent 4'); grid off;
 legend('y_d','y_4');
-set(gca, 'FontSize', font_size); % Smaller font for inset
+set(gca, 'FontSize', font_size);
+xlim([1 m+1]); % Ensure x-axis spans 1 to 201
 
-
-zoom_x_start = 4; % Start of zoomed x-range (last 20% of L)
-zoom_x_end = 6.5; % End of zoomed x-range
-axes('Position', [0.65,0.275,0.15,0.13]); % Top-right corner, adjust as needed
-box on; % Add a box around the inset
-hold on;
-
-plot(t, yd_plot, '--b', 'LineWidth', 2.5); hold on;
-plot(t, y3, '-.g', 'LineWidth', 2.5);
-
-% Set limits for the zoomed region
+axes('Position', [0.65,0.275,0.15,0.13]);
+box on; hold on;
+plot(t, yd, '--b', 'LineWidth', 2.5);
+plot(t, y4, '-.g', 'LineWidth', 2.5);
 xlim([zoom_x_start zoom_x_end]);
-% ylim([-0.02 0.02]);
+yticks([0.599,0.6,0.601]);
+set(gca, 'FontSize', font_size);
 
-yticks([0.599,0.6,0.601]);  % Set y-axis ticks
-
-% Optional: Add a rectangle on the main plot to indicate the zoomed region
-axes(findall(gcf, 'Type', 'axes', 'Position', [100, 100, 10*100, 5.5*100])); % Switch back to main axes
-
-
-
-
-
-
-
-
-
-
-% Create a figure and set its size (width: 10 inches, height: 5.5 inches)
-figure('Position', [100, 100, 10*100, 5.0*100]); % [left, bottom, width, height] in pixels
-
-% Main plot
-plot(xi1(1:end-1), '--', 'DisplayName', '\xi_1(k)', 'LineWidth', 2.5); hold on;
-plot(xi2(1:end-1), '-.m', 'DisplayName', '\xi_2(k)', 'LineWidth', 2.5);
-plot(xi3(1:end-1), '-.k', 'DisplayName', '\xi_3(k)', 'LineWidth', 2.5);
-plot(xi4(1:end-1), '-.g', 'DisplayName', '\xi_4(k)', 'LineWidth', 2.5);
-
-% Set main plot properties
-% xlabel('Time step', 'FontSize', 14);
-% ylabel('Distributed error', 'FontSize', 14);
+% Plot distributed errors
+figure('Position', [100, 100, 10*100, 5.0*100]);
+plot(t(1:end-1), xi1, '--', 'DisplayName', '\xi_1(k)', 'LineWidth', 2.5); hold on;
+plot(t(1:end-1), xi2, '-.m', 'DisplayName', '\xi_2(k)', 'LineWidth', 2.5);
+plot(t(1:end-1), xi3, '-.k', 'DisplayName', '\xi_3(k)', 'LineWidth', 2.5);
+plot(t(1:end-1), xi4, '-.g', 'DisplayName', '\xi_4(k)', 'LineWidth', 2.5);
 legend('FontSize', 14);
 xlim([0 L]);
 ylim([-0.25 0.65]);
-% ylim([-2.5 5])
 grid off;
 set(gca, 'FontSize', 13);
-% title('Distributed Errors', 'FontSize', 15, 'FontWeight', 'bold');
 
-% Add zoomed-in inset plot
-% Define the inset axes: [left, bottom, width, height] in normalized units (0 to 1)
-axes('Position', [0.25, 0.60, 0.25, 0.25]); % Top-right corner, adjust as needed
-box on; % Add a box around the inset
-hold on;
-
-% Plot the same data in the inset, focusing on a specific region
-% Example: Zoom in on the last 20% of the x-axis and y-range [-0.2, 0.2]
-zoom_x_start = 0.8 * L; % Start of zoomed x-range (last 20% of L)
-zoom_x_end = L; % End of zoomed x-range
-plot(xi1(1:end-1), '--', 'LineWidth', 2.5); % Same style as main plot
-plot(xi2(1:end-1), '-.m', 'LineWidth', 2.5);
-plot(xi3(1:end-1), '-.k', 'LineWidth', 2.5);
-plot(xi4(1:end-1), '-.g', 'LineWidth', 2.5);
-
-% Set limits for the zoomed region
-xlim([zoom_x_start zoom_x_end]);
+axes('Position', [0.25, 0.60, 0.25, 0.25]);
+box on; hold on;
+plot(t(1:end-1), xi1, '--', 'LineWidth', 2.5);
+plot(t(1:end-1), xi2, '-.m', 'LineWidth', 2.5);
+plot(t(1:end-1), xi3, '-.k', 'LineWidth', 2.5);
+plot(t(1:end-1), xi4, '-.g', 'LineWidth', 2.5);
+xlim([0.8*L L]);
 ylim([-0.02 0.02]);
-
-% Customize inset plot
-set(gca, 'FontSize', 13); % Smaller font for inset
-grid off; % Match main plot style
-% Optionally, add a title or labels to the inset
-% title('Zoomed Region', 'FontSize', 10);
-
-% Optional: Add a rectangle on the main plot to indicate the zoomed region
-axes(findall(gcf, 'Type', 'axes', 'Position', [100, 100, 10*100, 5.5*100])); % Switch back to main axes
-% rectangle('Position', [zoom_x_start, -0.1, zoom_x_end-zoom_x_start, 0.2], ...
-%     'LineStyle', '--', 'LineWidth', 1, 'EdgeColor', 'k'); % Rectangle showing zoomed area
-
+set(gca, 'FontSize', 13);
 hold off;
