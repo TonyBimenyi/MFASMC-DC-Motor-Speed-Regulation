@@ -208,14 +208,14 @@ set(gca, 'FontSize', font_size);
 xlim([0 m]); % X-axis starts from 0
 ylim([-1.5 3.5]); % Y-axis limits for Agent 1
 
-zoom_x_start = 40; % Start of zoomed x-range
-zoom_x_end = 70.5; % End of zoomed x-range
-axes('Position', [0.20,0.78,0.13,0.10]);
+zoom_x_start = 80; % Start of zoomed x-range
+zoom_x_end = 100; % End of zoomed x-range
+axes('Position', [0.20,0.79,0.13,0.10]);
 box on; hold on;
 plot(t, yd, '--b', 'LineWidth', 2.5);
 plot(t, y1, '-.g', 'LineWidth', 2.5);
 xlim([zoom_x_start zoom_x_end]);
-yticks([0.599,0.6,0.601]);
+yticks([-0.4,0,0.2]);
 set(gca, 'FontSize', font_size);
 
 subplot(2,2,2);
@@ -225,14 +225,14 @@ title('Agent 2'); grid off;
 legend('y_d(k)','y_2(k)','Orientation', 'horizontal');
 set(gca, 'FontSize', font_size);
 xlim([0 m]); % X-axis starts from 0
-% ylim([0.5 0.8]); % Y-axis limits for Agent 2
+ylim([-1.5 3.5]); % Y-axis limits for Agent 2
 
-axes('Position', [0.65,0.75,0.15,0.13]);
+axes('Position', [0.64,0.79,0.13,0.10]);
 box on; hold on;
 plot(t, yd, '--b', 'LineWidth', 2.5);
 plot(t, y2, '-.g', 'LineWidth', 2.5);
 xlim([zoom_x_start zoom_x_end]);
-yticks([0.599,0.6,0.601]);
+yticks([-0.4,0,0.2]);
 set(gca, 'FontSize', font_size);
 
 subplot(2,2,3);
@@ -242,14 +242,14 @@ title('Agent 3'); grid off;
 legend('y_d(k)','y_3(k)','Orientation', 'horizontal');
 set(gca, 'FontSize', font_size);
 xlim([0 m]); % X-axis starts from 0
-% ylim([-4.5 1.5]); % Y-axis limits for Agent 1
+ylim([-1.5 3.5]); % Y-axis limits for Agent 3
 
-axes('Position', [0.20,0.275,0.15,0.13]);
+axes('Position', [0.20,0.315,0.13,0.10]);
 box on; hold on;
 plot(t, yd, '--b', 'LineWidth', 2.5);
 plot(t, y3, '-.g', 'LineWidth', 2.5);
 xlim([zoom_x_start zoom_x_end]);
-yticks([0.599,0.6,0.601]);
+yticks([-0.4,0,0.2]);
 set(gca, 'FontSize', font_size);
 
 subplot(2,2,4);
@@ -259,14 +259,14 @@ title('Agent 4'); grid off;
 legend('y_d(k)','y_4(k)','Orientation', 'horizontal');
 set(gca, 'FontSize', font_size);
 xlim([0 m]); % X-axis starts from 0
-% ylim([0.5 0.8]); % Y-axis limits for Agent 2
+ylim([-1.5 3.5]); % Y-axis limits for Agent 4
 
-axes('Position', [0.65,0.275,0.15,0.13]);
+axes('Position', [0.64,0.315,0.13,0.10]);
 box on; hold on;
 plot(t, yd, '--b', 'LineWidth', 2.5);
 plot(t, y4, '-.g', 'LineWidth', 2.5);
 xlim([zoom_x_start zoom_x_end]);
-yticks([0.599,0.6,0.601]);
+yticks([-0.4,0,0.2]);
 set(gca, 'FontSize', font_size);
 
 
