@@ -203,7 +203,7 @@ subplot(2,2,1);
 plot(t, yd, '--b', 'LineWidth', 2.5); hold on;
 plot(t, y1, '-.g', 'LineWidth', 2.5);
 title('Agent 1'); grid off;
-legend('y_d','y_1','Orientation', 'horizontal');
+legend('y_d(k)','y_1(k)','Orientation', 'horizontal');
 set(gca, 'FontSize', font_size);
 xlim([0 m+1]); % X-axis starts from 0
 ylim([0.5 0.8]); % Y-axis limits for Agent 1
@@ -222,7 +222,7 @@ subplot(2,2,2);
 plot(t, yd, '--b', 'LineWidth', 2.5); hold on;
 plot(t, y2, '-.g', 'LineWidth', 2.5);
 title('Agent 2'); grid off;
-legend('y_d','y_2','Orientation', 'horizontal');
+legend('y_d(k)','y_2(k)','Orientation', 'horizontal');
 set(gca, 'FontSize', font_size);
 xlim([0 m+1]); % X-axis starts from 0
 ylim([0.41 0.99]); % Y-axis limits for Agent 2
@@ -239,7 +239,7 @@ subplot(2,2,3);
 plot(t, yd, '--b', 'LineWidth', 2.5); hold on;
 plot(t, y3, '-.g', 'LineWidth', 2.5);
 title('Agent 3'); grid off;
-legend('y_d','y_3','Orientation', 'horizontal');
+legend('y_d(k)','y_3(k)','Orientation', 'horizontal');
 set(gca, 'FontSize', font_size);
 xlim([0 m+1]); % X-axis starts from 0
 ylim([0.5 0.8]); % Y-axis limits for Agent 1
@@ -256,7 +256,7 @@ subplot(2,2,4);
 plot(t, yd, '--b', 'LineWidth', 2.5); hold on;
 plot(t, y4, '-.g', 'LineWidth', 2.5);
 title('Agent 4'); grid off;
-legend('y_d','y_4','Orientation', 'horizontal');
+legend('y_d(k)','y_4(k)','Orientation', 'horizontal');
 set(gca, 'FontSize', font_size);
 xlim([0 m+1]); % X-axis starts from 0
 ylim([0.41 0.99]); % Y-axis limits for Agent 2
