@@ -39,10 +39,25 @@ if ~isempty(ch3_data_match) && ~isempty(ch1_data_match) && ~isempty(ch2_data_mat
     xlim([0, 1660]);
     xlabel('Time step', 'FontSize', 14);
     ylabel('Output', 'FontSize', 14);
+    ylim([-1.5 3]); % Y-axis limits for Agent 4
     set(gca, 'FontSize', 12);
+
+  
     
     % Add legend
     legend('show');
+
+    zoom_x_start = 80; % Start of zoomed x-range
+    zoom_x_end = 100; % End of zoomed x-range
+    axes('Position', [0.23,0.59,0.30,0.25]);
+    box on; hold on;
+    plot(ch2_data, '--b', 'LineWidth', 2.5);
+    plot(ch1_data, '-.g', 'LineWidth', 2.5);
+    plot(ch3_data, '-.g', 'LineWidth', 2.5);
+    plot(ch4_data, '-.g', 'LineWidth', 2.5);
+    xlim([zoom_x_start zoom_x_end]);
+    yticks([-0.4,0,0.2]);
+    set(gca, 'FontSize', 14);
     
     % Save the plot (equivalent to plt.show() in Python)
     print('-dpng', 'motor_plot.png');
