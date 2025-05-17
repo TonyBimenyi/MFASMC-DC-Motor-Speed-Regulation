@@ -334,7 +334,7 @@ set(gca, 'FontSize', font_size);
 xlim([0 m]); % X-axis starts from 0
 ylim([-2 3]); % Y-axis limits for Agent 4
 
-axes('Position', [0.65,0.170,0.15,0.13]);
+axes('Position', [0.65,0.290,0.15,0.13]);
 box on; hold on;
 plot(t(1:end-1), xi4, '-.g', 'LineWidth', 2.5);
 xlim([zoom_x_start_xi zoom_x_end_xi]);
