@@ -186,6 +186,26 @@ for k = 1:m
     y4(k+1) = a * y4(k) + b4 * u4(k) - nonlinearity4 * y4(k)^2 + ff_gain;
 end
 
+% Calculate Mean Squared Error and Mean for each xi_i(k)
+mse_xi1 = mean(xi1.^2);
+mse_xi2 = mean(xi2.^2);
+mse_xi3 = mean(xi3.^2);
+mse_xi4 = mean(xi4.^2);
+mean_xi1 = mean(xi1);
+mean_xi2 = mean(xi2);
+mean_xi3 = mean(xi3);
+mean_xi4 = mean(xi4);
+
+% Print MSE and Mean values
+fprintf('Mean Squared Error for xi_1(k): %.10e\n', mse_xi1);
+
+fprintf('Mean Squared Error for xi_2(k): %.10e\n', mse_xi2);
+
+fprintf('Mean Squared Error for xi_3(k): %.10e\n', mse_xi3);
+
+fprintf('Mean Squared Error for xi_4(k): %.10e\n', mse_xi4);
+
+
 % Plotting
 % Time vector for plotting
 t = 1:1:m+1;  % Gives 201 points, as expected
