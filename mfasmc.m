@@ -186,6 +186,18 @@ for k = 1:m
     y4(k+1) = a * y4(k) + b4 * u4(k) - nonlinearity4 * y4(k)^2 + ff_gain;
 end
 
+% Calculate Mean Squared Error for each xi_i(k)
+mse_xi1 = mean(xi1.^2);
+mse_xi2 = mean(xi2.^2);
+mse_xi3 = mean(xi3.^2);
+mse_xi4 = mean(xi4.^2);
+
+% Print MSE values
+fprintf('Mean Squared Error for xi_1(k): %.10e\n', mse_xi1);
+fprintf('Mean Squared Error for xi_2(k): %.10e\n', mse_xi2);
+fprintf('Mean Squared Error for xi_3(k): %.10e\n', mse_xi3);
+fprintf('Mean Squared Error for xi_4(k): %.10e\n', mse_xi4);
+
 % Plotting
 % Time vector for plotting
 t = 1:1:m+1;  % Gives 201 points, as expected
@@ -269,15 +281,7 @@ xlim([zoom_x_start zoom_x_end]);
 yticks([0.599,0.6,0.601]);
 set(gca, 'FontSize', font_size);
 
-
-
-
-
-
-
-% Plot 4 subplots
-
-
+% Plot 4 subplots for xi
 figure('Position', [100, 100, 15*100, 7.5*100]); % [left, bottom, width, height] in pixels
 subplot(2,2,1);
 plot(t(1:end-1), xi1, '-.g', 'LineWidth', 2.5);
@@ -312,7 +316,7 @@ xlim([zoom_x_start_xi zoom_x_end_xi]);
 set(gca, 'FontSize', font_size);
 
 subplot(2,2,3);
-plot(t(1:end-1), xi2, '-.g', 'LineWidth', 2.5);
+plot(t(1:end-1), xi3, '-.g', 'LineWidth', 2.5); % Fixed from xi2 to xi3
 title('Agent 3'); grid off;
 legend('\xi_3(k)','y_3','Orientation', 'horizontal');
 set(gca, 'FontSize', font_size);
@@ -321,7 +325,7 @@ xlim([0 m]); % X-axis starts from 0
 
 axes('Position', [0.20,0.170,0.15,0.13]);
 box on; hold on;
-plot(t(1:end-1), xi2, '-.g', 'LineWidth', 2.5);
+plot(t(1:end-1), xi3, '-.g', 'LineWidth', 2.5); % Fixed from xi2 to xi3
 xlim([zoom_x_start_xi zoom_x_end_xi]);
 % yticks([0.599,0.6,0.601]);
 set(gca, 'FontSize', font_size);
