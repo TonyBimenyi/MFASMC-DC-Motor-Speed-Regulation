@@ -255,6 +255,8 @@ t = 1:m+1; t_err = 1:m;
 
 % Plot outputs (y1, y2, y3, y4) for both methods
 figure('Position', [100, 100, 1450, 800]);
+zoom_x_start = 94.5; % Start of zoomed x-range
+zoom_x_end = 96.5; % End of zoomed x-range
 for i = 1:4
     subplot(2, 2, i);
     plot(t, yd, '-.b', 'LineWidth', 3); hold on;
@@ -268,8 +270,7 @@ for i = 1:4
         xlim([0 m]); % X-axis starts from 0
         ylim([-1.5 4]); % Y-axis limits for Agent 1
 
-        zoom_x_start = 88.5; % Start of zoomed x-range
-        zoom_x_end = 96.5; % End of zoomed x-range
+
         axes('Position', [0.18,0.76,0.13,0.10]);
         box on; hold on;
         plot(t, yd, '-.b', 'LineWidth', 3)
