@@ -255,7 +255,7 @@ t = 1:m+1; t_err = 1:m;
 
 % Plot outputs (y1, y2, y3, y4) for both methods
 figure('Position', [100, 100, 1450, 800]);
-zoom_x_start = 94.5; % Start of zoomed x-range
+zoom_x_start = 90.5; % Start of zoomed x-range
 zoom_x_end = 96.5; % End of zoomed x-range
 for i = 1:4
     subplot(2, 2, i);
@@ -286,17 +286,57 @@ for i = 1:4
         plot(t, y2_m2, '-.r', 'LineWidth', 3);
         plot(t, y2_m1, '--g', 'LineWidth', 3);
 
-        title('Agent 2');
+
+        title('Agent 1'); grid off;
+        legend('y_d(k)',  'Method[1]','Proposed scheme','orientation', 'horizontal');
+        set(gca, 'FontSize', font_size);
+        xlim([0 m]); % X-axis starts from 0
+        ylim([-1.5 4]); % Y-axis limits for Agent 1
+
+        axes('Position', [0.62,0.76,0.13,0.10]);
+        box on; hold on;
+        plot(t, yd, '-.b', 'LineWidth', 3)
+        plot(t, y2_m2, '-.r', 'LineWidth', 3);
+        plot(t, y2_m1, '--g', 'LineWidth', 3);
+        xlim([zoom_x_start zoom_x_end]);
+        % yticks([-0.4,0,0.2]);
+        set(gca, 'FontSize', font_size);
     elseif i == 3
         plot(t, y3_m2, '-.r', 'LineWidth', 3);
         plot(t, y3_m1, '--g', 'LineWidth', 3);
 
-        title('Agent 3');
+        title('Agent 1'); grid off;
+        legend('y_d(k)',  'Method[1]','Proposed scheme','orientation', 'horizontal');
+        set(gca, 'FontSize', font_size);
+        xlim([0 m]); % X-axis starts from 0
+        ylim([-1.5 4]); % Y-axis limits for Agent 1
+
+        axes('Position', [0.18,0.287,0.13,0.10]);
+        box on; hold on;
+        plot(t, yd, '-.b', 'LineWidth', 3)
+        plot(t, y3_m2, '-.r', 'LineWidth', 3);
+        plot(t, y3_m1, '--g', 'LineWidth', 3);
+        xlim([zoom_x_start zoom_x_end]);
+        % yticks([-0.4,0,0.2]);
+        set(gca, 'FontSize', font_size);
     else
         plot(t, y4_m2, '-.r', 'LineWidth', 3);
         plot(t, y4_m1, '--g', 'LineWidth', 3);
 
-        title('Agent 4');
+        title('Agent 1'); grid off;
+        legend('y_d(k)',  'Method[1]','Proposed scheme','orientation', 'horizontal');
+        set(gca, 'FontSize', font_size);
+        xlim([0 m]); % X-axis starts from 0
+        ylim([-1.5 4]); % Y-axis limits for Agent 1
+
+        axes('Position', [0.18,0.287,0.13,0.10]);
+        box on; hold on;
+        plot(t, yd, '-.b', 'LineWidth', 3)
+        plot(t, y4_m2, '-.r', 'LineWidth', 3);
+        plot(t, y4_m1, '--g', 'LineWidth', 3);
+        xlim([zoom_x_start zoom_x_end]);
+        % yticks([-0.4,0,0.2]);
+        set(gca, 'FontSize', font_size);
     end
     % grid off;
     % legend('y_d(k)',  'y (MFAC only)','y (MFAC + SMC)', 'Orientation', 'horizontal');
