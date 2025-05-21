@@ -31,7 +31,7 @@ gamma3_m2 = 0;
 gamma4_m2 = 0;
 n_m2 = 1024;          % Data size for Method 2
 a_m2 = 0.8;           % Plant parameter
-ff_gain_m2 = 0.2;     % Feedforward gain
+ff_gain_m2 = 0.25;     % Feedforward gain
 
 % Nonlinearity coefficients (same for both methods)
 nonlinearity1 = 0.03;
@@ -59,7 +59,7 @@ yd = zeros(m+1,1);
 % Desired signal (Reference trajectory)
 for k = 1:m+1
     yd(k) = 0.6 * sin(0.05 * pi * k) + 0.6 * cos(0.03 * pi * k);
-    % yd(k) = 2.6; % Time-invariant constant reference signalx
+    % yd(k) = 0.6; % Time-invariant constant reference signalx
 end
 
 % Method 1 (MFAC + SMC) Simulation
@@ -254,7 +254,7 @@ fprintf('xi4: %.10e\n\n', mse_xi4_m2);
 t = 1:m+1; t_err = 1:m;
 
 % Plot outputs (y1, y2, y3, y4) for both methods
-figure('Position', [100, 100, 1500, 750]);
+figure('Position', [100, 100, 1450, 800]);
 for i = 1:4
     subplot(2, 2, i);
     plot(t, yd, '-.b', 'LineWidth', 3); hold on;
@@ -262,7 +262,25 @@ for i = 1:4
         plot(t, y1_m2, '-.r', 'LineWidth', 3);
         plot(t, y1_m1, '--g', 'LineWidth', 3);
         
-        title('Agent 1');
+        title('Agent 1'); grid off;
+        legend('y_d(k)',  'Method[1]','Proposed scheme','orientation', 'horizontal');
+        set(gca, 'FontSize', font_size);
+        xlim([0 m]); % X-axis starts from 0
+        ylim([-1.5 4]); % Y-axis limits for Agent 1
+
+        zoom_x_start = 88.5; % Start of zoomed x-range
+        zoom_x_end = 96.5; % End of zoomed x-range
+        axes('Position', [0.18,0.76,0.13,0.10]);
+        box on; hold on;
+        plot(t, yd, '-.b', 'LineWidth', 3)
+        plot(t, y1_m2, '-.r', 'LineWidth', 3);
+        plot(t, y1_m1, '--g', 'LineWidth', 3);
+        xlim([zoom_x_start zoom_x_end]);
+        % yticks([-0.4,0,0.2]);
+        set(gca, 'FontSize', font_size);
+
+        
+        
     elseif i == 2
         plot(t, y2_m2, '-.r', 'LineWidth', 3);
         plot(t, y2_m1, '--g', 'LineWidth', 3);
@@ -279,38 +297,36 @@ for i = 1:4
 
         title('Agent 4');
     end
-    grid off;
-    % legend('y_d(k)',  'Method [1]','y (MFAC + SMC)', 'Orientation', 'horizontal');
-    legend('y_d(k)',  'Method[1]','Proposed method', 'Orientation', 'horizontal');
-    set(gca, 'FontSize', font_size);
-    xlim([0 m]);
-    ylim([-1.5 3.5]);
+    % grid off;
+    % legend('y_d(k)',  'y (MFAC only)','y (MFAC + SMC)', 'Orientation', 'horizontal');
+    % set(gca, 'FontSize', font_size);
+
 end
 
 % Plot error dynamics (xi1, xi2, xi3, xi4) for both methods
-figure('Position', [100, 100, 1500, 750]);
-for i = 1:4
-    subplot(2, 2, i);
-    if i == 1
-        plot(t_err, xi1_m1, '-.g', 'LineWidth', 2.5); hold on;
-        plot(t_err, xi1_m2, '-b', 'LineWidth', 2.5);
-        title('Error Dynamics \xi_1(k)');
-    elseif i == 2
-        plot(t_err, xi2_m1, '-.g', 'LineWidth', 2.5); hold on;
-        plot(t_err, xi2_m2, '-b', 'LineWidth', 2.5);
-        title('Error Dynamics \xi_2(k)');
-    elseif i == 3
-        plot(t_err, xi3_m1, '-.g', 'LineWidth', 2.5); hold on;
-        plot(t_err, xi3_m2, '-b', 'LineWidth', 2.5);
-        title('Error Dynamics \xi_3(k)');
-    else
-        plot(t_err, xi4_m1, '-.g', 'LineWidth', 2.5); hold on;
-        plot(t_err, xi4_m2, '-b', 'LineWidth', 2.5);
-        title('Error Dynamics \xi_4(k)');
-    end
-    grid off;
-    legend('\xi (MFAC + SMC)', '\xi (MFAC only)', 'Orientation', 'horizontal');
-    set(gca, 'FontSize', font_size);
-    xlim([0 m]);
-    ylim([-2 3]);
-end
+% figure('Position', [100, 100, 1500, 750]);
+% for i = 1:4
+%     subplot(2, 2, i);
+%     if i == 1
+%         plot(t_err, xi1_m1, '-.g', 'LineWidth', 2.5); hold on;
+%         plot(t_err, xi1_m2, '-b', 'LineWidth', 2.5);
+%         title('Error Dynamics \xi_1(k)');
+%     elseif i == 2
+%         plot(t_err, xi2_m1, '-.g', 'LineWidth', 2.5); hold on;
+%         plot(t_err, xi2_m2, '-b', 'LineWidth', 2.5);
+%         title('Error Dynamics \xi_2(k)');
+%     elseif i == 3
+%         plot(t_err, xi3_m1, '-.g', 'LineWidth', 2.5); hold on;
+%         plot(t_err, xi3_m2, '-b', 'LineWidth', 2.5);
+%         title('Error Dynamics \xi_3(k)');
+%     else
+%         plot(t_err, xi4_m1, '-.g', 'LineWidth', 2.5); hold on;
+%         plot(t_err, xi4_m2, '-b', 'LineWidth', 2.5);
+%         title('Error Dynamics \xi_4(k)');
+%     end
+%     grid off;
+%     legend('\xi (MFAC + SMC)', '\xi (MFAC only)', 'Orientation', 'horizontal');
+%     set(gca, 'FontSize', font_size);
+%     xlim([0 m]);
+%     ylim([-2 5]);
+% end

@@ -46,8 +46,8 @@ yd = zeros(m+1,1);
 
 % Desired signal (Reference trajectory)
 for k = 1:1:m+1
-    % yd(k) = 0.6; % Time-invariant constant reference signal
-    yd(k) = 0.6 * sin(0.05 * pi * k) + 0.6 * cos(0.03 * pi * k);
+    yd(k) = 2.6; % Time-invariant constant reference signal
+    % yd(k) = 0.6 * sin(0.05 * pi * k) + 0.6 * cos(0.03 * pi * k);
 end
 
 for k = 1:m
