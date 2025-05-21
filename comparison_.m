@@ -30,8 +30,8 @@ gamma2_m2 = 0;
 gamma3_m2 = 0;
 gamma4_m2 = 0;
 n_m2 = 1024;          % Data size for Method 2
-a_m2 = 0.8;           % Plant parameter
-ff_gain_m2 = 0.25;     % Feedforward gain
+a_m2 = 0.705;           % Plant parameter
+ff_gain_m2 = 0.35;     % Feedforward gain
 
 % Nonlinearity coefficients (same for both methods)
 nonlinearity1 = 0.03;
@@ -58,8 +58,8 @@ yd = zeros(m+1,1);
 
 % Desired signal (Reference trajectory)
 for k = 1:m+1
-    yd(k) = 0.6 * sin(0.05 * pi * k) + 0.6 * cos(0.03 * pi * k);
-    % yd(k) = 0.6; % Time-invariant constant reference signalx
+    % yd(k) = 0.6 * sin(0.05 * pi * k) + 0.6 * cos(0.03 * pi * k);
+    yd(k) = 0.6; % Time-invariant constant reference signalx
 end
 
 % Method 1 (MFAC + SMC) Simulation
@@ -259,7 +259,7 @@ zoom_x_start = 90.5; % Start of zoomed x-range
 zoom_x_end = 96.5; % End of zoomed x-range
 for i = 1:4
     subplot(2, 2, i);
-    plot(t, yd, '-.b', 'LineWidth', 3); hold on;
+    plot(t, yd, '-b', 'LineWidth', 3); hold on;
     if i == 1
         plot(t, y1_m2, '-.r', 'LineWidth', 3);
         plot(t, y1_m1, '--g', 'LineWidth', 3);
@@ -313,7 +313,7 @@ for i = 1:4
 
         axes('Position', [0.18,0.287,0.13,0.10]);
         box on; hold on;
-        plot(t, yd, '-.b', 'LineWidth', 3)
+        plot(t, yd, '-b', 'LineWidth', 3)
         plot(t, y3_m2, '-.r', 'LineWidth', 3);
         plot(t, y3_m1, '--g', 'LineWidth', 3);
         xlim([zoom_x_start zoom_x_end]);
