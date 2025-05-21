@@ -58,8 +58,8 @@ yd = zeros(m+1,1);
 
 % Desired signal (Reference trajectory)
 for k = 1:m+1
-    % yd(k) = 0.6 * sin(0.05 * pi * k) + 0.6 * cos(0.03 * pi * k);
-    yd(k) = 2.6; % Time-invariant constant reference signalx
+    yd(k) = 0.6 * sin(0.05 * pi * k) + 0.6 * cos(0.03 * pi * k);
+    % yd(k) = 2.6; % Time-invariant constant reference signalx
 end
 
 % Method 1 (MFAC + SMC) Simulation
@@ -257,30 +257,31 @@ t = 1:m+1; t_err = 1:m;
 figure('Position', [100, 100, 1500, 750]);
 for i = 1:4
     subplot(2, 2, i);
-    plot(t, yd, '--b', 'LineWidth', 2.5); hold on;
+    plot(t, yd, '-.b', 'LineWidth', 3); hold on;
     if i == 1
-        plot(t, y1_m2, '-.r', 'LineWidth', 2.5);
-        plot(t, y1_m1, '-.g', 'LineWidth', 2.5);
+        plot(t, y1_m2, '-.r', 'LineWidth', 3);
+        plot(t, y1_m1, '--g', 'LineWidth', 3);
         
         title('Agent 1');
     elseif i == 2
-        plot(t, y2_m2, '-.r', 'LineWidth', 2.5);
-        plot(t, y2_m1, '-.g', 'LineWidth', 2.5);
+        plot(t, y2_m2, '-.r', 'LineWidth', 3);
+        plot(t, y2_m1, '--g', 'LineWidth', 3);
 
         title('Agent 2');
     elseif i == 3
-        plot(t, y3_m2, '-.r', 'LineWidth', 2.5);
-        plot(t, y3_m1, '-.g', 'LineWidth', 2.5);
+        plot(t, y3_m2, '-.r', 'LineWidth', 3);
+        plot(t, y3_m1, '--g', 'LineWidth', 3);
 
         title('Agent 3');
     else
-        plot(t, y4_m2, '-.r', 'LineWidth', 2.5);
-        plot(t, y4_m1, '-.g', 'LineWidth', 2.5);
+        plot(t, y4_m2, '-.r', 'LineWidth', 3);
+        plot(t, y4_m1, '--g', 'LineWidth', 3);
 
         title('Agent 4');
     end
     grid off;
-    legend('y_d(k)',  'y (MFAC only)','y (MFAC + SMC)', 'Orientation', 'horizontal');
+    % legend('y_d(k)',  'Method [1]','y (MFAC + SMC)', 'Orientation', 'horizontal');
+    legend('y_d(k)',  'Method[1]','Proposed method', 'Orientation', 'horizontal');
     set(gca, 'FontSize', font_size);
     xlim([0 m]);
     ylim([-1.5 3.5]);
