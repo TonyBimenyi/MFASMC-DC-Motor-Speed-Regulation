@@ -265,7 +265,7 @@ for i = 1:4
         plot(t, y1_m1, '--g', 'LineWidth', 3);
         
         title('Agent 1'); grid off;
-        legend('y_d(k)',  'Method[1]','Proposed scheme','orientation', 'horizontal');
+        legend('y_d(k)',  'Method [1]','Proposed scheme','orientation', 'horizontal');
         set(gca, 'FontSize', font_size);
         xlim([0 m]); % X-axis starts from 0
         ylim([-1.5 4]); % Y-axis limits for Agent 1
@@ -288,7 +288,7 @@ for i = 1:4
 
 
         title('Agent 1'); grid off;
-        legend('y_d(k)',  'Method[1]','Proposed scheme','orientation', 'horizontal');
+        legend('y_d(k)',  'Method [1]','Proposed scheme','orientation', 'horizontal');
         set(gca, 'FontSize', font_size);
         xlim([0 m]); % X-axis starts from 0
         ylim([-1.5 4]); % Y-axis limits for Agent 1
@@ -306,7 +306,7 @@ for i = 1:4
         plot(t, y3_m1, '--g', 'LineWidth', 3);
 
         title('Agent 1'); grid off;
-        legend('y_d(k)',  'Method[1]','Proposed scheme','orientation', 'horizontal');
+        legend('y_d(k)',  'Method [1]','Proposed scheme','orientation', 'horizontal');
         set(gca, 'FontSize', font_size);
         xlim([0 m]); % X-axis starts from 0
         ylim([-1.5 4]); % Y-axis limits for Agent 1
@@ -324,12 +324,12 @@ for i = 1:4
         plot(t, y4_m1, '--g', 'LineWidth', 3);
 
         title('Agent 1'); grid off;
-        legend('y_d(k)',  'Method[1]','Proposed scheme','orientation', 'horizontal');
+        legend('y_d(k)',  'Method [1]','Proposed scheme','orientation', 'horizontal');
         set(gca, 'FontSize', font_size);
         xlim([0 m]); % X-axis starts from 0
         ylim([-1.5 4]); % Y-axis limits for Agent 1
 
-        axes('Position', [0.18,0.287,0.13,0.10]);
+        axes('Position', [0.62,0.287,0.13,0.10]);
         box on; hold on;
         plot(t, yd, '-.b', 'LineWidth', 3)
         plot(t, y4_m2, '-.r', 'LineWidth', 3);
