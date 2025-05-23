@@ -1,4 +1,3 @@
-% MATLAB script to read and plot motor data from a file
 clear all;
 close all;
 
@@ -21,10 +20,20 @@ if ~isempty(ch3_data_match) && ~isempty(ch1_data_match) && ~isempty(ch2_data_mat
     ch2_data = str2num(ch2_data_match{1}{1});
     ch4_data = str2num(ch4_data_match{1}{1});
     
-    % Calculate distributed errors
-    error1 = ch2_data - ch1_data;
-    error2 = ch2_data - ch3_data;
-    error3 = ch2_data - ch4_data;
+    % Calculate distributed errors (xi)
+    xi1 = ch2_data - ch1_data; % Error for Motor 1
+    xi2 = ch2_data - ch3_data; % Error for Motor 2
+    xi3 = ch2_data - ch4_data; % Error for Motor 3
+    
+    % Calculate MSE for each error
+    mse1 = mean(xi1.^2); % MSE for Motor 1
+    mse2 = mean(xi2.^2); % MSE for Motor 2
+    mse3 = mean(xi3.^2); % MSE for Motor 3
+    
+    % Display MSE values
+    fprintf('MSE for Motor 1 (CH2 - CH1): %.10e\n', mse1);
+    fprintf('MSE for Motor 2 (CH2 - CH3): %.10e\n', mse2);
+    fprintf('MSE for Motor 3 (CH2 - CH4): %.10e\n', mse3);
     
     % Plot the data
     figure('Position', [100, 100, 800, 400]);
@@ -41,8 +50,6 @@ if ~isempty(ch3_data_match) && ~isempty(ch1_data_match) && ~isempty(ch2_data_mat
     % ylabel('Output', 'FontSize', 14);
     ylim([-1.5 3]); % Y-axis limits for Agent 4
     set(gca, 'FontSize', 14);
-
-  
     
     % Add legend
     legend('show','orientation','horizontal');
@@ -59,7 +66,7 @@ if ~isempty(ch3_data_match) && ~isempty(ch1_data_match) && ~isempty(ch2_data_mat
     % yticks([-0.4,0,0.2]);
     set(gca, 'FontSize', 14);
     
-    % Save the plot (equivalent to plt.show() in Python)
+    % Save the plot
     print('-dpng', 'motor_plot.png');
 else
     disp('CH3_Data_OutPut[1707] not found in the file.');
