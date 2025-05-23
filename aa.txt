@@ -234,3 +234,202 @@ ylim([-0.2 0.2]);
 grid off;
 set(gca, 'FontSize', 12);
 % title('Distributed Errors', 'FontSize', 15, 'FontWeight', 'bold');
+
+
+
+nonlinearity1 = 0.03;
+nonlinearity2 = 0.01;
+nonlinearity3 = 0.02;
+nonlinearity4 = 0.03;
+
+clc; clear;
+
+% Common Parameters
+rho = 7.5;            % Gain for control response
+eta = 1;              % Adaptive update speed
+lamda = 350;          % Model-free parameter
+mu = 0.005;           % Adaptive parameter
+epsilon = 1e-5;       % Stability threshold
+alpha = 15;           % Smoothing factor for error dynamics
+T = 0.1;              % Sampling time
+m = 200;              % Time steps
+rT = 1024;            % Sample rate
+font_size = 14;
+
+% Method 1 (MFAC + SMC) Parameters
+gamma1_m1 = 0.45;     % Control gains
+gamma2_m1 = 0.15;
+gamma3_m1 = 0.45;
+gamma4_m1 = 0.15;
+beta_m1 = 10;         % Sliding mode coefficient
+sigma_m1 = 95;        % Sliding mode parameter
+tau_m1 = 1e-5;        % Damping term
+n_m1 = 600;           % Data size for Method 1
+a_m1 = 0.5;           % Plant parameter
+ff_gain_m1 = 0.45;    % Feedforward gain
+
+% Nonlinearity coefficients (same for both methods)
+nonlinearity1 = 0.03;
+nonlinearity2 = 0.01;
+nonlinearity3 = 0.02;
+nonlinearity4 = 0.03;
+
+% Initialization for Method 1
+phi1_m1 = zeros(m+1,1); phi2_m1 = zeros(m+1,1); phi3_m1 = zeros(m+1,1); phi4_m1 = zeros(m+1,1);
+mfa1_m1 = zeros(m+1,1); mfa2_m1 = zeros(m+1,1); mfa3_m1 = zeros(m+1,1); mfa4_m1 = zeros(m+1,1);
+sm1_m1 = zeros(m,1); sm2_m1 = zeros(m,1); sm3_m1 = zeros(m,1); sm4_m1 = zeros(m,1);
+y1_m1 = zeros(m+1,1); y2_m1 = zeros(m+1,1); y3_m1 = zeros(m+1,1); y4_m1 = zeros(m+1,1);
+u1_m1 = zeros(m,1); u2_m1 = zeros(m,1); u3_m1 = zeros(m,1); u4_m1 = zeros(m,1);
+xi1_m1 = zeros(m,1); xi2_m1 = zeros(m,1); xi3_m1 = zeros(m,1); xi4_m1 = zeros(m,1);
+s1_m1 = zeros(m,1); s2_m1 = zeros(m,1); s3_m1 = zeros(m,1); s4_m1 = zeros(m,1);
+
+yd = zeros(m+1,1);
+
+% Desired signal (Reference trajectory)
+for k = 1:m+1
+    yd(k) = 0.6; % Time-invariant constant reference signal
+end
+
+% Method 1 (MFAC + SMC) Simulation
+for k = 1:m
+    % Adaptive Gain update
+    if k == 1
+        phi1_m1(k) = 4.0; phi2_m1(k) = 4.0; phi3_m1(k) = 4.0; phi4_m1(k) = 4.0;
+    elseif k == 2
+        phi1_m1(k) = phi1_m1(k-1) + (eta * u1_m1(k-1) / (mu + u1_m1(k-1)^2)) * (y1_m1(k) - phi1_m1(k-1)*u1_m1(k-1));
+        phi2_m1(k) = phi2_m1(k-1) + (eta * u2_m1(k-1) / (mu + u2_m1(k-1)^2)) * (y2_m1(k) - phi2_m1(k-1)*u2_m1(k-1));
+        phi3_m1(k) = phi3_m1(k-1) + (eta * u3_m1(k-1) / (mu + u3_m1(k-1)^2)) * (y3_m1(k) - phi3_m1(k-1)*u3_m1(k-1));
+        phi4_m1(k) = phi4_m1(k-1) + (eta * u4_m1(k-1) / (mu + u4_m1(k-1)^2)) * (y4_m1(k) - phi4_m1(k-1)*u4_m1(k-1));
+    else
+        phi1_m1(k) = phi1_m1(k-1) + (eta * (u1_m1(k-1) - u1_m1(k-2)) / (mu + (u1_m1(k-1) - u1_m1(k-2))^2)) * (y1_m1(k) - y1_m1(k-1) - phi1_m1(k-1) * (u1_m1(k-1) - u1_m1(k-2)));
+        phi2_m1(k) = phi2_m1(k-1) + (eta * (u2_m1(k-1) - u2_m1(k-2)) / (mu + (u2_m1(k-1) - u2_m1(k-2))^2)) * (y2_m1(k) - y2_m1(k-1) - phi2_m1(k-1) * (u2_m1(k-1) - u2_m1(k-2)));
+        phi3_m1(k) = phi3_m1(k-1) + (eta * (u3_m1(k-1) - u3_m1(k-2)) / (mu + (u3_m1(k-1) - u3_m1(k-2))^2)) * (y3_m1(k) - y3_m1(k-1) - phi3_m1(k-1) * (u3_m1(k-1) - u3_m1(k-2)));
+        phi4_m1(k) = phi4_m1(k-1) + (eta * (u4_m1(k-1) - u4_m1(k-2)) / (mu + (u4_m1(k-1) - u4_m1(k-2))^2)) * (y4_m1(k) - y4_m1(k-1) - phi4_m1(k-1) * (u4_m1(k-1) - u4_m1(k-2)));
+    end
+
+    % Stability protection
+    if k > 2 && (abs(phi1_m1(k)) <= epsilon || abs(u1_m1(k-1) - u1_m1(k-2)) <= epsilon || sign(phi1_m1(k)) ~= sign(phi1_m1(1)))
+        phi1_m1(k) = phi1_m1(1);
+    end
+    if k > 2 && (abs(phi2_m1(k)) <= epsilon || abs(u2_m1(k-1) - u2_m1(k-2)) <= epsilon || sign(phi2_m1(k)) ~= sign(phi2_m1(1)))
+        phi2_m1(k) = phi2_m1(1);
+    end
+    if k > 2 && (abs(phi3_m1(k)) <= epsilon || abs(u3_m1(k-1) - u3_m1(k-2)) <= epsilon || sign(phi3_m1(k)) ~= sign(phi3_m1(1)))
+        phi3_m1(k) = phi3_m1(1);
+    end
+    if k > 2 && (abs(phi4_m1(k)) <= epsilon || abs(u4_m1(k-1) - u4_m1(k-2)) <= epsilon || sign(phi4_m1(k)) ~= sign(phi4_m1(1)))
+        phi4_m1(k) = phi4_m1(1);
+    end
+
+    % Error dynamics
+    xi1_m1(k) = yd(k) - 2*y1_m1(k) + y4_m1(k);
+    xi2_m1(k) = y1_m1(k) - 2*y2_m1(k) + y3_m1(k);
+    xi3_m1(k) = y2_m1(k) + yd(k) - 2*y3_m1(k);
+    xi4_m1(k) = y1_m1(k) + y3_m1(k) - 2*y4_m1(k);
+
+    % Sliding surfaces
+    if k == 1
+        s1_m1(k) = 0; s2_m1(k) = 0; s3_m1(k) = 0; s4_m1(k) = 0;
+    else
+        s1_m1(k) = alpha * xi1_m1(k) - xi1_m1(k-1);
+        s2_m1(k) = alpha * xi2_m1(k) - xi2_m1(k-1);
+        s3_m1(k) = alpha * xi3_m1(k) - xi3_m1(k-1);
+        s4_m1(k) = alpha * xi4_m1(k) - xi4_m1(k-1);
+    end
+
+    % MFAC updates
+    if k == 1
+        mfa1_m1(k) = 0; mfa2_m1(k) = 0; mfa3_m1(k) = 0; mfa4_m1(k) = 0;
+    else
+        mfa1_m1(k) = mfa1_m1(k-1) + (rho * phi1_m1(k)) / (lamda + abs(phi1_m1(k)^2)) * xi1_m1(k);
+        mfa2_m1(k) = mfa2_m1(k-1) + (rho * phi2_m1(k)) / (lamda + abs(phi2_m1(k)^2)) * xi2_m1(k);
+        mfa3_m1(k) = mfa3_m1(k-1) + (rho * phi3_m1(k)) / (lamda + abs(phi3_m1(k)^2)) * xi3_m1(k);
+        mfa4_m1(k) = mfa4_m1(k-1) + (rho * phi4_m1(k)) / (lamda + abs(phi4_m1(k)^2)) * xi4_m1(k);
+    end
+
+    % SMC updates
+    if k == 1
+        sm1_m1(k) = 0; sm2_m1(k) = 0; sm3_m1(k) = 0; sm4_m1(k) = 0;
+    else
+        sm1_m1(k) = sm1_m1(k-1) + (beta_m1 * phi1_m1(k)) / (sigma_m1 + (phi1_m1(k))^2) * ...
+            ( (xi1_m1(k) + (y4_m1(k) - y4_m1(k-1)) + (yd(k+1) - yd(k))) / (1 + 1) ...
+            - (xi1_m1(k)) / (alpha * 2) + tau_m1 * sign(s1_m1(k)) );
+        sm2_m1(k) = sm2_m1(k-1) + (beta_m1 * phi2_m1(k)) / (sigma_m1 + (phi2_m1(k))^2) * ...
+            ( (xi2_m1(k) + (y1_m1(k) - y1_m1(k-1)) + (y3_m1(k) - y3_m1(k-1))) / (1 + 1) ...
+            - (xi2_m1(k)) / (alpha * 2) + tau_m1 * sign(s2_m1(k)) );
+        sm3_m1(k) = sm3_m1(k-1) + (beta_m1 * phi3_m1(k)) / (sigma_m1 + (phi3_m1(k))^2) * ...
+            ( (xi3_m1(k) + (y2_m1(k) - y2_m1(k-1)) + (yd(k+1) - yd(k))) / (1 + 1) ...
+            - (xi3_m1(k)) / (alpha * 2) + tau_m1 * sign(s3_m1(k)) );
+        sm4_m1(k) = sm4_m1(k-1) + (beta_m1 * phi4_m1(k)) / (sigma_m1 + (phi4_m1(k))^2) * ...
+            ( (xi4_m1(k) + (y1_m1(k) - y1_m1(k-1)) + (y3_m1(k) - y3_m1(k-1))) / (1 + 1) ...
+            - (xi4_m1(k)) / (alpha * 2) + tau_m1 * sign(s4_m1(k)) );
+    end
+
+    % Control signal
+    if k == 1
+        u1_m1(k) = 0.01; u2_m1(k) = 0.01; u3_m1(k) = 0.01; u4_m1(k) = 0.01;
+    else
+        u1_m1(k) = mfa1_m1(k) + gamma1_m1 * sm1_m1(k);
+        u2_m1(k) = mfa2_m1(k) + gamma2_m1 * sm2_m1(k);
+        u3_m1(k) = mfa3_m1(k) + gamma3_m1 * sm3_m1(k);
+        u4_m1(k) = mfa4_m1(k) + gamma4_m1 * sm4_m1(k);
+    end
+    if k == 1
+        y1_m1(k) = 0.6; y2_m1(k) = 0.6; y3_m1(k) = 0.6; y4_m1(k) = 0.6;
+    end
+
+    % Plant model update
+    b1_m1 = 1.2 * n_m1 / (rT * 0.2);
+    b2_m1 = 1.2 * n_m1 / (rT * 0.2);
+    b3_m1 = 1.2 * n_m1 / (rT * 0.2);
+    b4_m1 = 1.2 * n_m1 / (rT * 0.2);
+    y1_m1(k+1) = a_m1 * y1_m1(k) + b1_m1 * u1_m1(k) - nonlinearity1 * y1_m1(k)^3 + ff_gain_m1;
+    y2_m1(k+1) = a_m1 * y2_m1(k) + b2_m1 * u2_m1(k) - nonlinearity2 * y2_m1(k)^2 + ff_gain_m1;
+    y3_m1(k+1) = a_m1 * y3_m1(k) + b3_m1 * u3_m1(k) - nonlinearity3 * y3_m1(k)^3 + ff_gain_m1;
+    y4_m1(k+1) = a_m1 * y4_m1(k) + b4_m1 * u4_m1(k) - nonlinearity4 * y4_m1(k)^2 + ff_gain_m1;
+end
+
+% Time vector
+t = 1:m+1;
+
+% Plot outputs (y1, y2, y3, y4) for Method 1 with inset axes
+figure('Position', [100, 100, 800, 800]);
+for i = 1:4
+    subplot(2, 2, i);
+    plot(t, yd, '--b', 'LineWidth', 2); hold on;
+    if i == 1
+        plot(t, y1_m1, '-.g', 'LineWidth', 2);
+        title('Agent 1');
+    elseif i == 2
+        plot(t, y2_m1, '-.g', 'LineWidth', 2);
+        title('Agent 2');
+    elseif i == 3
+        plot(t, y3_m1, '-.g', 'LineWidth', 2);
+        title('Agent 3');
+    else
+        plot(t, y4_m1, '-.g', 'LineWidth', 2);
+        title('Agent 4');
+    end
+    grid off;
+    legend('y_d(k)', 'y_i(k)', 'Location', 'NorthEast');
+    set(gca, 'FontSize', font_size);
+    xlim([0 m]);
+    ylim([-1 3]);
+
+    % Inset axes
+    axes('Position', [0.65, 0.65, 0.2, 0.2]);
+    box on;
+    plot(t, yd, '--b', 'LineWidth', 1.5); hold on;
+    if i == 1
+        plot(t, y1_m1, '-.g', 'LineWidth', 1.5);
+    elseif i == 2
+        plot(t, y2_m1, '-.g', 'LineWidth', 1.5);
+    elseif i == 3
+        plot(t, y3_m1, '-.g', 'LineWidth', 1.5);
+    else
+        plot(t, y4_m1, '-.g', 'LineWidth', 1.5);
+    end
+    xlim([80 100]);
+    ylim([-0.4 0.2]);
+    set(gca, 'FontSize', font_size-2);
+end

@@ -255,11 +255,11 @@ t = 1:m+1; t_err = 1:m;
 
 % Plot outputs (y1, y2, y3, y4) for both methods
 figure('Position', [100, 100, 1450, 800]);
-zoom_x_start = 90.5; % Start of zoomed x-range
-zoom_x_end = 96.5; % End of zoomed x-range
+zoom_x_start = 25; % Start of zoomed x-range
+zoom_x_end = 45; % End of zoomed x-range
 for i = 1:4
     subplot(2, 2, i);
-    plot(t, yd, '-b', 'LineWidth', 3); hold on;
+    plot(t, yd, '--b', 'LineWidth', 3); hold on;
     if i == 1
         plot(t, y1_m2, '-.r', 'LineWidth', 3);
         plot(t, y1_m1, '--g', 'LineWidth', 3);
@@ -268,7 +268,7 @@ for i = 1:4
         legend('y_d(k)',  'Method [1]','Proposed scheme','orientation', 'horizontal');
         set(gca, 'FontSize', font_size);
         xlim([0 m]); % X-axis starts from 0
-        ylim([-1.5 4]); % Y-axis limits for Agent 1
+        % ylim([-1.5 4]); % Y-axis limits for Agent 1
 
 
         axes('Position', [0.18,0.76,0.13,0.10]);
@@ -291,7 +291,7 @@ for i = 1:4
         legend('y_d(k)',  'Method [1]','Proposed scheme','orientation', 'horizontal');
         set(gca, 'FontSize', font_size);
         xlim([0 m]); % X-axis starts from 0
-        ylim([-1.5 4]); % Y-axis limits for Agent 1
+        % ylim([-1.5 4]); % Y-axis limits for Agent 1
 
         axes('Position', [0.62,0.76,0.13,0.10]);
         box on; hold on;
@@ -309,7 +309,7 @@ for i = 1:4
         legend('y_d(k)',  'Method [1]','Proposed scheme','orientation', 'horizontal');
         set(gca, 'FontSize', font_size);
         xlim([0 m]); % X-axis starts from 0
-        ylim([-1.5 4]); % Y-axis limits for Agent 1
+        % ylim([-1.5 4]); % Y-axis limits for Agent 1
 
         axes('Position', [0.18,0.287,0.13,0.10]);
         box on; hold on;
@@ -327,7 +327,7 @@ for i = 1:4
         legend('y_d(k)',  'Method [1]','Proposed scheme','orientation', 'horizontal');
         set(gca, 'FontSize', font_size);
         xlim([0 m]); % X-axis starts from 0
-        ylim([-1.5 4]); % Y-axis limits for Agent 1
+        % ylim([-1.5 4]); % Y-axis limits for Agent 1
 
         axes('Position', [0.62,0.287,0.13,0.10]);
         box on; hold on;
