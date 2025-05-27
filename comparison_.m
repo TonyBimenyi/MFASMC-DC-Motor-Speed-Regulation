@@ -30,7 +30,7 @@ gamma2_m2 = 0;
 gamma3_m2 = 0;
 gamma4_m2 = 0;
 n_m2 = 1024;          % Data size for Method 2
-a_m2 = 0.705;           % Plant parameter
+a_m2 = 0.75;           % Plant parameter
 ff_gain_m2 = 0.35;     % Feedforward gain
 
 % Nonlinearity coefficients (same for both methods)
