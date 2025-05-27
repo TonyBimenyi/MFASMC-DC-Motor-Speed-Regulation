@@ -30,7 +30,7 @@ gamma2_m2 = 0;
 gamma3_m2 = 0;
 gamma4_m2 = 0;
 n_m2 = 1024;          % Data size for Method 2
-a_m2 = 0.75;           % Plant parameter
+a_m2 = 0.705;           % Plant parameter
 ff_gain_m2 = 0.35;     % Feedforward gain
 
 % Nonlinearity coefficients (same for both methods)
@@ -58,15 +58,15 @@ yd = zeros(m+1,1);
 
 % Desired signal (Reference trajectory)
 for k = 1:m+1
-    % yd(k) = 0.6 * sin(0.05 * pi * k) + 0.6 * cos(0.03 * pi * k);
-    yd(k) = 0.6; % Time-invariant constant reference signalx
+    yd(k) = 0.6 * sin(0.05 * pi * k) + 0.6 * cos(0.03 * pi * k);
+    % yd(k) = 0.6; % Time-invariant constant reference signalx
 end
 
 % Method 1 (MFAC + SMC) Simulation
 for k = 1:m
     % Adaptive Gain update
     if k == 1
-        phi1_m1(k) = 1.0; phi2_m1(k) = 1.0; phi3_m1(k) = 1.0; phi4_m1(k) = 1.0;
+        phi1_m1(k) = 4.0; phi2_m1(k) = 4.0; phi3_m1(k) = 4.0; phi4_m1(k) = 4.0;
     elseif k == 2
         phi1_m1(k) = phi1_m1(k-1) + (eta * u1_m1(k-1) / (mu + u1_m1(k-1)^2)) * (y1_m1(k) - phi1_m1(k-1)*u1_m1(k-1));
         phi2_m1(k) = phi2_m1(k-1) + (eta * u2_m1(k-1) / (mu + u2_m1(k-1)^2)) * (y2_m1(k) - phi2_m1(k-1)*u2_m1(k-1));
@@ -165,7 +165,7 @@ end
 for k = 1:m
     % Adaptive Gain update
     if k == 1
-        phi1_m2(k) = 1.5; phi2_m2(k) = 1.5; phi3_m2(k) = 1.5; phi4_m2(k) = 1.5;
+        phi1_m2(k) = 4.0; phi2_m2(k) = 4.0; phi3_m2(k) = 4.0; phi4_m2(k) = 4.0;
     elseif k == 2
         phi1_m2(k) = phi1_m2(k-1) + (eta * u1_m2(k-1) / (mu + u1_m2(k-1)^2)) * (y1_m2(k) - phi1_m2(k-1)*u1_m2(k-1));
         phi2_m2(k) = phi2_m2(k-1) + (eta * u2_m2(k-1) / (mu + u2_m2(k-1)^2)) * (y2_m2(k) - phi2_m2(k-1)*u2_m2(k-1));
@@ -210,7 +210,7 @@ for k = 1:m
 
     % Control signal
     if k == 1
-        u1_m2(k) = 0; u2_m2(k) = 0; u3_m2(k) = 0; u4_m2(k) = 0;
+        u1_m2(k) = 0.01; u2_m2(k) = 0.01; u3_m2(k) = 0.01; u4_m2(k) = 0.01;
     else
         u1_m2(k) = mfa1_m2(k);
         u2_m2(k) = mfa2_m2(k);
