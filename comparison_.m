@@ -14,9 +14,9 @@ font_size = 14;
 
 % Method 1 (MFAC + SMC) Parameters
 gamma1_m1 = 0.45;     % Control gains
-gamma2_m1 = 0.15;
+gamma2_m1 = 0.25;
 gamma3_m1 = 0.45;
-gamma4_m1 = 0.15;
+gamma4_m1 = 0.25;
 beta_m1 = 10;         % Sliding mode coefficient
 sigma_m1 = 95;        % Sliding mode parameter
 tau_m1 = 1e-5;        % Damping term
@@ -34,10 +34,10 @@ a_m2 = 0.705;           % Plant parameter
 ff_gain_m2 = 0.35;     % Feedforward gain
 
 % Nonlinearity coefficients (same for both methods)
-nonlinearity1 = 0.03;
-nonlinearity2 = 0.01;
+nonlinearity1 = 0.02;
+nonlinearity2 = 0.02;
 nonlinearity3 = 0.02;
-nonlinearity4 = 0.01;
+nonlinearity4 = 0.02;
 
 % Initialization for both methods
 phi1_m1 = zeros(m+1,1); phi2_m1 = zeros(m+1,1); phi3_m1 = zeros(m+1,1); phi4_m1 = zeros(m+1,1);
@@ -58,15 +58,15 @@ yd = zeros(m+1,1);
 
 % Desired signal (Reference trajectory)
 for k = 1:m+1
-    yd(k) = 0.6 * sin(0.05 * pi * k) + 0.6 * cos(0.03 * pi * k);
-    % yd(k) = 0.6; % Time-invariant constant reference signalx
+    % yd(k) = 0.6 * sin(0.05 * pi * k) + 0.6 * cos(0.03 * pi * k);
+    yd(k) = 0.6; % Time-invariant constant reference signalx
 end
 
 % Method 1 (MFAC + SMC) Simulation
 for k = 1:m
     % Adaptive Gain update
     if k == 1
-        phi1_m1(k) = 4.0; phi2_m1(k) = 4.0; phi3_m1(k) = 4.0; phi4_m1(k) = 4.0;
+        phi1_m1(k) = 1.0; phi2_m1(k) = 1.0; phi3_m1(k) = 1.0; phi4_m1(k) = 1.0;
     elseif k == 2
         phi1_m1(k) = phi1_m1(k-1) + (eta * u1_m1(k-1) / (mu + u1_m1(k-1)^2)) * (y1_m1(k) - phi1_m1(k-1)*u1_m1(k-1));
         phi2_m1(k) = phi2_m1(k-1) + (eta * u2_m1(k-1) / (mu + u2_m1(k-1)^2)) * (y2_m1(k) - phi2_m1(k-1)*u2_m1(k-1));
@@ -139,7 +139,7 @@ for k = 1:m
 
     % Control signal
     if k == 1
-        u1_m1(k) = 0.01; u2_m1(k) = 0.01; u3_m1(k) = 0.01; u4_m1(k) = 0.01;
+        u1_m1(k) = 0; u2_m1(k) = 0; u3_m1(k) = 0; u4_m1(k) = 0;
     else
         u1_m1(k) = mfa1_m1(k) + gamma1_m1 * sm1_m1(k);
         u2_m1(k) = mfa2_m1(k) + gamma2_m1 * sm2_m1(k);
@@ -152,9 +152,9 @@ for k = 1:m
 
     % Plant model update
     b1_m1 = 1.2 * n_m1 / (rT * 0.2);
-    b2_m1 = 1.2 * n_m1 / (rT * 0.2);
+    b2_m1 = 1.15 * n_m1 / (rT * 0.2);
     b3_m1 = 1.2 * n_m1 / (rT * 0.2);
-    b4_m1 = 1.2 * n_m1 / (rT * 0.2);
+    b4_m1 = 1.15 * n_m1 / (rT * 0.2);
     y1_m1(k+1) = a_m1 * y1_m1(k) + b1_m1 * u1_m1(k) - nonlinearity1 * y1_m1(k)^3 + ff_gain_m1;
     y2_m1(k+1) = a_m1 * y2_m1(k) + b2_m1 * u2_m1(k) - nonlinearity2 * y2_m1(k)^2 + ff_gain_m1;
     y3_m1(k+1) = a_m1 * y3_m1(k) + b3_m1 * u3_m1(k) - nonlinearity3 * y3_m1(k)^3 + ff_gain_m1;
@@ -165,7 +165,7 @@ end
 for k = 1:m
     % Adaptive Gain update
     if k == 1
-        phi1_m2(k) = 4.0; phi2_m2(k) = 4.0; phi3_m2(k) = 4.0; phi4_m2(k) = 4.0;
+        phi1_m2(k) = 1.5; phi2_m2(k) = 1.5; phi3_m2(k) = 1.5; phi4_m2(k) = 1.5;
     elseif k == 2
         phi1_m2(k) = phi1_m2(k-1) + (eta * u1_m2(k-1) / (mu + u1_m2(k-1)^2)) * (y1_m2(k) - phi1_m2(k-1)*u1_m2(k-1));
         phi2_m2(k) = phi2_m2(k-1) + (eta * u2_m2(k-1) / (mu + u2_m2(k-1)^2)) * (y2_m2(k) - phi2_m2(k-1)*u2_m2(k-1));
@@ -210,7 +210,7 @@ for k = 1:m
 
     % Control signal
     if k == 1
-        u1_m2(k) = 0.01; u2_m2(k) = 0.01; u3_m2(k) = 0.01; u4_m2(k) = 0.01;
+        u1_m2(k) = 0; u2_m2(k) = 0; u3_m2(k) = 0; u4_m2(k) = 0;
     else
         u1_m2(k) = mfa1_m2(k);
         u2_m2(k) = mfa2_m2(k);
@@ -227,9 +227,9 @@ for k = 1:m
     b3_m2 = 1.2 * n_m2 / (rT * 0.2);
     b4_m2 = 1.2 * n_m2 / (rT * 0.2);
     y1_m2(k+1) = a_m2 * y1_m2(k) + b1_m2 * u1_m2(k) - nonlinearity1 * y1_m2(k)^3 + ff_gain_m2;
-    y2_m2(k+1) = a_m2 * y2_m2(k) + b2_m2 * u2_m2(k) - nonlinearity2 * y2_m2(k)^2 + ff_gain_m2;
+    y2_m2(k+1) = a_m2 * y2_m2(k) + b2_m2 * u2_m2(k) - nonlinearity2 * y2_m2(k)^3 + ff_gain_m2;
     y3_m2(k+1) = a_m2 * y3_m2(k) + b3_m2 * u3_m2(k) - nonlinearity3 * y3_m2(k)^3 + ff_gain_m2;
-    y4_m2(k+1) = a_m2 * y4_m2(k) + b4_m2 * u4_m2(k) - nonlinearity4 * y4_m2(k)^2 + ff_gain_m2;
+    y4_m2(k+1) = a_m2 * y4_m2(k) + b4_m2 * u4_m2(k) - nonlinearity4 * y4_m2(k)^3 + ff_gain_m2;
 end
 
 % Calculate MSE for both methods
