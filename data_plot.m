@@ -54,8 +54,8 @@ if ~isempty(ch3_data_match) && ~isempty(ch1_data_match) && ~isempty(ch2_data_mat
     % Add legend
     legend('show','orientation','horizontal');
 
-    zoom_x_start = 80; % Start of zoomed x-range
-    zoom_x_end = 100; % End of zoomed x-range
+    zoom_x_start = 75; % Start of zoomed x-range
+    zoom_x_end = 105; % End of zoomed x-range
     axes('Position', [0.23,0.555,0.30,0.25]);
     box on; hold on;
     plot(ch2_data, '-b', 'LineWidth', 2.5);
