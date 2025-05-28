@@ -1,7 +1,7 @@
 clc; clear;
 
 % Common Parameters
-rho = 7.5;            % Gain for control response
+rho = 6.5;            % Gain for control response
 eta = 1;              % Adaptive update speed
 lamda = 350;          % Model-free parameter
 mu = 0.005;           % Adaptive parameter
@@ -30,7 +30,7 @@ gamma2_m2 = 0;
 gamma3_m2 = 0;
 gamma4_m2 = 0;
 n_m2 = 1024;          % Data size for Method 2
-a_m2 = 0.705;           % Plant parameter
+a_m2 = 0.71;           % Plant parameter
 ff_gain_m2 = 0.35;     % Feedforward gain
 
 % Nonlinearity coefficients (same for both methods)
@@ -66,7 +66,7 @@ end
 for k = 1:m
     % Adaptive Gain update
     if k == 1
-        phi1_m1(k) = 4.0; phi2_m1(k) = 4.0; phi3_m1(k) = 4.0; phi4_m1(k) = 4.0;
+        phi1_m1(k) = 1; phi2_m1(k) = 1; phi3_m1(k) = 1; phi4_m1(k) = 1;
     elseif k == 2
         phi1_m1(k) = phi1_m1(k-1) + (eta * u1_m1(k-1) / (mu + u1_m1(k-1)^2)) * (y1_m1(k) - phi1_m1(k-1)*u1_m1(k-1));
         phi2_m1(k) = phi2_m1(k-1) + (eta * u2_m1(k-1) / (mu + u2_m1(k-1)^2)) * (y2_m1(k) - phi2_m1(k-1)*u2_m1(k-1));
@@ -147,7 +147,7 @@ for k = 1:m
         u4_m1(k) = mfa4_m1(k) + gamma4_m1 * sm4_m1(k);
     end
     if k == 1
-        y1_m1(k) = 0.6; y2_m1(k) = 0.6; y3_m1(k) = 0.6; y4_m1(k) = 0.6;
+        y1_m1(k) = 0; y2_m1(k) = 0; y3_m1(k) = 0; y4_m1(k) = 0;
     end
 
     % Plant model update
@@ -165,7 +165,7 @@ end
 for k = 1:m
     % Adaptive Gain update
     if k == 1
-        phi1_m2(k) = 4.0; phi2_m2(k) = 4.0; phi3_m2(k) = 4.0; phi4_m2(k) = 4.0;
+        phi1_m2(k) = 3.0; phi2_m2(k) = 3.0; phi3_m2(k) = 3.0; phi4_m2(k) = 3.0;
     elseif k == 2
         phi1_m2(k) = phi1_m2(k-1) + (eta * u1_m2(k-1) / (mu + u1_m2(k-1)^2)) * (y1_m2(k) - phi1_m2(k-1)*u1_m2(k-1));
         phi2_m2(k) = phi2_m2(k-1) + (eta * u2_m2(k-1) / (mu + u2_m2(k-1)^2)) * (y2_m2(k) - phi2_m2(k-1)*u2_m2(k-1));
@@ -210,7 +210,7 @@ for k = 1:m
 
     % Control signal
     if k == 1
-        u1_m2(k) = 0.01; u2_m2(k) = 0.01; u3_m2(k) = 0.01; u4_m2(k) = 0.01;
+        u1_m2(k) = 0; u2_m2(k) = 0; u3_m2(k) = 0; u4_m2(k) = 0;
     else
         u1_m2(k) = mfa1_m2(k);
         u2_m2(k) = mfa2_m2(k);
@@ -218,18 +218,18 @@ for k = 1:m
         u4_m2(k) = mfa4_m2(k);
     end
     if k == 1
-        y1_m2(k) = 0.6; y2_m2(k) = 0.6; y3_m2(k) = 0.6; y4_m2(k) = 0.6;
+        y1_m2(k) = 0; y2_m2(k) = 0; y3_m2(k) = 0; y4_m2(k) = 0;
     end
 
     % Plant model update
     b1_m2 = 1.2 * n_m2 / (rT * 0.2);
-    b2_m2 = 1.2 * n_m2 / (rT * 0.2);
+    b2_m2 = 1.15 * n_m2 / (rT * 0.2);
     b3_m2 = 1.2 * n_m2 / (rT * 0.2);
-    b4_m2 = 1.2 * n_m2 / (rT * 0.2);
+    b4_m2 = 1.15 * n_m2 / (rT * 0.2);
     y1_m2(k+1) = a_m2 * y1_m2(k) + b1_m2 * u1_m2(k) - nonlinearity1 * y1_m2(k)^3 + ff_gain_m2;
-    y2_m2(k+1) = a_m2 * y2_m2(k) + b2_m2 * u2_m2(k) - nonlinearity2 * y2_m2(k)^3 + ff_gain_m2;
+    y2_m2(k+1) = a_m2 * y2_m2(k) + b2_m2 * u2_m2(k) - nonlinearity2 * y2_m2(k)^2 + ff_gain_m2;
     y3_m2(k+1) = a_m2 * y3_m2(k) + b3_m2 * u3_m2(k) - nonlinearity3 * y3_m2(k)^3 + ff_gain_m2;
-    y4_m2(k+1) = a_m2 * y4_m2(k) + b4_m2 * u4_m2(k) - nonlinearity4 * y4_m2(k)^3 + ff_gain_m2;
+    y4_m2(k+1) = a_m2 * y4_m2(k) + b4_m2 * u4_m2(k) - nonlinearity4 * y4_m2(k)^2 + ff_gain_m2;
 end
 
 % Calculate MSE for both methods
@@ -258,8 +258,8 @@ figure('Position', [100, 100, 1450, 800]);
 % zoom_x_start = 90.2; % Start of zoomed x-range
 % zoom_x_end = 96.5; % End of zoomed x-range
 
-zoom_x_start = 25; % Start of zoomed x-range
-zoom_x_end = 45; % End of zoomed x-range
+zoom_x_start = 38; % Start of zoomed x-range
+zoom_x_end = 40; % End of zoomed x-range
 for i = 1:4
     subplot(2, 2, i);
     plot(t, yd, '--b', 'LineWidth', 3); hold on;
@@ -316,7 +316,7 @@ for i = 1:4
 
         axes('Position', [0.18,0.287,0.13,0.10]);
         box on; hold on;
-        plot(t, yd, '-b', 'LineWidth', 3)
+        plot(t, yd, '-.b', 'LineWidth', 3)
         plot(t, y3_m2, '-.r', 'LineWidth', 3);
         plot(t, y3_m1, '--g', 'LineWidth', 3);
         xlim([zoom_x_start zoom_x_end]);
@@ -347,30 +347,70 @@ for i = 1:4
 
 end
 
-% Plot error dynamics (xi1, xi2, xi3, xi4) for both methods
-% figure('Position', [100, 100, 1500, 750]);
-% for i = 1:4
-%     subplot(2, 2, i);
-%     if i == 1
-%         plot(t_err, xi1_m1, '-.g', 'LineWidth', 2.5); hold on;
-%         plot(t_err, xi1_m2, '-b', 'LineWidth', 2.5);
-%         title('Error Dynamics \xi_1(k)');
-%     elseif i == 2
-%         plot(t_err, xi2_m1, '-.g', 'LineWidth', 2.5); hold on;
-%         plot(t_err, xi2_m2, '-b', 'LineWidth', 2.5);
-%         title('Error Dynamics \xi_2(k)');
-%     elseif i == 3
-%         plot(t_err, xi3_m1, '-.g', 'LineWidth', 2.5); hold on;
-%         plot(t_err, xi3_m2, '-b', 'LineWidth', 2.5);
-%         title('Error Dynamics \xi_3(k)');
-%     else
-%         plot(t_err, xi4_m1, '-.g', 'LineWidth', 2.5); hold on;
-%         plot(t_err, xi4_m2, '-b', 'LineWidth', 2.5);
-%         title('Error Dynamics \xi_4(k)');
-%     end
-%     grid off;
-%     legend('\xi (MFAC + SMC)', '\xi (MFAC only)', 'Orientation', 'horizontal');
-%     set(gca, 'FontSize', font_size);
-%     xlim([0 m]);
-%     ylim([-2 5]);
-% end
+% Plot 4 subplots
+
+% figure('Position', [100, 100, 1450, 800]);
+% % figure('Position', [100, 100, 15*100, 7.5*100]); % [left, bottom, width, height] in pixels
+% subplot(2,2,1);
+% plot(t(1:end-1), xi1, '-.b', 'LineWidth', 2.5);
+% title('Agent 1'); grid off;
+% legend('\xi_1(k)','y_1','Orientation', 'horizontal');
+% set(gca, 'FontSize', font_size);
+% xlim([0 m]); % X-axis starts from 0
+% ylim([-2 3]); % Y-axis limits for Agent 1
+
+% zoom_x_start_xi = 50; % Start of zoomed x-range
+% zoom_x_end_xi = 100; % End of zoomed x-range0.20,0.79,0.13,0.10
+% axes('Position', [0.20,0.765,0.15,0.13]);
+% box on; hold on;
+% plot(t(1:end-1), xi1, '-.b', 'LineWidth', 2.5);
+% xlim([zoom_x_start_xi zoom_x_end_xi]);
+% % yticks([-2.000000000000000e-04,0,2.000000000000000e-04,4.000000000000001e-04,6.000000000000001e-04]);
+% set(gca, 'FontSize', font_size);
+
+% subplot(2,2,2);
+% plot(t(1:end-1), xi2, '-.b', 'LineWidth', 2.5);
+% title('Agent 2'); grid off;
+% legend('\xi_2(k)','y_2','Orientation', 'horizontal');
+% set(gca, 'FontSize', font_size);
+% xlim([0 m]); % X-axis starts from 0
+% ylim([-2 3]); % Y-axis limits for Agent 2
+
+% axes('Position', [0.65,0.765,0.15,0.13]);
+% box on; hold on;
+% plot(t(1:end-1), xi2, '-.b', 'LineWidth', 2.5);
+% xlim([zoom_x_start_xi zoom_x_end_xi]);
+% % yticks([-2.000000000000000e-04,0,2.000000000000000e-04,4.000000000000001e-04,6.000000000000001e-04]);
+% set(gca, 'FontSize', font_size);
+
+% subplot(2,2,3);
+% plot(t(1:end-1), xi3, '-.b', 'LineWidth', 2.5);
+% title('Agent 3'); grid off;
+% legend('\xi_3(k)','y_3','Orientation', 'horizontal');
+% set(gca, 'FontSize', font_size);
+% xlim([0 m]); % X-axis starts from 0
+% ylim([-2 3]); % Y-axis limits for Agent 2
+
+% axes('Position', [0.20,0.290,0.15,0.13]);
+% box on; hold on;
+% plot(t(1:end-1), xi3, '-.b', 'LineWidth', 2.5);
+% xlim([zoom_x_start_xi zoom_x_end_xi]);
+% % yticks([0.599,0.6,0.601]);
+% set(gca, 'FontSize', font_size);
+
+% subplot(2,2,4);
+% plot(t(1:end-1), xi4, '-.b', 'LineWidth', 2.5);
+% title('Agent 4'); grid off;
+% legend('\xi_4(k)','y_4','Orientation', 'horizontal');
+% set(gca, 'FontSize', font_size);
+% xlim([0 m]); % X-axis starts from 0
+% ylim([-2 3]); % Y-axis limits for Agent 4
+
+% axes('Position', [0.65,0.290,0.15,0.13]);
+% box on; hold on;
+% plot(t(1:end-1), xi4, '-.b', 'LineWidth', 2.5);
+% xlim([zoom_x_start_xi zoom_x_end_xi]);
+% % xticks([64,64.5,65])
+% % yticks([-1.000000000000000e-04,0,1.000000000000000e-04]);
+% set(gca, 'FontSize', font_size);
+% hold off;
