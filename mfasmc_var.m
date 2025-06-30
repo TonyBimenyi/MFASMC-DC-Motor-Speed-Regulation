@@ -306,6 +306,8 @@ legend('\xi_1(k)','y_1','Orientation', 'horizontal');
 set(gca, 'FontSize', font_size);
 xlim([0 m]); % X-axis starts from 0
 ylim([-2 3]); % Y-axis limits for Agent 1
+ylabel('Distributed measurement error', 'FontSize', font_size);
+xlabel('Time step(k)', 'FontSize', font_size);
 
 zoom_x_start_xi = 50; % Start of zoomed x-range
 zoom_x_end_xi = 80; % End of zoomed x-range0.20,0.79,0.13,0.10
@@ -323,6 +325,8 @@ legend('\xi_2(k)','y_2','Orientation', 'horizontal');
 set(gca, 'FontSize', font_size);
 xlim([0 m]); % X-axis starts from 0
 ylim([-2 3]); % Y-axis limits for Agent 2
+ylabel('Distributed measurement error', 'FontSize', font_size);
+xlabel('Time step(k)', 'FontSize', font_size);
 
 axes('Position', [0.65,0.765,0.15,0.13]);
 box on; hold on;
@@ -338,6 +342,8 @@ legend('\xi_3(k)','y_3','Orientation', 'horizontal');
 set(gca, 'FontSize', font_size);
 xlim([0 m]); % X-axis starts from 0
 ylim([-2 3]); % Y-axis limits for Agent 2
+ylabel('Distributed Measurement Error', 'FontSize', font_size);
+xlabel('Time step(k)', 'FontSize', font_size);
 
 axes('Position', [0.20,0.290,0.15,0.13]);
 box on; hold on;
@@ -353,6 +359,8 @@ legend('\xi_4(k)','y_4','Orientation', 'horizontal');
 set(gca, 'FontSize', font_size);
 xlim([0 m]); % X-axis starts from 0
 ylim([-2 3]); % Y-axis limits for Agent 4
+ylabel('Distributed measurement error', 'FontSize', font_size);
+xlabel('Time step(k)', 'FontSize', font_size);
 
 axes('Position', [0.65,0.290,0.15,0.13]);
 box on; hold on;
