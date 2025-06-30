@@ -54,8 +54,8 @@ yd = zeros(m+1,1);
 
 % Desired signal (Reference trajectory)
 for k = 1:1:m+1
-    yd(k) = 0.6; % Time-invariant constant reference signal
-    % yd(k) = 0.6 * sin(0.05 * pi * k) + 0.6 * cos(0.03 * pi * k);
+    % yd(k) = 0.6; % Time-invariant constant reference signal
+    yd(k) = 0.6 * sin(0.05 * pi * k) + 0.6 * cos(0.03 * pi * k);
 end
 
 for k = 1:m
@@ -217,77 +217,77 @@ disp(['Length of y1: ', num2str(length(y1))]); % Should be 201
 disp(['Length of yd: ', num2str(length(yd))]); % Should be 201
 disp(['Length of xi1: ', num2str(length(xi1))]); % Should be 200
 
-% Plot 4 subplots
-figure('Position', [100, 100, 15*100, 7.5*100]); % [left, bottom, width, height] in pixels
-subplot(2,2,1);
-plot(t, yd, '--b', 'LineWidth', 2.5); hold on;
-plot(t, y1, '-.g', 'LineWidth', 2.5);
-title('Agent 1'); grid off;
-legend('y_d(k)','y_1(k)','Orientation', 'horizontal');
-set(gca, 'FontSize', font_size);
-xlim([0 m]); % X-axis starts from 0
-ylim([-1.5 3.5]); % Y-axis limits for Agent 1
+% % Plot 4 subplots
+% figure('Position', [100, 100, 15*100, 7.5*100]); % [left, bottom, width, height] in pixels
+% subplot(2,2,1);
+% plot(t, yd, '--b', 'LineWidth', 2.5); hold on;
+% plot(t, y1, '-.g', 'LineWidth', 2.5);
+% title('Agent 1'); grid off;
+% legend('y_d(k)','y_1(k)','Orientation', 'horizontal');
+% set(gca, 'FontSize', font_size);
+% xlim([0 m]); % X-axis starts from 0
+% ylim([-1.5 3.5]); % Y-axis limits for Agent 1
 
-zoom_x_start = 80; % Start of zoomed x-range
-zoom_x_end = 100; % End of zoomed x-range
-axes('Position', [0.20,0.79,0.13,0.10]);
-box on; hold on;
-plot(t, yd, '--b', 'LineWidth', 2.5);
-plot(t, y1, '-.g', 'LineWidth', 2.5);
-xlim([zoom_x_start zoom_x_end]);
-yticks([-0.4,0,0.2]);
-set(gca, 'FontSize', font_size);
+% zoom_x_start = 80; % Start of zoomed x-range
+% zoom_x_end = 100; % End of zoomed x-range
+% axes('Position', [0.20,0.79,0.13,0.10]);
+% box on; hold on;
+% plot(t, yd, '--b', 'LineWidth', 2.5);
+% plot(t, y1, '-.g', 'LineWidth', 2.5);
+% xlim([zoom_x_start zoom_x_end]);
+% yticks([-0.4,0,0.2]);
+% set(gca, 'FontSize', font_size);
 
-subplot(2,2,2);
-plot(t, yd, '--b', 'LineWidth', 2.5); hold on;
-plot(t, y2, '-.g', 'LineWidth', 2.5);
-title('Agent 2'); grid off;
-legend('y_d(k)','y_2(k)','Orientation', 'horizontal');
-set(gca, 'FontSize', font_size);
-xlim([0 m]); % X-axis starts from 0
-ylim([-1.5 3.5]); % Y-axis limits for Agent 2
+% subplot(2,2,2);
+% plot(t, yd, '--b', 'LineWidth', 2.5); hold on;
+% plot(t, y2, '-.g', 'LineWidth', 2.5);
+% title('Agent 2'); grid off;
+% legend('y_d(k)','y_2(k)','Orientation', 'horizontal');
+% set(gca, 'FontSize', font_size);
+% xlim([0 m]); % X-axis starts from 0
+% ylim([-1.5 3.5]); % Y-axis limits for Agent 2
 
-axes('Position', [0.64,0.79,0.13,0.10]);
-box on; hold on;
-plot(t, yd, '--b', 'LineWidth', 2.5);
-plot(t, y2, '-.g', 'LineWidth', 2.5);
-xlim([zoom_x_start zoom_x_end]);
-yticks([-0.4,0,0.2]);
-set(gca, 'FontSize', font_size);
+% axes('Position', [0.64,0.79,0.13,0.10]);
+% box on; hold on;
+% plot(t, yd, '--b', 'LineWidth', 2.5);
+% plot(t, y2, '-.g', 'LineWidth', 2.5);
+% xlim([zoom_x_start zoom_x_end]);
+% yticks([-0.4,0,0.2]);
+% set(gca, 'FontSize', font_size);
 
-subplot(2,2,3);
-plot(t, yd, '--b', 'LineWidth', 2.5); hold on;
-plot(t, y3, '-.g', 'LineWidth', 2.5);
-title('Agent 3'); grid off;
-legend('y_d(k)','y_3(k)','Orientation', 'horizontal');
-set(gca, 'FontSize', font_size);
-xlim([0 m]); % X-axis starts from 0
-ylim([-1.5 3.5]); % Y-axis limits for Agent 3
+% subplot(2,2,3);
+% plot(t, yd, '--b', 'LineWidth', 2.5); hold on;
+% plot(t, y3, '-.g', 'LineWidth', 2.5);
+% title('Agent 3'); grid off;
+% legend('y_d(k)','y_3(k)','Orientation', 'horizontal');
+% set(gca, 'FontSize', font_size);
+% xlim([0 m]); % X-axis starts from 0
+% ylim([-1.5 3.5]); % Y-axis limits for Agent 3
 
-axes('Position', [0.20,0.315,0.13,0.10]);
-box on; hold on;
-plot(t, yd, '--b', 'LineWidth', 2.5);
-plot(t, y3, '-.g', 'LineWidth', 2.5);
-xlim([zoom_x_start zoom_x_end]);
-yticks([-0.4,0,0.2]);
-set(gca, 'FontSize', font_size);
+% axes('Position', [0.20,0.315,0.13,0.10]);
+% box on; hold on;
+% plot(t, yd, '--b', 'LineWidth', 2.5);
+% plot(t, y3, '-.g', 'LineWidth', 2.5);
+% xlim([zoom_x_start zoom_x_end]);
+% yticks([-0.4,0,0.2]);
+% set(gca, 'FontSize', font_size);
 
-subplot(2,2,4);
-plot(t, yd, '--b', 'LineWidth', 2.5); hold on;
-plot(t, y4, '-.g', 'LineWidth', 2.5);
-title('Agent 4'); grid off;
-legend('y_d(k)','y_4(k)','Orientation', 'horizontal');
-set(gca, 'FontSize', font_size);
-xlim([0 m]); % X-axis starts from 0
-ylim([-1.5 3.5]); % Y-axis limits for Agent 4
+% subplot(2,2,4);
+% plot(t, yd, '--b', 'LineWidth', 2.5); hold on;
+% plot(t, y4, '-.g', 'LineWidth', 2.5);
+% title('Agent 4'); grid off;
+% legend('y_d(k)','y_4(k)','Orientation', 'horizontal');
+% set(gca, 'FontSize', font_size);
+% xlim([0 m]); % X-axis starts from 0
+% ylim([-1.5 3.5]); % Y-axis limits for Agent 4
 
-axes('Position', [0.64,0.315,0.13,0.10]);
-box on; hold on;
-plot(t, yd, '--b', 'LineWidth', 2.5);
-plot(t, y4, '-.g', 'LineWidth', 2.5);
-xlim([zoom_x_start zoom_x_end]);
-yticks([-0.4,0,0.2]);
-set(gca, 'FontSize', font_size);
+% axes('Position', [0.64,0.315,0.13,0.10]);
+% box on; hold on;
+% plot(t, yd, '--b', 'LineWidth', 2.5);
+% plot(t, y4, '-.g', 'LineWidth', 2.5);
+% xlim([zoom_x_start zoom_x_end]);
+% yticks([-0.4,0,0.2]);
+% set(gca, 'FontSize', font_size);
 
 
 
@@ -308,7 +308,7 @@ xlim([0 m]); % X-axis starts from 0
 ylim([-2 3]); % Y-axis limits for Agent 1
 
 zoom_x_start_xi = 50; % Start of zoomed x-range
-zoom_x_end_xi = 100; % End of zoomed x-range0.20,0.79,0.13,0.10
+zoom_x_end_xi = 80; % End of zoomed x-range0.20,0.79,0.13,0.10
 axes('Position', [0.20,0.765,0.15,0.13]);
 box on; hold on;
 plot(t(1:end-1), xi1, '-.b', 'LineWidth', 2.5);
