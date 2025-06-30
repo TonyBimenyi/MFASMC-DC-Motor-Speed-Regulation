@@ -209,7 +209,7 @@ for k = 1:m
     end
 
     % Control signal
-    if k == 1
+    if k == 1   
         u1_m2(k) = 0; u2_m2(k) = 0; u3_m2(k) = 0; u4_m2(k) = 0;
     else
         u1_m2(k) = mfa1_m2(k);
@@ -272,6 +272,8 @@ for i = 1:4
         set(gca, 'FontSize', font_size);
         xlim([0 m]); % X-axis starts from 0
         ylim([-1.5 4]); % Y-axis limits for Agent 1
+        xlabel('Time step(k)', 'FontSize', font_size);
+        ylabel('Tracking performance', 'FontSize', font_size);
 
 
         axes('Position', [0.18,0.76,0.13,0.10]);
