@@ -10,7 +10,7 @@ alpha = 15;           % Smoothing factor for error dynamics
 T = 0.1;              % Sampling time
 m = 200;              % Time steps
 rT = 1024;            % Sample rate
-font_size = 14;
+font_size = 18;
 
 % Method 1 (MFAC + SMC) Parameters
 gamma1_m1 = 0.45;     % Control gains
@@ -273,7 +273,7 @@ for i = 1:4
         xlim([0 m]); % X-axis starts from 0
         % ylim([-1.5 4]); % Y-axis limits for Agent 1
         ylabel('Tracking performance', 'FontSize', font_size);
-        xlabel('Time step(k)', 'FontSize', font_size);
+        xlabel('Time step (k)', 'FontSize', font_size);
 
 
         axes('Position', [0.20,0.65,0.13,0.10]);
@@ -298,7 +298,7 @@ for i = 1:4
         xlim([0 m]); % X-axis starts from 0
         % ylim([-1.5 4]); % Y-axis limits for Agent 1
         ylabel('Tracking performance', 'FontSize', font_size);
-        xlabel('Time step(k)', 'FontSize', font_size);
+        xlabel('Time step (k)', 'FontSize', font_size);
 
         axes('Position', [0.65,0.63,0.13,0.10]);
         box on; hold on;
@@ -318,7 +318,7 @@ for i = 1:4
         xlim([0 m]); % X-axis starts from 0
         % ylim([-1.5 4]); % Y-axis limits for Agent 1
         ylabel('Tracking performance', 'FontSize', font_size);
-        xlabel('Time step(k)', 'FontSize', font_size);
+        xlabel('Time step (k)', 'FontSize', font_size);
 
         axes('Position', [0.20,0.175,0.13,0.10]);
         box on; hold on;
@@ -338,7 +338,7 @@ for i = 1:4
         xlim([0 m]); % X-axis starts from 0
         % ylim([-1.5 4]); % Y-axis limits for Agent 1
         ylabel('Tracking performance', 'FontSize', font_size);
-        xlabel('Time step(k)', 'FontSize', font_size);
+        xlabel('Time step (k)', 'FontSize', font_size);
 
         axes('Position', [0.65,0.155,0.13,0.10]);
         box on; hold on;
