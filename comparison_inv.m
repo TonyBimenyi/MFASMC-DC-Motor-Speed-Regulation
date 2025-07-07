@@ -10,7 +10,7 @@ alpha = 15;           % Smoothing factor for error dynamics
 T = 0.1;              % Sampling time
 m = 200;              % Time steps
 rT = 1024;            % Sample rate
-font_size = 20;
+font_size = 21;
 
 % Method 1 (MFAC + SMC) Parameters
 gamma1_m1 = 0.45;     % Control gains
