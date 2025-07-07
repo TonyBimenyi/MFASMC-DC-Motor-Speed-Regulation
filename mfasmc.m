@@ -201,7 +201,7 @@ fprintf('Mean Squared Error for xi_4(k): %.10e\n', mse_xi4);
 % Plotting
 % Time vector for plotting
 t = 1:1:m+1;  % Gives 201 points, as expected
-font_size = 14;
+font_size =21;
 
 % Verify time vector and array lengths
 disp(['Length of t: ', num2str(length(t))]); % Should display 201
@@ -291,7 +291,7 @@ legend('\xi_1(k)','y_1','Orientation', 'horizontal');
 set(gca, 'FontSize', font_size);
 xlim([0 m]); % X-axis starts from 0
 ylabel('Distributed measurement error', 'FontSize', font_size);
-xlabel('Time step(k)', 'FontSize', font_size);
+xlabel('Time step (k)', 'FontSize', font_size);
 % ylim([0.5 0.8]); % Y-axis limits for Agent 1
 
 zoom_x_start_xi = 50; % Start of zoomed x-range
@@ -311,7 +311,7 @@ set(gca, 'FontSize', font_size);
 xlim([0 m]); % X-axis starts from 0
 % ylim([0.41 0.99]); % Y-axis limits for Agent 2
 ylabel('Distributed measurement error', 'FontSize', font_size);
-xlabel('Time step(k)', 'FontSize', font_size);
+xlabel('Time step (k)', 'FontSize', font_size);
 
 axes('Position', [0.65,0.64,0.15,0.13]);
 box on; hold on;
@@ -328,7 +328,7 @@ set(gca, 'FontSize', font_size);
 xlim([0 m]); % X-axis starts from 0
 % ylim([0.5 0.8]); % Y-axis limits for Agent 1
 ylabel('Distributed measurement error', 'FontSize', font_size);
-xlabel('Time step(k)', 'FontSize', font_size);
+xlabel('Time step (k)', 'FontSize', font_size);
 
 axes('Position', [0.20,0.270,0.15,0.13]);  
 box on; hold on;
@@ -345,7 +345,7 @@ set(gca, 'FontSize', font_size);
 xlim([0 m]); % X-axis starts from 0
 % ylim([0.41 0.99]); % Y-axis limits for Agent 2
 ylabel('Distributed measurement error', 'FontSize', font_size);
-xlabel('Time step(k)', 'FontSize', font_size);
+xlabel('Time step (k)', 'FontSize', font_size);
 
 axes('Position', [0.65,0.170,0.15,0.13]);
 box on; hold on;
