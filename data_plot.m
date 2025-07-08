@@ -3,6 +3,7 @@ close all;
 
 % Define parameters
 file_path = 'dataplot.txt'; % Replace with your file's path
+font_size = 16;
 
 % Load the content of the data
 file_content = fileread(file_path);
@@ -36,7 +37,7 @@ if ~isempty(ch3_data_match) && ~isempty(ch1_data_match) && ~isempty(ch2_data_mat
     fprintf('MSE for Motor 3 (CH2 - CH4): %.10e\n', mse3);
     
     % Plot the data
-    figure('Position', [100, 100, 800, 400]);
+    figure('Position', [100, 100, 800, 450]);
     plot(ch2_data, '-', 'LineWidth', 2, 'Color', 'blue', 'MarkerSize', 4.5, 'DisplayName', 'Reference Trajectory');
     hold on;
     plot(ch1_data, '-.m', 'LineWidth', 2, 'MarkerSize', 5.5, 'DisplayName', 'Motor1');
@@ -46,10 +47,10 @@ if ~isempty(ch3_data_match) && ~isempty(ch1_data_match) && ~isempty(ch2_data_mat
     
     % Set plot limits and labels
     xlim([0, 1660]);
-    % xlabel('Time step', 'FontSize', 14);
-    % ylabel('Output', 'FontSize', 14);
+    xlabel('Time step (k)', 'FontSize', font_size);
+    ylabel('Tracking performance', 'FontSize', font_size);
     ylim([-1.5 3]); % Y-axis limits for Agent 4
-    set(gca, 'FontSize', 14);
+    set(gca, 'FontSize', font_size);
     
     % Add legend
     legend('show','orientation','horizontal');
@@ -64,7 +65,7 @@ if ~isempty(ch3_data_match) && ~isempty(ch1_data_match) && ~isempty(ch2_data_mat
     plot(ch4_data, '-.g', 'LineWidth', 2.5);
     xlim([zoom_x_start zoom_x_end]);
     % yticks([-0.4,0,0.2]);
-    set(gca, 'FontSize', 14);
+    set(gca, 'FontSize', font_size);
     
     % Save the plot
     print('-dpng', 'motor_plot.png');
