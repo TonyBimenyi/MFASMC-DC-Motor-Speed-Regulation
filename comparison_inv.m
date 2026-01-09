@@ -11,6 +11,7 @@ T = 0.1;              % Sampling time
 m = 200;              % Time steps
 rT = 1024;            % Sample rate
 font_size = 21;
+font_family = 'Times New Roman';
 
 % Method 1 (MFAC + SMC) Parameters
 gamma1_m1 = 0.45;     % Control gains
@@ -258,8 +259,14 @@ figure('Position', [100, 100, 1450, 800]);
 % zoom_x_start = 90.2; % Start of zoomed x-range
 % zoom_x_end = 96.5; % End of zoomed x-range
 
-zoom_x_start = 20; % Start of zoomed x-range
-zoom_x_end = 50; % End of zoomed x-range
+zoom_x_start = 55.84382837897092; % Start of zoomed x-range
+zoom_x_end = 55.939893305357884; % End of zoomed x-range
+xtick_value_start = 20;
+xtick_value_end = 50;
+
+ytick_value_start = 0.59;
+ytick_value_end = 0.6;
+
 for i = 1:4
     subplot(2, 2, i);
     plot(t, yd, '--b', 'LineWidth', 3); hold on;
@@ -275,6 +282,8 @@ for i = 1:4
         ylabel('Tracking performance', 'FontSize', font_size);
         xlabel('Time step (k)', 'FontSize', font_size);
 
+        set(gca, 'FontSize', font_size,'FontName',font_family);
+
 
         axes('Position', [0.20,0.65,0.13,0.10]);
         box on; hold on;
@@ -282,8 +291,12 @@ for i = 1:4
         plot(t, y1_m2, '-.r', 'LineWidth', 3);
         plot(t, y1_m1, '--g', 'LineWidth', 3);
         xlim([zoom_x_start zoom_x_end]);
+        % xticks([xtick_value_start xtick_value_end]);
+        yticks([ytick_value_start ytick_value_end]);
         % yticks([-0.4,0,0.2]);
         set(gca, 'FontSize', font_size);
+
+        set(gca, 'FontSize', font_size,'FontName',font_family);
 
         
         
@@ -300,14 +313,19 @@ for i = 1:4
         ylabel('Tracking performance', 'FontSize', font_size);
         xlabel('Time step (k)', 'FontSize', font_size);
 
+        set(gca, 'FontSize', font_size,'FontName',font_family);
+
         axes('Position', [0.65,0.63,0.13,0.10]);
         box on; hold on;
         plot(t, yd, '-.b', 'LineWidth', 3)
         plot(t, y2_m2, '-.r', 'LineWidth', 3);
         plot(t, y2_m1, '--g', 'LineWidth', 3);
         xlim([zoom_x_start zoom_x_end]);
+        % xticks([xtick_value_start xtick_value_end]);
+        yticks([ytick_value_start ytick_value_end]);
         % yticks([-0.4,0,0.2]);
         set(gca, 'FontSize', font_size);
+        set(gca, 'FontSize', font_size,'FontName',font_family);
     elseif i == 3
         plot(t, y3_m2, '-.r', 'LineWidth', 3);
         plot(t, y3_m1, '--g', 'LineWidth', 3);
@@ -320,14 +338,21 @@ for i = 1:4
         ylabel('Tracking performance', 'FontSize', font_size);
         xlabel('Time step (k)', 'FontSize', font_size);
 
+        set(gca, 'FontSize', font_size,'FontName',font_family);
+
+
         axes('Position', [0.20,0.175,0.13,0.10]);
         box on; hold on;
         plot(t, yd, '-.b', 'LineWidth', 3)
         plot(t, y3_m2, '-.r', 'LineWidth', 3);
         plot(t, y3_m1, '--g', 'LineWidth', 3);
         xlim([zoom_x_start zoom_x_end]);
+        % xticks([xtick_value_start xtick_value_end]);
+        yticks([ytick_value_start ytick_value_end]);
         % yticks([-0.4,0,0.2]);
         set(gca, 'FontSize', font_size);
+
+        set(gca, 'FontSize', font_size,'FontName',font_family);
     else
         plot(t, y4_m2, '-.r', 'LineWidth', 3);
         plot(t, y4_m1, '--g', 'LineWidth', 3);
@@ -339,6 +364,7 @@ for i = 1:4
         % ylim([-1.5 4]); % Y-axis limits for Agent 1
         ylabel('Tracking performance', 'FontSize', font_size);
         xlabel('Time step (k)', 'FontSize', font_size);
+        set(gca, 'FontSize', font_size,'FontName',font_family);
 
         axes('Position', [0.65,0.155,0.13,0.10]);
         box on; hold on;
@@ -346,8 +372,10 @@ for i = 1:4
         plot(t, y4_m2, '-.r', 'LineWidth', 3);
         plot(t, y4_m1, '--g', 'LineWidth', 3);
         xlim([zoom_x_start zoom_x_end]);
-        % yticks([-0.4,0,0.2]);
+        % xticks([xtick_value_start xtick_value_end]);
+        yticks([ytick_value_start ytick_value_end]);
         set(gca, 'FontSize', font_size);
+        set(gca, 'FontSize', font_size,'FontName',font_family);
     end
     % grid off;
     % legend('y_d(k)',  'y (MFAC only)','y (MFAC + SMC)', 'Orientation', 'horizontal');

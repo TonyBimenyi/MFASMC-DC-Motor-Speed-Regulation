@@ -11,6 +11,7 @@ T = 0.1;              % Sampling time
 m = 200;              % Time steps
 rT = 1024;            % Sample rate
 font_size = 21;
+font_family = 'Times New Roman';
 
 % Method 1 (MFAC + SMC) Parameters
 gamma1_m1 = 0.45;     % Control gains
@@ -276,14 +277,19 @@ for i = 1:4
 ylabel('Tracking performance', 'FontSize', font_size);
 
 
+        set(gca, 'FontSize', font_size,'FontName',font_family);
+
+
         axes('Position', [0.18,0.76,0.13,0.10]);
         box on; hold on;
         plot(t, yd, '-.b', 'LineWidth', 3)
         plot(t, y1_m2, '-.r', 'LineWidth', 3);
         plot(t, y1_m1, '--g', 'LineWidth', 3);
         xlim([zoom_x_start zoom_x_end]);
+        % Only show first and last value on the x-axis
+        xticks([38 40]);
         % yticks([-0.4,0,0.2]);
-        set(gca, 'FontSize', font_size);
+        set(gca, 'FontSize', font_size,'FontName',font_family);
 
         
         
@@ -294,11 +300,12 @@ ylabel('Tracking performance', 'FontSize', font_size);
 
         title('Agent 2'); grid off;
         legend('y_d(k)',  'Method [1]','Proposed scheme','orientation', 'horizontal');
-        set(gca, 'FontSize', font_size);
+        set(gca, 'FontSize', font_size,'FontName',font_family);
         xlim([0 m]); % X-axis starts from 0
         ylim([-1.5 4]); % Y-axis limits for Agent 1
         xlabel('Time step (k)', 'FontSize', font_size);
-ylabel('Tracking performance', 'FontSize', font_size);
+        ylabel('Tracking performance', 'FontSize', font_size);
+        set(gca, 'FontSize', font_size,'FontName',font_family);
 
         axes('Position', [0.62,0.76,0.13,0.10]);
         box on; hold on;
@@ -307,18 +314,21 @@ ylabel('Tracking performance', 'FontSize', font_size);
         plot(t, y2_m1, '--g', 'LineWidth', 3);
         xlim([zoom_x_start zoom_x_end]);
         % yticks([-0.4,0,0.2]);
-        set(gca, 'FontSize', font_size);
+        % Only show first and last value on the x-axis
+        xticks([38 40]);
+        set(gca, 'FontSize', font_size,'FontName',font_family);
     elseif i == 3
         plot(t, y3_m2, '-.r', 'LineWidth', 3);
         plot(t, y3_m1, '--g', 'LineWidth', 3);
 
         title('Agent 3'); grid off;
         legend('y_d(k)',  'Method [1]','Proposed scheme','orientation', 'horizontal');
-        set(gca, 'FontSize', font_size);
+        set(gca, 'FontSize', font_size,'FontName',font_family);
         xlim([0 m]); % X-axis starts from 0
         ylim([-1.5 4]); % Y-axis limits for Agent 1
         xlabel('Time step (k)', 'FontSize', font_size);
-ylabel('Tracking performance', 'FontSize', font_size);
+        ylabel('Tracking performance', 'FontSize', font_size);
+        set(gca, 'FontSize', font_size,'FontName',font_family);
 
         axes('Position', [0.18,0.287,0.13,0.10]);
         box on; hold on;
@@ -326,8 +336,10 @@ ylabel('Tracking performance', 'FontSize', font_size);
         plot(t, y3_m2, '-.r', 'LineWidth', 3);
         plot(t, y3_m1, '--g', 'LineWidth', 3);
         xlim([zoom_x_start zoom_x_end]);
+        % Only show first and last value on the x-axis
+        xticks([38 40]);
         % yticks([-0.4,0,0.2]);
-        set(gca, 'FontSize', font_size);
+        set(gca, 'FontSize', font_size,'FontName',font_family);
     else
         plot(t, y4_m2, '-.r', 'LineWidth', 3);
         plot(t, y4_m1, '--g', 'LineWidth', 3);
@@ -338,7 +350,8 @@ ylabel('Tracking performance', 'FontSize', font_size);
         xlim([0 m]); % X-axis starts from 0
         ylim([-1.5 4]); % Y-axis limits for Agent 1
         xlabel('Time step (k)', 'FontSize', font_size);
-ylabel('Tracking performance', 'FontSize', font_size);
+        ylabel('Tracking performance', 'FontSize', font_size);
+        set(gca, 'FontSize', font_size,'FontName',font_family);
 
         axes('Position', [0.62,0.287,0.13,0.10]);
         box on; hold on;
@@ -346,8 +359,10 @@ ylabel('Tracking performance', 'FontSize', font_size);
         plot(t, y4_m2, '-.r', 'LineWidth', 3);
         plot(t, y4_m1, '--g', 'LineWidth', 3);
         xlim([zoom_x_start zoom_x_end]);
+        % Only show first and last value on the x-axis
+        xticks([38 40]);
         % yticks([-0.4,0,0.2]);
-        set(gca, 'FontSize', font_size);
+        set(gca, 'FontSize', font_size,'FontName',font_family);
     end
     % grid off;
     % legend('y_d(k)',  'y (MFAC only)','y (MFAC + SMC)', 'Orientation', 'horizontal');

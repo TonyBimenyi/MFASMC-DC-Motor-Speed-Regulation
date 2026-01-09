@@ -210,6 +210,9 @@ fprintf('Mean Squared Error for xi_4(k): %.10e\n', mse_xi4);
 % Time vector for plotting
 t = 1:1:m+1;  % Gives 201 points, as expected
 font_size = 21;
+font_family = 'Times New Roman';
+xtick_value_start = 40;
+xtick_value_end = 100;
 
 % Verify time vector and array lengths
 disp(['Length of t: ', num2str(length(t))]); % Should display 201
@@ -303,7 +306,7 @@ subplot(2,2,1);
 plot(t(1:end-1), xi1, '-.b', 'LineWidth', 2.5);
 title('Agent 1'); grid off;
 legend('\xi_1(k)','y_1','Orientation', 'horizontal');
-set(gca, 'FontSize', font_size);
+set(gca, 'FontSize', font_size,'FontName',font_family);
 xlim([0 m]); % X-axis starts from 0
 ylim([-2 4.5]); % Y-axis limits for Agent 1
 ylabel('Distributed measurement error', 'FontSize', font_size);
@@ -315,14 +318,15 @@ axes('Position', [0.20,0.765,0.15,0.13]);
 box on; hold on;
 plot(t(1:end-1), xi1, '-.b', 'LineWidth', 2.5);
 xlim([zoom_x_start_xi zoom_x_end_xi]);
+xticks([xtick_value_start xtick_value_end]);
 % yticks([-2.000000000000000e-04,0,2.000000000000000e-04,4.000000000000001e-04,6.000000000000001e-04]);
-set(gca, 'FontSize', font_size);
+set(gca, 'FontSize', font_size,'FontName',font_family);
 
 subplot(2,2,2);
 plot(t(1:end-1), xi2, '-.b', 'LineWidth', 2.5);
 title('Agent 2'); grid off;
 legend('\xi_2(k)','y_2','Orientation', 'horizontal');
-set(gca, 'FontSize', font_size);
+set(gca, 'FontSize', font_size,'FontName',font_family);
 xlim([0 m]); % X-axis starts from 0
 ylim([-2 4.5]); % Y-axis limits for Agent 1; % Y-axis limits for Agent 2
 ylabel('Distributed measurement error', 'FontSize', font_size);
@@ -332,31 +336,33 @@ axes('Position', [0.65,0.765,0.15,0.13]);
 box on; hold on;
 plot(t(1:end-1), xi2, '-.b', 'LineWidth', 2.5);
 xlim([zoom_x_start_xi zoom_x_end_xi]);
+xticks([xtick_value_start xtick_value_end]);
 % yticks([-2.000000000000000e-04,0,2.000000000000000e-04,4.000000000000001e-04,6.000000000000001e-04]);
-set(gca, 'FontSize', font_size);
+set(gca, 'FontSize', font_size,'FontName',font_family);
 
 subplot(2,2,3);
 plot(t(1:end-1), xi3, '-.b', 'LineWidth', 2.5);
 title('Agent 3'); grid off;
 legend('\xi_3(k)','y_3','Orientation', 'horizontal');
-set(gca, 'FontSize', font_size);
+set(gca, 'FontSize', font_size,'FontName',font_family);
 xlim([0 m]); % X-axis starts from 0
 ylim([-2 4.5]); % Y-axis limits for Agent 1; % Y-axis limits for Agent 2
 ylabel('Distributed Measurement Error', 'FontSize', font_size);
-xlabel('Time step (k)', 'FontSize', font_size);
+set(gca, 'FontSize', font_size,'FontName',font_family);
 
 axes('Position', [0.20,0.290,0.15,0.13]);
 box on; hold on;
 plot(t(1:end-1), xi3, '-.b', 'LineWidth', 2.5);
 xlim([zoom_x_start_xi zoom_x_end_xi]);
+xticks([xtick_value_start xtick_value_end]);
 % yticks([0.599,0.6,0.601]);
-set(gca, 'FontSize', font_size);
+set(gca, 'FontSize', font_size,'FontName',font_family);
 
 subplot(2,2,4);
 plot(t(1:end-1), xi4, '-.b', 'LineWidth', 2.5);
 title('Agent 4'); grid off;
 legend('\xi_4(k)','y_4','Orientation', 'horizontal');
-set(gca, 'FontSize', font_size);
+set(gca, 'FontSize', font_size,'FontName',font_family);
 xlim([0 m]); % X-axis starts from 0
 ylim([-2 4.5]); % Y-axis limits for Agent 1; % Y-axis limits for Agent 4
 ylabel('Distributed measurement error', 'FontSize', font_size);
@@ -366,7 +372,8 @@ axes('Position', [0.65,0.290,0.15,0.13]);
 box on; hold on;
 plot(t(1:end-1), xi4, '-.b', 'LineWidth', 2.5);
 xlim([zoom_x_start_xi zoom_x_end_xi]);
+xticks([xtick_value_start xtick_value_end]);
 % xticks([64,64.5,65])
 % yticks([-1.000000000000000e-04,0,1.000000000000000e-04]);
-set(gca, 'FontSize', font_size);
+set(gca, 'FontSize', font_size,'FontName',font_family);
 hold off;

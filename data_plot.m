@@ -3,7 +3,8 @@ close all;
 
 % Define parameters
 file_path = 'dataplot.txt'; % Replace with your file's path
-font_size = 16;
+font_size = 21;
+font_family = 'Times New Roman';
 
 % Load the content of the data
 file_content = fileread(file_path);
@@ -50,13 +51,13 @@ if ~isempty(ch3_data_match) && ~isempty(ch1_data_match) && ~isempty(ch2_data_mat
     xlabel('Time step (k)', 'FontSize', font_size);
     ylabel('Tracking performance', 'FontSize', font_size);
     ylim([-1.5 3]); % Y-axis limits for Agent 4
-    set(gca, 'FontSize', font_size);
+    set(gca, 'FontSize', font_size,'FontName',font_family);
     
     % Add legend
     legend('show','orientation','horizontal');
 
-    zoom_x_start = 75; % Start of zoomed x-range
-    zoom_x_end = 105; % End of zoomed x-range
+    zoom_x_start = 80; % Start of zoomed x-range
+    zoom_x_end = 110; % End of zoomed x-range
     axes('Position', [0.23,0.555,0.30,0.25]);
     box on; hold on;
     plot(ch2_data, '-b', 'LineWidth', 2.5);
@@ -64,8 +65,8 @@ if ~isempty(ch3_data_match) && ~isempty(ch1_data_match) && ~isempty(ch2_data_mat
     plot(ch3_data, '-r', 'LineWidth', 2.5);
     plot(ch4_data, '-.g', 'LineWidth', 2.5);
     xlim([zoom_x_start zoom_x_end]);
-    % yticks([-0.4,0,0.2]);
-    set(gca, 'FontSize', font_size);
+    xticks([zoom_x_start zoom_x_end]);
+    set(gca, 'FontSize', font_size,'FontName',font_family); 
     
     % Save the plot
     print('-dpng', 'motor_plot.png');
